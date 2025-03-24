@@ -1,7 +1,7 @@
-name: "diffdriver_run"
+name: diffdriver_run
 output_dir: ../docs
 navbar:
-  title: "diffdriver_run"
+  title: diffdriver_run
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fab fa-github
+    text: Source code
+    href: https://github.com/LD-ZhangQR/diffdriver
 output:
   workflowr::wflow_html:
     toc: yes
