@@ -71,13 +71,22 @@ get_diff_table <- function(filedf){
     numlist[[p]] <- list()
     
     for (t in seq_len(nrow(p_txtfiles))){
-      txtf  <- p_txtfiles[t, "filetxt"]  
+      txtf  <- p_txtfiles[t, "filetxt"]
+      rdf   <- p_txtfiles[t, "file"] 
       tumor <- p_txtfiles[t, "tumor"] 
       mode  <- p_txtfiles[t, "mode"]     # reg / sig
+      
+      env <- new.env()
+      load(rdf, envir = env)
+      res_rdata <- env$res
       
       res <- read.table(txtf, header = TRUE)
       res$gene <- row.names(res)
       res$mode <- mode
+      
+      res$alpha2 <- sapply(res$gene, function(gene){
+          res_rdata[[gene]][["dd"]][["res.alt"]]$alpha[2]
+      })
       
       sig_res <- res[res$dd.fdr < 0.1, ]
       if (nrow(sig_res) > 0){
@@ -105,12 +114,21 @@ get_diff_table <- function(filedf){
       return(df.pheno)
     })
   )
-  
   return(combined_df)
 }
 
 diff_table <- get_diff_table(filedf)
-head(diff_table)
+```
+
+```{r}
+library(DT)
+diff_table_sig <- subset(diff_table, mode == "sig")
+datatable(diff_table_sig, options = list(pageLength = 10))
+```
+
+```{r}
+diff_table_reg <- subset(diff_table, mode == "reg")
+datatable(diff_table_reg, options = list(pageLength = 10))
 ```
 
 ```{r}
