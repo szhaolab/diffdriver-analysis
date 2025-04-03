@@ -12,5 +12,5 @@ Welcome to my research website.
 
 - [Clinical](clinical.html)
 - [Immune Subtypes](immunesubtypes.html)
-- [Immuneraits](immunetraits.html)
+- [Immunertaits](immunetraits.html)
 - [PRS](PRS.html)
