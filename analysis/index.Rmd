@@ -11,6 +11,6 @@ editor_options:
 Welcome to my research website.
 
 - [Clinical](clinical.html)
-- [Immune Subtypes](immune_subtypes.html)
-- [Immuneraits](immuneraits.html)
+- [Immune Subtypes](immunesubtypes.html)
+- [Immuneraits](immunetraits.html)
 - [PRS](PRS.html)
