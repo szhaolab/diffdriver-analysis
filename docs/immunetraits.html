@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Qirui Zhang" />
+
+<meta name="date" content="2025-03-23" />
+
+<title>example</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">diffdriver_run</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/LD-ZhangQR/diffdriver">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">example</h1>
+<h4 class="author">Qirui Zhang</h4>
+<h4 class="date">2025-03-23</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2025-04-03
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>diffdriver/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250319code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250319)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250319code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250319)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/workflowr/diffdriver/output/
+</td>
+<td style="text-align:left;">
+output
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree442ada3a1d1396c8cee8409c5d93f3aa6b2314c1targetblank442ada3a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/442ada3a1d1396c8cee8409c5d93f3aa6b2314c1" target="_blank">442ada3</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree442ada3a1d1396c8cee8409c5d93f3aa6b2314c1targetblank442ada3a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/442ada3a1d1396c8cee8409c5d93f3aa6b2314c1" target="_blank">442ada3</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  code/run_workflowr.R
+    Untracked:  output/BLCA_FGFR3_Aneuploidy.Score_reg59e6f336fd3d8
+
+Unstaged changes:
+    Deleted:    analysis/example.Rmd
+    Modified:   diffdriver.Rproj
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/immunetraits.Rmd</code>) and HTML
+(<code>docs/immunetraits.html</code>) files. If you’ve configured a
+remote Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/442ada3a1d1396c8cee8409c5d93f3aa6b2314c1/analysis/immunetraits.Rmd" target="_blank">442ada3</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-04-03
+</td>
+<td>
+Update all analysis
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)</code></pre>
+<pre class="r"><code>get_files &lt;- function(outputdir, tumors = NULL, phenotypes = NULL) {
+  files &lt;- list.files(
+    path = outputdir,
+    pattern = &quot;_resdd\\.Rd$&quot;,
+    recursive = TRUE,
+    full.names = TRUE
+  )
+  
+  matching_files_txt &lt;- sub(&quot;\\.Rd$&quot;, &quot;.txt&quot;, files)
+  
+  analysis_mode &lt;- ifelse(grepl(&quot;_sig_&quot;, basename(files)), &quot;sig&quot;, &quot;reg&quot;)
+
+  inner_folder_names      &lt;- basename(dirname(files))            # e.g. &quot;Aneuploidy.Score_BLCA_mutations&quot;
+  phenotype_folder_names  &lt;- basename(dirname(dirname(files)))   # e.g. &quot;Aneuploidy.Score&quot;
+  
+  tumor_names &lt;- mapply(function(inner_name, phen) {
+    pattern_front &lt;- paste0(&quot;^&quot;, phen, &quot;_&quot;)
+    tmp &lt;- sub(pattern_front, &quot;&quot;, inner_name)
+    tmp &lt;- sub(&quot;_mutations$&quot;, &quot;&quot;, tmp)
+    return(tmp)
+  }, inner_folder_names, phenotype_folder_names)
+  
+  phenos_all &lt;- phenotype_folder_names
+  
+  filedf &lt;- data.frame(
+    tumor      = tumor_names,
+    phenotype  = phenos_all,
+    mode       = analysis_mode,   
+    file       = files,
+    filetxt    = matching_files_txt,
+    stringsAsFactors = FALSE
+  )
+  
+  if (!is.null(tumors)) {
+    filedf &lt;- filedf[filedf$tumor %in% tumors, ]
+  }
+  if (!is.null(phenotypes)) {
+    filedf &lt;- filedf[filedf$phenotype %in% phenotypes, ]
+  }
+
+  rownames(filedf) &lt;- NULL
+  return(filedf)
+}
+
+filedf &lt;- get_files(
+  outputdir = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits&quot;
+)
+
+head(filedf)</code></pre>
+<pre><code>  tumor phenotype mode
+1  BLCA      APM1  reg
+2  BLCA      APM1  sig
+3  BRCA      APM1  reg
+4  BRCA      APM1  sig
+5  CESC      APM1  reg
+6  CESC      APM1  sig
+                                                                                                                         file
+1 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_BLCA_mutations/testdiffdriver_reg_APM1_resdd.Rd
+2 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_BLCA_mutations/testdiffdriver_sig_APM1_resdd.Rd
+3 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_BRCA_mutations/testdiffdriver_reg_APM1_resdd.Rd
+4 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_BRCA_mutations/testdiffdriver_sig_APM1_resdd.Rd
+5 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_CESC_mutations/testdiffdriver_reg_APM1_resdd.Rd
+6 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_CESC_mutations/testdiffdriver_sig_APM1_resdd.Rd
+                                                                                                                       filetxt
+1 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_BLCA_mutations/testdiffdriver_reg_APM1_resdd.txt
+2 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_BLCA_mutations/testdiffdriver_sig_APM1_resdd.txt
+3 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_BRCA_mutations/testdiffdriver_reg_APM1_resdd.txt
+4 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_BRCA_mutations/testdiffdriver_sig_APM1_resdd.txt
+5 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_CESC_mutations/testdiffdriver_reg_APM1_resdd.txt
+6 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits/APM1/APM1_CESC_mutations/testdiffdriver_sig_APM1_resdd.txt</code></pre>
+<pre class="r"><code>get_diff_table &lt;- function(filedf){
+  pheno_all &lt;- unique(filedf$phenotype)
+  numlist &lt;- list()
+  
+  for (p in pheno_all){
+    p_txtfiles &lt;- filedf[filedf$phenotype == p, ]
+    numlist[[p]] &lt;- list()
+    
+    for (t in seq_len(nrow(p_txtfiles))){
+      txtf  &lt;- p_txtfiles[t, &quot;filetxt&quot;]
+      rdf   &lt;- p_txtfiles[t, &quot;file&quot;] 
+      tumor &lt;- p_txtfiles[t, &quot;tumor&quot;] 
+      mode  &lt;- p_txtfiles[t, &quot;mode&quot;]     # reg / sig
+      
+      env &lt;- new.env()
+      load(rdf, envir = env)
+      res_rdata &lt;- env$res
+      
+      res &lt;- read.table(txtf, header = TRUE)
+      res$gene &lt;- row.names(res)
+      res$mode &lt;- mode
+      
+      res$alpha &lt;- sapply(res$gene, function(gene){
+          res_rdata[[gene]][[&quot;dd&quot;]][[&quot;res.alt&quot;]]$alpha[2]
+      })
+      
+      sig_res &lt;- res[res$dd.fdr &lt; 0.1, ]
+      if (nrow(sig_res) &gt; 0){
+        numlist[[p]][[ paste0(tumor, &quot;_&quot;, mode) ]] &lt;- sig_res
+      }
+    }
+    
+    if (length(numlist[[p]]) == 0){
+      numlist[[p]] &lt;- NULL
+    }
+  }
+  
+  combined_df &lt;- do.call(
+    rbind,
+    lapply(names(numlist), function(pheno) {
+      numlist.pheno &lt;- numlist[[pheno]]
+      df.pheno &lt;- do.call(rbind, lapply(names(numlist.pheno), function(tname) {
+        df &lt;- numlist.pheno[[tname]]
+
+        df$tumor &lt;- sub(&quot;_.*&quot;, &quot;&quot;, tname) 
+        df$mode  &lt;- sub(&quot;.*_&quot;, &quot;&quot;, tname) 
+        return(df)
+      }))
+      df.pheno$pheno &lt;- pheno
+      return(df.pheno)
+    })
+  )
+  return(combined_df)
+}
+
+diff_table &lt;- get_diff_table(filedf)</code></pre>
+<pre class="r"><code>library(DT)
+diff_table_sig &lt;- subset(diff_table, mode == &quot;sig&quot;)
+datatable(diff_table_sig, options = list(pageLength = 10))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-321f8cf22c7d3f9f6363" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-321f8cf22c7d3f9f6363">{"x":{"filter":"none","vertical":false,"data":[["KRAS","MME1"],[0.0321690006863774,0.000673626253693588],[0.0408020587957205,0.00705844891908838],[0.0539086443869642,0.00926794116316311],[0.294809831413996,0.0289752933478509],[0.318071256480736,0.0129908107693843],[0.197679115876562,0.986405782852639],[0.0965070020591323,0.0269450501477435],[0.122406176387162,0.141168978381768],[0.161725933160893,0.185358823263262],[0.618588969055431,0.579505866957019],[0.6274145428987949,0.259816215387685],[0.436623761997901,0.987868668158241],[4,0],[13,6],[54,102],[88,96],["KRAS","MME"],["sig","sig"],[-47.46423950954252,-125.6596786081624],["TGCT","UCEC"],["NK_cells","T_helper_cells"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>dd.p<\/th>\n      <th>mlr.p<\/th>\n      <th>mlr.v2.p<\/th>\n      <th>fisher.p<\/th>\n      <th>binom.p<\/th>\n      <th>lr.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>mlr.fdr<\/th>\n      <th>mlr.v2.fdr<\/th>\n      <th>fisher.fdr<\/th>\n      <th>binom.fdr<\/th>\n      <th>lr.fdr<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>E1<\/th>\n      <th>E0<\/th>\n      <th>gene<\/th>\n      <th>mode<\/th>\n      <th>alpha<\/th>\n      <th>tumor<\/th>\n      <th>pheno<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,19]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"dd.p","targets":1},{"name":"mlr.p","targets":2},{"name":"mlr.v2.p","targets":3},{"name":"fisher.p","targets":4},{"name":"binom.p","targets":5},{"name":"lr.p","targets":6},{"name":"dd.fdr","targets":7},{"name":"mlr.fdr","targets":8},{"name":"mlr.v2.fdr","targets":9},{"name":"fisher.fdr","targets":10},{"name":"binom.fdr","targets":11},{"name":"lr.fdr","targets":12},{"name":"mut.E1","targets":13},{"name":"mut.E0","targets":14},{"name":"E1","targets":15},{"name":"E0","targets":16},{"name":"gene","targets":17},{"name":"mode","targets":18},{"name":"alpha","targets":19},{"name":"tumor","targets":20},{"name":"pheno","targets":21}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>diff_table_reg &lt;- subset(diff_table, mode == &quot;reg&quot;)
+datatable(diff_table_reg, options = list(pageLength = 10))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1662b273260d1abeaa23" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1662b273260d1abeaa23">{"x":{"filter":"none","vertical":false,"data":[["MME","FRG1","ARID1B","ATM","CCND1","CTCF","SPOP"],[2.66835304313352e-05,0.0496617948694007,0.000859129929903508,0.00528370905039144,0.00525422286560058,0.00395588299554412,0.00360875358529921],[0.00705844891908838,0.0570361524716298,0.00817565057617272,0.0458124914720791,0.0443303832700587,0.0198049241640162,0.0351744128654868],[0.00926794116316311,0.0569497006895755,0.00775227033853096,0.06659215527365291,0.0519945604020744,0.0317893362664711,0.0512540702438015],[0.0289752933478509,0.114141138470164,0.0311347038521642,0.189574853857906,0.0196615654627413,0.0939980504607575,0.0441127984807524],[0.0129908107693843,0.0788487251348825,0.0223558495893336,0.197541528795284,0.0190299196402091,0.07619010422944469,0.0472918846056122],[0.986405782852639,0.120257463629335,0.0748069808154922,0.557821839407574,0.985546702128735,0.0420978552496176,0.0861096568747705],[0.00106734121725341,0.0993235897388013,0.054125185583921,0.0528370905039144,0.0528370905039144,0.0528370905039144,0.0528370905039144],[0.141168978381768,0.11407230494326,0.515065986298881,0.320885254426005,0.320885254426005,0.320885254426005,0.320885254426005],[0.185358823263262,0.0569497006895755,0.488393031327451,0.443947701824353,0.442950399888988,0.442950399888988,0.442950399888988],[0.579505866957019,0.149467602741787,0.653828780895448,0.689363104937841,0.468752986359697,0.486873534434304,0.468752986359697],[0.259816215387685,0.0788487251348825,0.47375062879862,0.71833283198285,0.338622685464199,0.338622685464199,0.338622685464199],[0.987868668158241,0.120257463629335,0.708036229458858,0.996179062654354,0.996179062654354,0.660396711235531,0.688877254998164],[0,3,5,4,0,7,2],[6,9,19,11,7,19,11],[102,33,152,89,89,89,89],[96,29,187,109,109,109,109],["MME","FRG1","ARID1B","ATM","CCND1","CTCF","SPOP"],["reg","reg","reg","reg","reg","reg","reg"],[-118.5331176300142,-37.28125138136749,-40.34522054105224,-56.96755770980452,-69.80990556173107,-37.44511424532181,-55.84202430854417],["UCEC","KICH","BLCA","UCEC","UCEC","UCEC","UCEC"],["T_helper_cells","Tem_cells","Tfh_cells","Tfh_cells","Tfh_cells","Tfh_cells","Tfh_cells"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>dd.p<\/th>\n      <th>mlr.p<\/th>\n      <th>mlr.v2.p<\/th>\n      <th>fisher.p<\/th>\n      <th>binom.p<\/th>\n      <th>lr.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>mlr.fdr<\/th>\n      <th>mlr.v2.fdr<\/th>\n      <th>fisher.fdr<\/th>\n      <th>binom.fdr<\/th>\n      <th>lr.fdr<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>E1<\/th>\n      <th>E0<\/th>\n      <th>gene<\/th>\n      <th>mode<\/th>\n      <th>alpha<\/th>\n      <th>tumor<\/th>\n      <th>pheno<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,19]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"dd.p","targets":1},{"name":"mlr.p","targets":2},{"name":"mlr.v2.p","targets":3},{"name":"fisher.p","targets":4},{"name":"binom.p","targets":5},{"name":"lr.p","targets":6},{"name":"dd.fdr","targets":7},{"name":"mlr.fdr","targets":8},{"name":"mlr.v2.fdr","targets":9},{"name":"fisher.fdr","targets":10},{"name":"binom.fdr","targets":11},{"name":"lr.fdr","targets":12},{"name":"mut.E1","targets":13},{"name":"mut.E0","targets":14},{"name":"E1","targets":15},{"name":"E0","targets":16},{"name":"gene","targets":17},{"name":"mode","targets":18},{"name":"alpha","targets":19},{"name":"tumor","targets":20},{"name":"pheno","targets":21}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>plot_diff_number &lt;- function(filedf, mode = c(&quot;all&quot;, &quot;reg&quot;, &quot;sig&quot;)){
+  mode &lt;- match.arg(mode)
+  
+  if (mode != &quot;all&quot;){
+    filedf &lt;- filedf[filedf$mode == mode, ]
+  }
+  
+  pheno_all &lt;- unique(filedf$phenotype)
+  numlist &lt;- list()
+  
+  for (p in pheno_all){
+    p_txtfiles &lt;- filedf[filedf$phenotype == p, ]
+    numlist[[p]] &lt;- list()
+    for (t in 1:nrow(p_txtfiles)){
+      txtf &lt;- p_txtfiles[t, &quot;filetxt&quot;]
+      tumor &lt;- p_txtfiles[t, &quot;tumor&quot;]
+      res &lt;- read.table(txtf, header = TRUE)
+      numlist[[p]][[tumor]] &lt;- c(
+        nrow(res[res$dd.fdr &lt; 0.1,]),
+        nrow(res) - nrow(res[res$dd.fdr &lt; 0.1,])
+      )
+    }
+  }
+  
+  par(mfrow = c(length(numlist),1), mar = c(3,5,2,0))
+  for (phenotype in names(numlist)) {
+    colors &lt;- rainbow(length(numlist[[phenotype]]))
+    plot(
+      NULL,
+      xlim = c(0.5, length(numlist[[phenotype]]) + 0.5),
+      ylim = c(0, max(unlist(sapply(numlist[[phenotype]], `[`, 1)))),
+      xlab = &quot;Tumor Type&quot;,
+      ylab = &quot;No. Genes&quot;,
+      main = paste(&quot;Context:&quot;, phenotype),
+      xaxt = &quot;n&quot;, bty = &#39;n&#39;
+    )
+    grid()
+    
+    axis(
+      1,
+      at = 1:length(numlist[[phenotype]]),
+      labels = names(numlist[[phenotype]]),
+      las = 2
+    )
+    
+    for (i in seq_along(numlist[[phenotype]])) {
+      bar_height &lt;- numlist[[phenotype]][[i]][1]
+      rect(i - 0.4, 0, i + 0.4, bar_height, col = colors[i], border = NA)
+    }
+  }
+}</code></pre>
+<pre class="r"><code>plot_diff_number(filedf, mode = &quot;reg&quot;)</code></pre>
+<p><img src="figure/immunetraits.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_diff_number(filedf, mode = &quot;sig&quot;)</code></pre>
+<p><img src="figure/immunetraits.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_each &lt;- function(outdt, path.base){
+  options(repr.plot.width = 7, repr.plot.height = 3)
+  
+  for (i in seq_len(nrow(outdt))) {
+
+    hits_i &lt;- paste0(
+      &quot;testdiffdriver_&quot;,
+      outdt$mode[i], &quot;_&quot;,
+      outdt$pheno[i],
+      &quot;_resdd.Rd&quot;
+    )
+    
+    subfolder &lt;- paste0(outdt$pheno[i], &quot;_&quot;, outdt$tumor[i], &quot;_mutations&quot;)
+    path &lt;- file.path(path.base, outdt$pheno[i], subfolder, hits_i)
+    
+    load(path)
+    ganno &lt;- fannoallg[[ outdt$gene[i] ]]
+    cannoj &lt;- e
+    names(cannoj) &lt;- &quot;Phenotype&quot;
+    mutmtx &lt;- riallg[[ outdt$gene[i] ]] 
+    bmrmtx &lt;- bmrallg[[ outdt$gene[i] ]]
+    
+    message(&quot;Plotting: &quot;, outdt$tumor[i], &quot;_&quot;, outdt$gene[i], &quot;_&quot;, outdt$pheno[i], &quot;_&quot;, outdt$mode[i])
+    
+    colnames(mutmtx)[colnames(mutmtx) == &quot;chrom&quot;] &lt;- &quot;Chromosome&quot;
+    colnames(mutmtx)[colnames(mutmtx) == &quot;start&quot;] &lt;- &quot;Start&quot;
+    colnames(mutmtx)[colnames(mutmtx) == &quot;ref&quot;]   &lt;- &quot;Ref&quot;
+    colnames(mutmtx)[colnames(mutmtx) == &quot;alt&quot;]   &lt;- &quot;Alt&quot;
+
+    diffdriver::plot_mut(
+      gene_name   = outdt$gene[i], 
+      mut         = mutmtx,        
+      pheno       = cannoj,       
+      totalnttype = 96,         
+      anno_dir    = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;,
+      output_prefix = paste(
+      outdt$tumor[i], outdt$gene[i], outdt$pheno[i], outdt$mode[i],
+      sep = &quot;_&quot;
+      ),
+      output_dir = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/workflowr/diffdriver/output/&quot;
+    )
+    
+    diffdriver::plot_mut(gene_name = &quot;PIK3CA&quot;, mut= mut, pheno = pheno, totalnttype = 9, anno_dir = &quot;~/temp/annodir9&quot;)
+  
+  }
+}</code></pre>
+<pre class="r"><code>outdt &lt;- data.frame(
+  tumor = c(&quot;BLCA&quot;, &quot;BLCA&quot;),
+  pheno = c(&quot;Aneuploidy.Score&quot;, &quot;Aneuploidy.Score&quot;),
+  gene  = c(&quot;FGFR3&quot;, &quot;NFE2L2&quot;),
+  mode  = c(&quot;reg&quot;, &quot;reg&quot;)
+)
+
+##plot_each(
+##  outdt     = outdt,
+##  path.base = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output&quot;
+##)</code></pre>
+<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/KICH/KICH_mutations.txt&quot;
+mut &lt;- read.table(mut_path, header = TRUE, sep = &quot;\t&quot;)
+head(mut)</code></pre>
+<pre><code>  Chromosome  Position Ref Alt     SampleID
+1         11  55587779   C   T TCGA-KN-8429
+2         10  71877654   A   C TCGA-KL-8326
+3          2 132021781   A   T TCGA-KL-8346
+4          8   2836315   G   T TCGA-KO-8404
+5          4   5564754   C   T TCGA-KO-8414
+6         20  57767954   C   T TCGA-KL-8335</code></pre>
+<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/KICH/KICH_Tem_cells.txt&quot;
+pheno &lt;- read.table(pheno_path, header = TRUE, sep = &quot;\t&quot;)
+head(pheno)</code></pre>
+<pre><code>      SampleID  Tem.cells
+1 TCGA-KM-8639 0.06995217
+2 TCGA-KN-8424 0.13275387
+3 TCGA-KN-8426 0.08187756
+4 TCGA-KO-8414 0.09180545
+5 TCGA-KN-8423 0.10712793
+6 TCGA-KN-8419 0.12391147</code></pre>
+<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;TP53&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
+                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;</code></pre>
+<p><img src="figure/immunetraits.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>
+Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>df_summary &lt;- diff_table %&gt;%
+  filter(mode == &quot;sig&quot;) %&gt;%               
+  group_by(tumor, pheno) %&gt;%          
+  summarise(num_genes = n_distinct(gene)) %&gt;% 
+  ungroup()</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;tumor&#39;. You can override using the
+`.groups` argument.</code></pre>
+<pre class="r"><code>head(df_summary)</code></pre>
+<pre><code># A tibble: 2 × 3
+  tumor pheno          num_genes
+  &lt;chr&gt; &lt;chr&gt;              &lt;int&gt;
+1 TGCT  NK_cells               1
+2 UCEC  T_helper_cells         1</code></pre>
+<pre class="r"><code>plot_one_pheno &lt;- function(df_single, pheno_name) {
+
+  par(mfrow=c(1,1), mar = c(3,5,2,0))
+  
+  colors &lt;- rainbow(nrow(df_single))
+  ymax   &lt;- max(df_single$num_genes)
+  
+  plot(
+    NULL,
+    xlim = c(0.5, nrow(df_single) + 0.5),
+    ylim = c(0, ymax),
+    xlab = &quot;Tumor Type&quot;,
+    ylab = &quot;No. Genes&quot;,
+    main = paste(&quot;Context:&quot;, pheno_name),
+    xaxt = &quot;n&quot;, bty = &#39;n&#39;
+  )
+  grid()
+  axis(
+    1,
+    at = 1:nrow(df_single),
+    labels = df_single$tumor,
+    las=2
+  )
+  
+  for(i in seq_len(nrow(df_single))) {
+    rect(i-0.4, 0, i+0.4, df_single$num_genes[i],
+         col=colors[i], border=NA)
+  }
+}
+
+df_single &lt;- subset(df_summary, pheno == &quot;NK_cells&quot;)
+plot_one_pheno(
+  df_single  = df_single, 
+  pheno_name = &quot;NK_cells&quot; 
+)</code></pre>
+<p><img src="figure/immunetraits.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>df_table &lt;- diff_table %&gt;%
+  filter(mode == &quot;sig&quot;) %&gt;%
+  transmute(
+    Tumor   = tumor,
+    Context = pheno,
+    Gene    = gene,
+    p       = dd.p,
+    FDR     = dd.fdr
+  ) %&gt;%
+  filter(FDR &lt; 0.1) %&gt;%
+  arrange(FDR)
+
+head(df_table)</code></pre>
+<pre><code>     Tumor        Context Gene            p        FDR
+MME1  UCEC T_helper_cells  MME 0.0006736263 0.02694505
+KRAS  TGCT       NK_cells KRAS 0.0321690007 0.09650700</code></pre>
+<pre class="r"><code>library(gt)
+
+df_table %&gt;%
+  head(8) %&gt;%
+  gt() %&gt;%
+  tab_header(
+    title = &quot;Significant Drivers&quot;,
+    subtitle = &quot;FDR &lt; 0.1&quot;
+  ) %&gt;%
+
+  tab_style(
+    style = list(
+      cell_fill(color = &quot;#B60059&quot;), 
+      cell_text(color = &quot;white&quot;, weight = &quot;bold&quot;)
+    ),
+    locations = cells_column_labels(everything())
+  ) %&gt;%
+  fmt_scientific(
+    columns = c(p, FDR),
+    decimals = 2
+  ) %&gt;%
+  tab_options(
+    table.border.top.style = &quot;none&quot;,
+    table.border.bottom.style = &quot;none&quot;,
+    table.border.left.style = &quot;none&quot;,
+    table.border.right.style = &quot;none&quot;,
+    
+    column_labels.border.bottom.style = &quot;solid&quot;,
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = &quot;black&quot;,
+    
+    data_row.padding = px(4),   
+    table.width = pct(50)           
+  )</code></pre>
+<div id="smsmddwcst" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#smsmddwcst table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#smsmddwcst thead, #smsmddwcst tbody, #smsmddwcst tfoot, #smsmddwcst tr, #smsmddwcst td, #smsmddwcst th {
+  border-style: none;
+}
+
+#smsmddwcst p {
+  margin: 0;
+  padding: 0;
+}
+
+#smsmddwcst .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 50%;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#smsmddwcst .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#smsmddwcst .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#smsmddwcst .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#smsmddwcst .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#smsmddwcst .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#smsmddwcst .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#smsmddwcst .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#smsmddwcst .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#smsmddwcst .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#smsmddwcst .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#smsmddwcst .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#smsmddwcst .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#smsmddwcst .gt_row {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#smsmddwcst .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#smsmddwcst .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#smsmddwcst .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#smsmddwcst .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#smsmddwcst .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#smsmddwcst .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#smsmddwcst .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#smsmddwcst .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#smsmddwcst .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#smsmddwcst .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#smsmddwcst .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#smsmddwcst .gt_left {
+  text-align: left;
+}
+
+#smsmddwcst .gt_center {
+  text-align: center;
+}
+
+#smsmddwcst .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#smsmddwcst .gt_font_normal {
+  font-weight: normal;
+}
+
+#smsmddwcst .gt_font_bold {
+  font-weight: bold;
+}
+
+#smsmddwcst .gt_font_italic {
+  font-style: italic;
+}
+
+#smsmddwcst .gt_super {
+  font-size: 65%;
+}
+
+#smsmddwcst .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#smsmddwcst .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#smsmddwcst .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#smsmddwcst .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#smsmddwcst .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#smsmddwcst .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#smsmddwcst .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#smsmddwcst .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#smsmddwcst div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_title gt_font_normal" style>Significant Drivers</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>FDR &lt; 0.1</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #B60059; color: #FFFFFF; font-weight: bold;" scope="col" id="Tumor">Tumor</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #B60059; color: #FFFFFF; font-weight: bold;" scope="col" id="Context">Context</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="background-color: #B60059; color: #FFFFFF; font-weight: bold;" scope="col" id="Gene">Gene</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #B60059; color: #FFFFFF; font-weight: bold;" scope="col" id="p">p</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="background-color: #B60059; color: #FFFFFF; font-weight: bold;" scope="col" id="FDR">FDR</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Tumor" class="gt_row gt_left">UCEC</td>
+<td headers="Context" class="gt_row gt_left">T_helper_cells</td>
+<td headers="Gene" class="gt_row gt_left">MME</td>
+<td headers="p" class="gt_row gt_right">6.74&nbsp;×&nbsp;10<sup style='font-size: 65%;'>−4</sup></td>
+<td headers="FDR" class="gt_row gt_right">2.69&nbsp;×&nbsp;10<sup style='font-size: 65%;'>−2</sup></td></tr>
+    <tr><td headers="Tumor" class="gt_row gt_left">TGCT</td>
+<td headers="Context" class="gt_row gt_left">NK_cells</td>
+<td headers="Gene" class="gt_row gt_left">KRAS</td>
+<td headers="p" class="gt_row gt_right">3.22&nbsp;×&nbsp;10<sup style='font-size: 65%;'>−2</sup></td>
+<td headers="FDR" class="gt_row gt_right">9.65&nbsp;×&nbsp;10<sup style='font-size: 65%;'>−2</sup></td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.2 (2024-10-31)
+Platform: x86_64-conda-linux-gnu
+Running under: Ubuntu 24.04.1 LTS
+
+Matrix products: default
+BLAS/LAPACK: /dartfs-hpc/rc/home/p/f0070pp/.conda/envs/diffdriver/lib/libopenblasp-r0.3.29.so;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] gt_0.11.1       dplyr_1.1.4     DT_0.33         workflowr_1.7.1
+
+loaded via a namespace (and not attached):
+ [1] Matrix_1.7-3      jsonlite_1.9.1    compiler_4.4.2    promises_1.3.2   
+ [5] tidyselect_1.2.1  Rcpp_1.0.14       xml2_1.3.8        stringr_1.5.1    
+ [9] git2r_0.35.0      callr_3.7.6       later_1.4.1       jquerylib_0.1.4  
+[13] yaml_2.3.10       fastmap_1.2.0     lattice_0.22-6    R6_2.6.1         
+[17] generics_0.1.3    knitr_1.50        htmlwidgets_1.6.4 tibble_3.2.1     
+[21] rprojroot_2.0.4   bslib_0.9.0       pillar_1.10.1     diffdriver_0.1.6 
+[25] rlang_1.1.5       utf8_1.2.4        cachem_1.1.0      stringi_1.8.4    
+[29] httpuv_1.6.15     xfun_0.51         getPass_0.2-4     fs_1.6.5         
+[33] sass_0.4.9        cli_3.6.4         withr_3.0.2       magrittr_2.0.3   
+[37] crosstalk_1.2.1   ps_1.8.1          digest_0.6.37     grid_4.4.2       
+[41] processx_3.8.6    rstudioapi_0.17.1 lifecycle_1.0.4   vctrs_0.6.5      
+[45] data.table_1.17.0 evaluate_1.0.3    glue_1.8.0        whisker_0.4.1    
+[49] rmarkdown_2.29    httr_1.4.7        tools_4.4.2       pkgconfig_2.0.3  
+[53] htmltools_0.5.8.1</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
