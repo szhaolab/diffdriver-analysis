@@ -1,0 +1,361 @@
+---
+title: "example"
+author: "Qirui Zhang"
+date: "2025-03-28"
+output: html_document
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+get_files <- function(outputdir, tumors = NULL, phenotypes = NULL) {
+  files <- list.files(
+    path = outputdir,
+    pattern = "_resdd\\.Rd$",
+    recursive = TRUE,
+    full.names = TRUE
+  )
+  
+  matching_files_txt <- sub("\\.Rd$", ".txt", files)
+  
+  analysis_mode <- ifelse(grepl("_sig_", basename(files)), "sig", "reg")
+
+  inner_folder_names      <- basename(dirname(files))            # e.g. "Aneuploidy.Score_BLCA_mutations"
+  phenotype_folder_names  <- basename(dirname(dirname(files)))   # e.g. "Aneuploidy.Score"
+  
+  tumor_names <- mapply(function(inner_name, phen) {
+    pattern_front <- paste0("^", phen, "_")
+    tmp <- sub(pattern_front, "", inner_name)
+    tmp <- sub("_mutations$", "", tmp)
+    return(tmp)
+  }, inner_folder_names, phenotype_folder_names)
+  
+  phenos_all <- phenotype_folder_names
+  
+  filedf <- data.frame(
+    tumor      = tumor_names,
+    phenotype  = phenos_all,
+    mode       = analysis_mode,   
+    file       = files,
+    filetxt    = matching_files_txt,
+    stringsAsFactors = FALSE
+  )
+  
+  if (!is.null(tumors)) {
+    filedf <- filedf[filedf$tumor %in% tumors, ]
+  }
+  if (!is.null(phenotypes)) {
+    filedf <- filedf[filedf$phenotype %in% phenotypes, ]
+  }
+
+  rownames(filedf) <- NULL
+  return(filedf)
+}
+
+filedf <- get_files(
+  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/clinical"
+)
+
+head(filedf)
+```
+
+```{r}
+get_diff_table <- function(filedf){
+  pheno_all <- unique(filedf$phenotype)
+  numlist <- list()
+  
+  for (p in pheno_all){
+    p_txtfiles <- filedf[filedf$phenotype == p, ]
+    numlist[[p]] <- list()
+    
+    for (t in seq_len(nrow(p_txtfiles))){
+      txtf  <- p_txtfiles[t, "filetxt"]
+      rdf   <- p_txtfiles[t, "file"] 
+      tumor <- p_txtfiles[t, "tumor"] 
+      mode  <- p_txtfiles[t, "mode"]     # reg / sig
+      
+      env <- new.env()
+      load(rdf, envir = env)
+      res_rdata <- env$res
+      
+      res <- read.table(txtf, header = TRUE)
+      res$gene <- row.names(res)
+      res$mode <- mode
+      
+      res$alpha <- sapply(res$gene, function(gene){
+          res_rdata[[gene]][["dd"]][["res.alt"]]$alpha[2]
+      })
+      
+      sig_res <- res[res$dd.fdr < 0.1, ]
+      if (nrow(sig_res) > 0){
+        numlist[[p]][[ paste0(tumor, "_", mode) ]] <- sig_res
+      }
+    }
+    
+    if (length(numlist[[p]]) == 0){
+      numlist[[p]] <- NULL
+    }
+  }
+  
+  combined_df <- do.call(
+    rbind,
+    lapply(names(numlist), function(pheno) {
+      numlist.pheno <- numlist[[pheno]]
+      df.pheno <- do.call(rbind, lapply(names(numlist.pheno), function(tname) {
+        df <- numlist.pheno[[tname]]
+
+        df$tumor <- sub("_.*", "", tname) 
+        df$mode  <- sub(".*_", "", tname) 
+        return(df)
+      }))
+      df.pheno$pheno <- pheno
+      return(df.pheno)
+    })
+  )
+  return(combined_df)
+}
+
+diff_table <- get_diff_table(filedf)
+```
+
+```{r}
+library(DT)
+diff_table_sig <- subset(diff_table, mode == "sig")
+datatable(diff_table_sig, options = list(pageLength = 10))
+```
+
+```{r}
+diff_table_reg <- subset(diff_table, mode == "reg")
+datatable(diff_table_reg, options = list(pageLength = 10))
+```
+
+```{r}
+plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
+  mode <- match.arg(mode)
+  
+  if (mode != "all"){
+    filedf <- filedf[filedf$mode == mode, ]
+  }
+  
+  pheno_all <- unique(filedf$phenotype)
+  numlist <- list()
+  
+  for (p in pheno_all){
+    p_txtfiles <- filedf[filedf$phenotype == p, ]
+    numlist[[p]] <- list()
+    for (t in 1:nrow(p_txtfiles)){
+      txtf <- p_txtfiles[t, "filetxt"]
+      tumor <- p_txtfiles[t, "tumor"]
+      res <- read.table(txtf, header = TRUE)
+      numlist[[p]][[tumor]] <- c(
+        nrow(res[res$dd.fdr < 0.1,]),
+        nrow(res) - nrow(res[res$dd.fdr < 0.1,])
+      )
+    }
+  }
+  
+  par(mfrow = c(length(numlist),1), mar = c(2,4,1,0))
+  for (phenotype in names(numlist)) {
+    colors <- rainbow(length(numlist[[phenotype]]))
+    plot(
+      NULL,
+      xlim = c(0.5, length(numlist[[phenotype]]) + 0.5),
+      ylim = c(0, max(unlist(sapply(numlist[[phenotype]], `[`, 1)))),
+      xlab = "Tumor Type",
+      ylab = "No. Genes",
+      main = paste("Context:", phenotype),
+      xaxt = "n", bty = 'n'
+    )
+    grid()
+    
+    axis(
+      1,
+      at = 1:length(numlist[[phenotype]]),
+      labels = names(numlist[[phenotype]]),
+      las = 2
+    )
+    
+    for (i in seq_along(numlist[[phenotype]])) {
+      bar_height <- numlist[[phenotype]][[i]][1]
+      rect(i - 0.4, 0, i + 0.4, bar_height, col = colors[i], border = NA)
+    }
+  }
+}
+```
+
+```{r}
+plot_diff_number(filedf, mode = "reg")
+```
+
+```{r}
+plot_diff_number(filedf, mode = "sig")
+```
+
+```{r}
+plot_each <- function(outdt, path.base){
+  options(repr.plot.width = 7, repr.plot.height = 3)
+  
+  for (i in seq_len(nrow(outdt))) {
+
+    hits_i <- paste0(
+      "testdiffdriver_",
+      outdt$mode[i], "_",
+      outdt$pheno[i],
+      "_resdd.Rd"
+    )
+    
+    subfolder <- paste0(outdt$pheno[i], "_", outdt$tumor[i], "_mutations")
+    path <- file.path(path.base, outdt$pheno[i], subfolder, hits_i)
+    
+    load(path)
+    ganno <- fannoallg[[ outdt$gene[i] ]]
+    cannoj <- e
+    names(cannoj) <- "Phenotype"
+    mutmtx <- riallg[[ outdt$gene[i] ]] 
+    bmrmtx <- bmrallg[[ outdt$gene[i] ]]
+    
+    message("Plotting: ", outdt$tumor[i], "_", outdt$gene[i], "_", outdt$pheno[i], "_", outdt$mode[i])
+    
+    colnames(mutmtx)[colnames(mutmtx) == "chrom"] <- "Chromosome"
+    colnames(mutmtx)[colnames(mutmtx) == "start"] <- "Start"
+    colnames(mutmtx)[colnames(mutmtx) == "ref"]   <- "Ref"
+    colnames(mutmtx)[colnames(mutmtx) == "alt"]   <- "Alt"
+
+    diffdriver::plot_mut(
+      gene_name   = outdt$gene[i], 
+      mut         = mutmtx,        
+      pheno       = cannoj,       
+      totalnttype = 96,         
+      anno_dir    = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96",
+      output_prefix = paste(
+      outdt$tumor[i], outdt$gene[i], outdt$pheno[i], outdt$mode[i],
+      sep = "_"
+      ),
+      output_dir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/workflowr/diffdriver/output/"
+    )
+    
+    diffdriver::plot_mut(gene_name = "PIK3CA", mut= mut, pheno = pheno, totalnttype = 9, anno_dir = "~/temp/annodir9")
+  
+  }
+}
+```
+
+```{r}
+mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/HNSC/HNSC_mutations.txt"
+mut <- read.table(mut_path, header = TRUE, sep = "\t")
+head(mut)
+```
+
+```{r}
+pheno_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Aneuploidy.Score.txt"
+pheno <- read.table(pheno_path, header = TRUE, sep = "\t")
+head(pheno)
+```
+
+```{r}
+diffdriver::plot_mut(gene_name = "CDKN2A", mut= mut, pheno = pheno, totalnttype = 96, 
+                     anno_dir =  "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96")
+```
+
+```{r}
+library(dplyr)
+
+df_summary <- diff_table %>%
+  filter(mode == "sig") %>%               
+  group_by(tumor, pheno) %>%          
+  summarise(num_genes = n_distinct(gene)) %>% 
+  ungroup()
+
+head(df_summary)
+```
+```{r}
+plot_one_pheno <- function(df_single, pheno_name) {
+
+  par(mfrow=c(1,1), mar = c(3,5,2,0))
+  
+  colors <- rainbow(nrow(df_single))
+  ymax   <- max(df_single$num_genes)
+  
+  plot(
+    NULL,
+    xlim = c(0.5, nrow(df_single) + 0.5),
+    ylim = c(0, ymax),
+    xlab = "Tumor Type",
+    ylab = "No. Genes",
+    main = paste("Context:", pheno_name),
+    xaxt = "n", bty = 'n'
+  )
+  grid()
+  axis(
+    1,
+    at = 1:nrow(df_single),
+    labels = df_single$tumor,
+    las=2
+  )
+  
+  for(i in seq_len(nrow(df_single))) {
+    rect(i-0.4, 0, i+0.4, df_single$num_genes[i],
+         col=colors[i], border=NA)
+  }
+}
+
+df_single <- subset(df_summary, pheno == "Aneuploidy.Score")
+plot_one_pheno(
+  df_single  = df_single, 
+  pheno_name = "Aneuploidy.Score" 
+)
+```
+
+```{r}
+df_table <- diff_table %>%
+  filter(mode == "sig") %>%
+  transmute(
+    Tumor   = tumor,
+    Context = pheno,
+    Gene    = gene,
+    p       = dd.p,
+    FDR     = dd.fdr
+  ) %>%
+  filter(FDR < 0.1) %>%
+  arrange(FDR)
+
+head(df_table)
+```
+```{r}
+library(gt)
+
+df_table %>%
+  head(8) %>%
+  gt() %>%
+  tab_header(
+    title = "Significant Drivers",
+    subtitle = "FDR < 0.1"
+  ) %>%
+
+  tab_style(
+    style = list(
+      cell_fill(color = "#B60059"), 
+      cell_text(color = "white", weight = "bold")
+    ),
+    locations = cells_column_labels(everything())
+  ) %>%
+  fmt_scientific(
+    columns = c(p, FDR),
+    decimals = 2
+  ) %>%
+  tab_options(
+    table.border.top.style = "none",
+    table.border.bottom.style = "none",
+    table.border.left.style = "none",
+    table.border.right.style = "none",
+    
+    column_labels.border.bottom.style = "solid",
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = "black",
+    
+    data_row.padding = px(4),   
+    table.width = pct(50)           
+  )
+```
