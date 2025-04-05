@@ -257,19 +257,20 @@ outdt <- data.frame(
 ```
 
 ```{r}
-mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/BLCA/BLCA_mutations.txt"
+mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/TGCT/TGCT_mutations.txt"
 mut <- read.table(mut_path, header = TRUE, sep = "\t")
 head(mut)
 ```
 
 ```{r}
-pheno_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/BLCA/BLCA_C2.txt"
+pheno_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C1.txt"
 pheno <- read.table(pheno_path, header = TRUE, sep = "\t")
+# pheno[1,2] = 0.1
 head(pheno)
 ```
 
 ```{r}
-diffdriver::plot_mut(gene_name = "CDKN2A", mut= mut, pheno = pheno, totalnttype = 96, 
+diffdriver::plot_mut(gene_name = "KIT", mut= mut, pheno = pheno, totalnttype = 96, 
                      anno_dir =  "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96")
 ```
 
@@ -315,10 +316,10 @@ plot_one_pheno <- function(df_single, pheno_name) {
   }
 }
 
-df_single <- subset(df_summary, pheno == "C4")
+df_single <- subset(df_summary, pheno == "C2")
 plot_one_pheno(
   df_single  = df_single, 
-  pheno_name = "C4" 
+  pheno_name = "C2" 
 )
 ```
 
