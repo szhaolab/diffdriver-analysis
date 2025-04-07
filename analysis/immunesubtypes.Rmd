@@ -1,14 +1,59 @@
 ---
-title: "example"
+title: "Immune Subtypes"
 author: "Qirui Zhang"
-date: "2025-03-23"
-output: html_document
+date: "2025-04-07"
+output: 
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
 ---
 
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Overview
+
+In total, **120 analyses** were conducted across **20 tumor types**, each classified into **6 distinct immune phenotype groups (C1–C6)**. Among these analyses, **87 completed successfully**, while **33 encountered errors**. The specific tumor type and phenotype combinations for unsuccessful analyses are detailed below.
+
+# Summary of Unsuccessful Analyses
+
+The table below summarizes analyses that failed, along with explanations for their failure:
+
+```{r, echo=FALSE}
+library(knitr)
+library(kableExtra)
+
+failure_data <- data.frame(
+  Combination = c("C1_SKCM_mutations", "C2_SKCM_mutations", "C2_GBM_mutations", "C2_KICH_mutations",
+                  "C3_GBM_mutations", "C3_CESC_mutations", "C3_LUSC_mutations", "C3_SKCM_mutations", "C3_UCS_mutations",
+                  "C4_SKCM_mutations", "C5_SARC_mutations", "C5_HNSC_mutations", "C5_ESCA_mutations", 
+                  "C5_UCEC_mutations", "C5_LUAD_mutations", "C5_LIHC_mutations", "C5_CESC_mutations", 
+                  "C5_LUSC_mutations", "C5_SKCM_mutations", "C5_PAAD_mutations", "C5_BLCA_mutations", 
+                  "C5_UCS_mutations", "C5_CHOL_mutations", "C5_TGCT_mutations", "C5_PRAD_mutations", 
+                  "C5_BRCA_mutations", "C6_CESC_mutations", "C6_UCS_mutations", "C6_GBM_mutations",
+                  "C6_TGCT_mutations", "C6_PRAD_mutations", "C6_KICH_mutations", "C6_SKCM_mutations"),
+  Reason = c("Insufficient data (only two samples)",
+             "Insufficient data (only two samples)",
+             rep("Lacked phenotype variation (all samples category 0)", 5),
+             "Insufficient data (only two samples)",
+             "Lacked phenotype variation (all samples category 0)",
+             "Insufficient data (only two samples)",
+             rep("Lacked phenotype variation (all samples category 0)", 8),
+             "Insufficient data (only two samples)",
+             rep("Lacked phenotype variation (all samples category 0)", 13),
+             "Insufficient data (only two samples)")
+)
+
+kable(failure_data, format = "html", col.names = c("Phenotype and Tumor Type", "Reason for Failure"), align = 'l') %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = F) %>%
+  row_spec(0, bold = TRUE, background = "#337ab7", color = "white") 
+```
+
+# Extracting and Summarizing Analysis Results
+This code segment scans through analysis output directories, identifies relevant result files (*_resdd.Rd), extracts corresponding tumor types, immune phenotypes, and analysis modes(sig/reg).
 ```{r}
 get_files <- function(outputdir, tumors = NULL, phenotypes = NULL) {
   files <- list.files(
@@ -22,8 +67,8 @@ get_files <- function(outputdir, tumors = NULL, phenotypes = NULL) {
   
   analysis_mode <- ifelse(grepl("_sig_", basename(files)), "sig", "reg")
 
-  inner_folder_names      <- basename(dirname(files))            # e.g. "Aneuploidy.Score_BLCA_mutations"
-  phenotype_folder_names  <- basename(dirname(dirname(files)))   # e.g. "Aneuploidy.Score"
+  inner_folder_names      <- basename(dirname(files))            
+  phenotype_folder_names  <- basename(dirname(dirname(files)))  
   
   tumor_names <- mapply(function(inner_name, phen) {
     pattern_front <- paste0("^", phen, "_")
@@ -61,6 +106,8 @@ filedf <- get_files(
 head(filedf)
 ```
 
+# Summary Table of Significant Differential Genes
+The provided function extracts and compiles results from analyses, filtering specifically for significant differential genes based on a threshold (**`dd.fdr < 0.1`**).  
 ```{r}
 get_diff_table <- function(filedf){
   pheno_all <- unique(filedf$phenotype)
@@ -120,17 +167,21 @@ get_diff_table <- function(filedf){
 diff_table <- get_diff_table(filedf)
 ```
 
+## Table under "Sig" Mode
 ```{r}
 library(DT)
 diff_table_sig <- subset(diff_table, mode == "sig")
 datatable(diff_table_sig, options = list(pageLength = 10))
 ```
 
+## Table under "Reg" Mode
 ```{r}
 diff_table_reg <- subset(diff_table, mode == "reg")
 datatable(diff_table_reg, options = list(pageLength = 10))
 ```
 
+# Plotting the Number of Significant Differential Genes
+The provided function generates bar plots illustrating the number of significantly differentially expressed genes (**dd.fdr < 0.1**) for each tumor type across immune phenotype contexts (C1–C6).
 ```{r}
 plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
   mode <- match.arg(mode)
@@ -185,77 +236,18 @@ plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
 }
 ```
 
+## Visualization under "Reg" Mode
 ```{r}
 plot_diff_number(filedf, mode = "reg")
 ```
 
+## Visualization under "Sig" Mode
 ```{r}
 plot_diff_number(filedf, mode = "sig")
 ```
 
-```{r}
-plot_each <- function(outdt, path.base){
-  options(repr.plot.width = 7, repr.plot.height = 3)
-  
-  for (i in seq_len(nrow(outdt))) {
-
-    hits_i <- paste0(
-      "testdiffdriver_",
-      outdt$mode[i], "_",
-      outdt$pheno[i],
-      "_resdd.Rd"
-    )
-    
-    subfolder <- paste0(outdt$pheno[i], "_", outdt$tumor[i], "_mutations")
-    path <- file.path(path.base, outdt$pheno[i], subfolder, hits_i)
-    
-    load(path)
-    ganno <- fannoallg[[ outdt$gene[i] ]]
-    cannoj <- e
-    names(cannoj) <- "Phenotype"
-    mutmtx <- riallg[[ outdt$gene[i] ]] 
-    bmrmtx <- bmrallg[[ outdt$gene[i] ]]
-    
-    message("Plotting: ", outdt$tumor[i], "_", outdt$gene[i], "_", outdt$pheno[i], "_", outdt$mode[i])
-    
-    colnames(mutmtx)[colnames(mutmtx) == "chrom"] <- "Chromosome"
-    colnames(mutmtx)[colnames(mutmtx) == "start"] <- "Start"
-    colnames(mutmtx)[colnames(mutmtx) == "ref"]   <- "Ref"
-    colnames(mutmtx)[colnames(mutmtx) == "alt"]   <- "Alt"
-
-    diffdriver::plot_mut(
-      gene_name   = outdt$gene[i], 
-      mut         = mutmtx,        
-      pheno       = cannoj,       
-      totalnttype = 96,         
-      anno_dir    = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96",
-      output_prefix = paste(
-      outdt$tumor[i], outdt$gene[i], outdt$pheno[i], outdt$mode[i],
-      sep = "_"
-      ),
-      output_dir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/workflowr/diffdriver/output/"
-    )
-    
-    diffdriver::plot_mut(gene_name = "PIK3CA", mut= mut, pheno = pheno, totalnttype = 9, anno_dir = "~/temp/annodir9")
-  
-  }
-}
-```
-
-```{r}
-outdt <- data.frame(
-  tumor = c("BLCA", "BLCA"),
-  pheno = c("Aneuploidy.Score", "Aneuploidy.Score"),
-  gene  = c("FGFR3", "NFE2L2"),
-  mode  = c("reg", "reg")
-)
-
-##plot_each(
-##  outdt     = outdt,
-##  path.base = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output"
-##)
-```
-
+# Plot specific genes
+To visualize the data for specific genes, diffdriver has a plotting function:
 ```{r}
 mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/TGCT/TGCT_mutations.txt"
 mut <- read.table(mut_path, header = TRUE, sep = "\t")
@@ -265,7 +257,6 @@ head(mut)
 ```{r}
 pheno_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C1.txt"
 pheno <- read.table(pheno_path, header = TRUE, sep = "\t")
-# pheno[1,2] = 0.1
 head(pheno)
 ```
 
@@ -274,103 +265,3 @@ diffdriver::plot_mut(gene_name = "KIT", mut= mut, pheno = pheno, totalnttype = 9
                      anno_dir =  "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96")
 ```
 
-```{r}
-library(dplyr)
-
-df_summary <- diff_table %>%
-  filter(mode == "reg") %>%               
-  group_by(tumor, pheno) %>%          
-  summarise(num_genes = n_distinct(gene)) %>% 
-  ungroup()
-
-head(df_summary)
-```
-```{r}
-plot_one_pheno <- function(df_single, pheno_name) {
-
-  par(mfrow=c(1,1), mar = c(3,5,2,0))
-  
-  colors <- rainbow(nrow(df_single))
-  ymax   <- max(df_single$num_genes)
-  
-  plot(
-    NULL,
-    xlim = c(0.5, nrow(df_single) + 0.5),
-    ylim = c(0, ymax),
-    xlab = "Tumor Type",
-    ylab = "No. Genes",
-    main = paste("Context:", pheno_name),
-    xaxt = "n", bty = 'n'
-  )
-  grid()
-  axis(
-    1,
-    at = 1:nrow(df_single),
-    labels = df_single$tumor,
-    las=2
-  )
-  
-  for(i in seq_len(nrow(df_single))) {
-    rect(i-0.4, 0, i+0.4, df_single$num_genes[i],
-         col=colors[i], border=NA)
-  }
-}
-
-df_single <- subset(df_summary, pheno == "C2")
-plot_one_pheno(
-  df_single  = df_single, 
-  pheno_name = "C2" 
-)
-```
-
-```{r}
-df_table <- diff_table %>%
-  filter(mode == "sig") %>%
-  transmute(
-    Tumor   = tumor,
-    Context = pheno,
-    Gene    = gene,
-    p       = dd.p,
-    FDR     = dd.fdr
-  ) %>%
-  filter(FDR < 0.1) %>%
-  arrange(FDR)
-
-head(df_table)
-```
-```{r}
-library(gt)
-
-df_table %>%
-  head(8) %>%
-  gt() %>%
-  tab_header(
-    title = "Significant Drivers",
-    subtitle = "FDR < 0.1"
-  ) %>%
-
-  tab_style(
-    style = list(
-      cell_fill(color = "#B60059"), 
-      cell_text(color = "white", weight = "bold")
-    ),
-    locations = cells_column_labels(everything())
-  ) %>%
-  fmt_scientific(
-    columns = c(p, FDR),
-    decimals = 2
-  ) %>%
-  tab_options(
-    table.border.top.style = "none",
-    table.border.bottom.style = "none",
-    table.border.left.style = "none",
-    table.border.right.style = "none",
-    
-    column_labels.border.bottom.style = "solid",
-    column_labels.border.bottom.width = px(2),
-    column_labels.border.bottom.color = "black",
-    
-    data_row.padding = px(4),   
-    table.width = pct(50)           
-  )
-```
