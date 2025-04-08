@@ -528,15 +528,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree5c263d689e50767e7033e0d25650c45a726748aatargetblank5c263d6a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree2fd166cc0053c013360a0fefa7321bddc983ba08targetblank2fd166ca">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/5c263d689e50767e7033e0d25650c45a726748aa" target="_blank">5c263d6</a>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/2fd166cc0053c013360a0fefa7321bddc983ba08" target="_blank">2fd166c</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree5c263d689e50767e7033e0d25650c45a726748aatargetblank5c263d6a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree2fd166cc0053c013360a0fefa7321bddc983ba08targetblank2fd166ca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -546,7 +546,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/5c263d689e50767e7033e0d25650c45a726748aa" target="_blank">5c263d6</a>.
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/2fd166cc0053c013360a0fefa7321bddc983ba08" target="_blank">2fd166c</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -614,6 +614,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/2fd166cc0053c013360a0fefa7321bddc983ba08/analysis/immunetraits.Rmd" target="_blank">2fd166c</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-04-08
+</td>
+<td>
+Add histogram
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/de1b6492817d859d9caafbbbee09d659b54b8589/docs/immunetraits.html" target="_blank">de1b649</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-04-08
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1042,36 +1076,39 @@ Qirui Zhang
 <h1>Plot specific genes</h1>
 <p>To visualize the data for specific genes, diffdriver has a plotting
 function:</p>
-<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/KICH/KICH_mutations.txt&quot;
+<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/TGCT/TGCT_mutations.txt&quot;
 mut &lt;- read.table(mut_path, header = TRUE, sep = &quot;\t&quot;)
 head(mut)</code></pre>
 <pre><code>  Chromosome  Position Ref Alt     SampleID
-1         11  55587779   C   T TCGA-KN-8429
-2         10  71877654   A   C TCGA-KL-8326
-3          2 132021781   A   T TCGA-KL-8346
-4          8   2836315   G   T TCGA-KO-8404
-5          4   5564754   C   T TCGA-KO-8414
-6         20  57767954   C   T TCGA-KL-8335</code></pre>
-<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/KICH/KICH_Tem_cells.txt&quot;
+1         16  30748991   C   T TCGA-SN-A84Y
+2         17   8439201   G   A TCGA-XE-AAOB
+3         14  96858506   G   A TCGA-YU-A94I
+4          7 100679429   T   A TCGA-2G-AAL5
+5          7 156802391   G   A TCGA-WZ-A7V3
+6          3 189586427   G   T TCGA-2G-AAG7</code></pre>
+<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/TGCT/TGCT_NK_cells.txt&quot;
 pheno &lt;- read.table(pheno_path, header = TRUE, sep = &quot;\t&quot;)
 head(pheno)</code></pre>
-<pre><code>      SampleID  Tem.cells
-1 TCGA-KM-8639 0.06995217
-2 TCGA-KN-8424 0.13275387
-3 TCGA-KN-8426 0.08187756
-4 TCGA-KO-8414 0.09180545
-5 TCGA-KN-8423 0.10712793
-6 TCGA-KN-8419 0.12391147</code></pre>
-<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;TP53&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
-                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
-<pre><code>[1] &quot;coding...&quot;
-[1] &quot;processing ...&quot;
-[1] &quot;for qnvars, filling in missing values ...&quot;
-[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
-[1] &quot;normalizing categorical variables in annotation matrix ...&quot;
-[1] &quot;Only keeping the first two columns of the phenotype data frame.&quot;
-[1] &quot;phenotype name is Tem.cells&quot;
-[1] &quot;number of samples shared in phenotype and mutation file: 62&quot;</code></pre>
+<pre><code>      SampleID   NK.cells
+1 TCGA-2G-AAFG 0.11125596
+2 TCGA-2G-AAEW 0.09057950
+3 TCGA-2G-AAGO 0.09243458
+4 TCGA-2G-AAGF 0.11599295
+5 TCGA-2G-AAG6 0.18450941
+6 TCGA-2G-AAFO 0.10544230</code></pre>
+<pre class="r"><code>library(ggplot2)
+
+ggplot(pheno, aes(x = NK.cells)) +
+  geom_histogram(
+    bins = 120,         
+    fill = &quot;skyblue&quot;,  
+    color = &quot;white&quot;
+  ) +
+  labs(
+    title = &quot;Distribution of NK Phenotypes in TGCT Samples&quot;,
+    x = &quot;NK Cells&quot;,
+    y = &quot;Count&quot;
+  )</code></pre>
 <p><img src="figure/immunetraits.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
@@ -1110,6 +1147,17 @@ Qirui Zhang
 </table>
 </div>
 </div>
+<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;KIT&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
+                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;
+[1] &quot;Only keeping the first two columns of the phenotype data frame.&quot;
+[1] &quot;phenotype name is NK.cells&quot;
+[1] &quot;number of samples shared in phenotype and mutation file: 142&quot;</code></pre>
+<p><img src="figure/immunetraits.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1141,21 +1189,24 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] DT_0.33         workflowr_1.7.1
+[1] ggplot2_3.5.1   DT_0.33         workflowr_1.7.1
 
 loaded via a namespace (and not attached):
- [1] Matrix_1.7-3      jsonlite_2.0.0    compiler_4.4.2    promises_1.3.2   
- [5] Rcpp_1.0.14       stringr_1.5.1     git2r_0.35.0      callr_3.7.6      
- [9] later_1.4.1       jquerylib_0.1.4   yaml_2.3.10       fastmap_1.2.0    
-[13] lattice_0.22-6    R6_2.6.1          knitr_1.50        htmlwidgets_1.6.4
-[17] tibble_3.2.1      rprojroot_2.0.4   bslib_0.9.0       pillar_1.10.1    
-[21] diffdriver_0.1.6  rlang_1.1.5       cachem_1.1.0      stringi_1.8.7    
-[25] httpuv_1.6.15     xfun_0.52         getPass_0.2-4     fs_1.6.5         
-[29] sass_0.4.9        cli_3.6.4         magrittr_2.0.3    crosstalk_1.2.1  
-[33] ps_1.8.1          digest_0.6.37     grid_4.4.2        processx_3.8.6   
-[37] rstudioapi_0.17.1 lifecycle_1.0.4   vctrs_0.6.5       data.table_1.17.0
-[41] evaluate_1.0.3    glue_1.8.0        whisker_0.4.1     rmarkdown_2.29   
-[45] httr_1.4.7        tools_4.4.2       pkgconfig_2.0.3   htmltools_0.5.8.1</code></pre>
+ [1] sass_0.4.9        generics_0.1.3    stringi_1.8.7     diffdriver_0.1.6 
+ [5] lattice_0.22-6    digest_0.6.37     magrittr_2.0.3    evaluate_1.0.3   
+ [9] grid_4.4.2        fastmap_1.2.0     rprojroot_2.0.4   jsonlite_2.0.0   
+[13] Matrix_1.7-3      processx_3.8.6    whisker_0.4.1     ps_1.8.1         
+[17] promises_1.3.2    httr_1.4.7        crosstalk_1.2.1   scales_1.3.0     
+[21] jquerylib_0.1.4   cli_3.6.4         rlang_1.1.5       munsell_0.5.1    
+[25] withr_3.0.2       cachem_1.1.0      yaml_2.3.10       tools_4.4.2      
+[29] dplyr_1.1.4       colorspace_2.1-1  httpuv_1.6.15     vctrs_0.6.5      
+[33] R6_2.6.1          lifecycle_1.0.4   git2r_0.35.0      stringr_1.5.1    
+[37] fs_1.6.5          htmlwidgets_1.6.4 pkgconfig_2.0.3   callr_3.7.6      
+[41] pillar_1.10.1     bslib_0.9.0       later_1.4.1       gtable_0.3.6     
+[45] glue_1.8.0        data.table_1.17.0 Rcpp_1.0.14       xfun_0.52        
+[49] tibble_3.2.1      tidyselect_1.2.1  rstudioapi_0.17.1 knitr_1.50       
+[53] farver_2.1.2      htmltools_0.5.8.1 labeling_0.4.3    rmarkdown_2.29   
+[57] compiler_4.4.2    getPass_0.2-4    </code></pre>
 </div>
 </div>
 </div>
