@@ -236,14 +236,14 @@ plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
 }
 ```
 
-## Visualization under "Reg" Mode
-```{r}
-plot_diff_number(filedf, mode = "reg")
-```
-
 ## Visualization under "Sig" Mode
 ```{r}
 plot_diff_number(filedf, mode = "sig")
+```
+
+## Visualization under "Reg" Mode
+```{r}
+plot_diff_number(filedf, mode = "reg")
 ```
 
 # Plot specific genes
