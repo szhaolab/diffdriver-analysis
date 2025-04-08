@@ -213,18 +213,33 @@ plot_diff_number(filedf, mode = "reg")
 # Plot specific genes
 To visualize the data for specific genes, diffdriver has a plotting function:
 ```{r}
-mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/KICH/KICH_mutations.txt"
+mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/TGCT/TGCT_mutations.txt"
 mut <- read.table(mut_path, header = TRUE, sep = "\t")
 head(mut)
 ```
 
 ```{r}
-pheno_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/KICH/KICH_Tem_cells.txt"
+pheno_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/TGCT/TGCT_NK_cells.txt"
 pheno <- read.table(pheno_path, header = TRUE, sep = "\t")
 head(pheno)
 ```
+```{r}
+library(ggplot2)
+
+ggplot(pheno, aes(x = NK.cells)) +
+  geom_histogram(
+    bins = 120,         
+    fill = "skyblue",  
+    color = "white"
+  ) +
+  labs(
+    title = "Distribution of NK Phenotypes in TGCT Samples",
+    x = "NK Cells",
+    y = "Count"
+  )
+```
 
 ```{r}
-diffdriver::plot_mut(gene_name = "TP53", mut= mut, pheno = pheno, totalnttype = 96, 
+diffdriver::plot_mut(gene_name = "KIT", mut= mut, pheno = pheno, totalnttype = 96, 
                      anno_dir =  "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96")
 ```
