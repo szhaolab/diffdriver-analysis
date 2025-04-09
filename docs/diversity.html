@@ -1,0 +1,3045 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Qirui Zhang" />
+
+<meta name="date" content="2025-04-08" />
+
+<title>Diversity</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">diffdriver_run</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/LD-ZhangQR/diffdriver">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Diversity</h1>
+<h4 class="author">Qirui Zhang</h4>
+<h4 class="date">2025-04-08</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2025-04-09
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>diffdriver/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250319code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250319)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250319code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250319)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreec3998afd3d04456c4a91927d3b4cc02bb77d7011targetblankc3998afa">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/c3998afd3d04456c4a91927d3b4cc02bb77d7011" target="_blank">c3998af</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreec3998afd3d04456c4a91927d3b4cc02bb77d7011targetblankc3998afa"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/c3998afd3d04456c4a91927d3b4cc02bb77d7011" target="_blank">c3998af</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  code/run_workflowr.R
+
+Unstaged changes:
+    Deleted:    analysis/example.Rmd
+    Modified:   diffdriver.Rproj
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/diversity.Rmd</code>) and HTML
+(<code>docs/diversity.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/c3998afd3d04456c4a91927d3b4cc02bb77d7011/analysis/diversity.Rmd" target="_blank">c3998af</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-04-09
+</td>
+<td>
+Update analysis results
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)</code></pre>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>In total, <strong>420 analyses</strong> were conducted across
+<strong>20 tumor types</strong>, each classified into <strong>21
+distinct immune phenotypes</strong> (Abundance_IGH, Abundance_IGL,
+Abundance_TRB, Abundance_TRG, Clonality_IGK, Clonality_TRA,
+Clonality_TRD, Entropy_IGH, Entropy_IGL, Entropy_TRB, Entropy_TRG,
+Abundance_IGK, Abundance_TRA, Abundance_TRD, Clonality_IGH,
+Clonality_IGL, Clonality_TRB, Clonality_TRG, Entropy_IGK, Entropy_TRA,
+Entropy_TRD). Of these, <strong>140 analyses completed
+successfully</strong>, while <strong>280 encountered errors</strong>.
+The specific tumor type and phenotype combinations corresponding to
+unsuccessful analyses are detailed below.</p>
+</div>
+<div id="summary-of-unsuccessful-analyses" class="section level1">
+<h1>Summary of Unsuccessful Analyses</h1>
+<p>The table below summarizes analyses that failed, along with
+explanations for their failure:</p>
+<pre><code>Warning: package &#39;knitr&#39; was built under R version 4.4.3</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(51, 122, 183, 255) !important;">
+Phenotype and Tumor Type
+</th>
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(51, 122, 183, 255) !important;">
+Reason for Failure
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRG_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGL_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRD_UCS_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRD_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRD_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRD_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRD_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRD_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRD_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGH_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRD_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGK_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRA_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGH_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGK_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_IGL_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRB_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRB_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_IGH_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGK_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRG_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRD_UCS_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRD_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRD_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRD_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRD_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRD_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRD_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRA_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Clonality_TRG_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_TRA_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Abundance_TRB_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_CHOL_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_SKCM_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_LUAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_KICH_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_BLCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_KIRP_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_ESCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_LUSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_LIHC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_HNSC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_UCEC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_BRCA_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_KIRC_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Entropy_IGL_PRAD_mutations
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="extracting-and-summarizing-analysis-results"
+class="section level1">
+<h1>Extracting and Summarizing Analysis Results</h1>
+<p>This code segment scans through analysis output directories,
+identifies relevant result files (*_resdd.Rd), extracts corresponding
+tumor types, immune phenotypes, and analysis modes(sig/reg).</p>
+<pre class="r"><code>get_files &lt;- function(outputdir, tumors = NULL, phenotypes = NULL) {
+  files &lt;- list.files(
+    path = outputdir,
+    pattern = &quot;_resdd\\.Rd$&quot;,
+    recursive = TRUE,
+    full.names = TRUE
+  )
+  
+  matching_files_txt &lt;- sub(&quot;\\.Rd$&quot;, &quot;.txt&quot;, files)
+  
+  analysis_mode &lt;- ifelse(grepl(&quot;_sig_&quot;, basename(files)), &quot;sig&quot;, &quot;reg&quot;)
+
+  inner_folder_names      &lt;- basename(dirname(files))            
+  phenotype_folder_names  &lt;- basename(dirname(dirname(files)))  
+  
+  tumor_names &lt;- mapply(function(inner_name, phen) {
+    pattern_front &lt;- paste0(&quot;^&quot;, phen, &quot;_&quot;)
+    tmp &lt;- sub(pattern_front, &quot;&quot;, inner_name)
+    tmp &lt;- sub(&quot;_mutations$&quot;, &quot;&quot;, tmp)
+    return(tmp)
+  }, inner_folder_names, phenotype_folder_names)
+  
+  phenos_all &lt;- phenotype_folder_names
+  
+  filedf &lt;- data.frame(
+    tumor      = tumor_names,
+    phenotype  = phenos_all,
+    mode       = analysis_mode,   
+    file       = files,
+    filetxt    = matching_files_txt,
+    stringsAsFactors = FALSE
+  )
+  
+  if (!is.null(tumors)) {
+    filedf &lt;- filedf[filedf$tumor %in% tumors, ]
+  }
+  if (!is.null(phenotypes)) {
+    filedf &lt;- filedf[filedf$phenotype %in% phenotypes, ]
+  }
+
+  rownames(filedf) &lt;- NULL
+  return(filedf)
+}
+
+filedf &lt;- get_files(
+  outputdir = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity&quot;
+)
+
+head(filedf)</code></pre>
+<pre><code>  tumor     phenotype mode
+1  CESC Abundance_IGH  reg
+2  CESC Abundance_IGH  sig
+3   GBM Abundance_IGH  reg
+4   GBM Abundance_IGH  sig
+5  PAAD Abundance_IGH  reg
+6  PAAD Abundance_IGH  sig
+                                                                                                                                                 file
+1 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_CESC_mutations/testdiffdriver_reg_Abundance_IGH_resdd.Rd
+2 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_CESC_mutations/testdiffdriver_sig_Abundance_IGH_resdd.Rd
+3  /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_GBM_mutations/testdiffdriver_reg_Abundance_IGH_resdd.Rd
+4  /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_GBM_mutations/testdiffdriver_sig_Abundance_IGH_resdd.Rd
+5 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_PAAD_mutations/testdiffdriver_reg_Abundance_IGH_resdd.Rd
+6 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_PAAD_mutations/testdiffdriver_sig_Abundance_IGH_resdd.Rd
+                                                                                                                                               filetxt
+1 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_CESC_mutations/testdiffdriver_reg_Abundance_IGH_resdd.txt
+2 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_CESC_mutations/testdiffdriver_sig_Abundance_IGH_resdd.txt
+3  /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_GBM_mutations/testdiffdriver_reg_Abundance_IGH_resdd.txt
+4  /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_GBM_mutations/testdiffdriver_sig_Abundance_IGH_resdd.txt
+5 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_PAAD_mutations/testdiffdriver_reg_Abundance_IGH_resdd.txt
+6 /dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity/Abundance_IGH/Abundance_IGH_PAAD_mutations/testdiffdriver_sig_Abundance_IGH_resdd.txt</code></pre>
+</div>
+<div id="summary-table-of-significant-differential-genes"
+class="section level1">
+<h1>Summary Table of Significant Differential Genes</h1>
+<p>The provided function extracts and compiles results from analyses,
+filtering specifically for significant differential genes based on a
+threshold (<strong><code>dd.fdr &lt; 0.1</code></strong>).</p>
+<pre class="r"><code>get_diff_table &lt;- function(filedf){
+  pheno_all &lt;- unique(filedf$phenotype)
+  numlist &lt;- list()
+  
+  for (p in pheno_all){
+    p_txtfiles &lt;- filedf[filedf$phenotype == p, ]
+    numlist[[p]] &lt;- list()
+    
+    for (t in seq_len(nrow(p_txtfiles))){
+      txtf  &lt;- p_txtfiles[t, &quot;filetxt&quot;]
+      rdf   &lt;- p_txtfiles[t, &quot;file&quot;] 
+      tumor &lt;- p_txtfiles[t, &quot;tumor&quot;] 
+      mode  &lt;- p_txtfiles[t, &quot;mode&quot;]     # reg / sig
+      
+      env &lt;- new.env()
+      load(rdf, envir = env)
+      res_rdata &lt;- env$res
+      
+      res &lt;- read.table(txtf, header = TRUE)
+      res$gene &lt;- row.names(res)
+      res$mode &lt;- mode
+      
+      res$alpha &lt;- sapply(res$gene, function(gene){
+          res_rdata[[gene]][[&quot;dd&quot;]][[&quot;res.alt&quot;]]$alpha[2]
+      })
+      
+      sig_res &lt;- res[res$dd.fdr &lt; 0.1, ]
+      if (nrow(sig_res) &gt; 0){
+        numlist[[p]][[ paste0(tumor, &quot;_&quot;, mode) ]] &lt;- sig_res
+      }
+    }
+    
+    if (length(numlist[[p]]) == 0){
+      numlist[[p]] &lt;- NULL
+    }
+  }
+  
+  combined_df &lt;- do.call(
+    rbind,
+    lapply(names(numlist), function(pheno) {
+      numlist.pheno &lt;- numlist[[pheno]]
+      df.pheno &lt;- do.call(rbind, lapply(names(numlist.pheno), function(tname) {
+        df &lt;- numlist.pheno[[tname]]
+
+        df$tumor &lt;- sub(&quot;_.*&quot;, &quot;&quot;, tname) 
+        df$mode  &lt;- sub(&quot;.*_&quot;, &quot;&quot;, tname) 
+        return(df)
+      }))
+      df.pheno$pheno &lt;- pheno
+      return(df.pheno)
+    })
+  )
+  return(combined_df)
+}
+
+diff_table &lt;- get_diff_table(filedf)</code></pre>
+<div id="table-under-sig-mode" class="section level2">
+<h2>Table under “Sig” Mode</h2>
+<pre class="r"><code>library(DT)
+diff_table_sig &lt;- subset(diff_table, mode == &quot;sig&quot;)
+datatable(diff_table_sig, options = list(pageLength = 10))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-321f8cf22c7d3f9f6363" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-321f8cf22c7d3f9f6363">{"x":{"filter":"none","vertical":false,"data":[["KIT1","KIT11","KRAS1","KIT12","KRAS11","KRAS12","KIT13","KRAS13","NRAS1","KIT14","KRAS14","NRAS11","ERBB21","KIT15","KRAS15","NRAS12","RB11","TP531","KIT16","KRAS16","NRAS13","KIT17","KRAS17","NRAS14","KIT18","KRAS18","NRAS15","KIT19","KRAS110","KRAS20","KIT110","KRAS2","RB111"],[0.0223077744912546,0.00122113560969669,0.000135398641284,0.00148235100611785,0.0003189710409514,0.00013206559113646,0.00282528367846494,0.000201325029514281,0.0093863835897358,0.00437710367716557,0.00206749032513521,0.0189709789997539,0.00449424635669725,0.00130707996825596,0.0267305779904248,0.00484782710383276,0.00543960454940629,0.0027528739371083,0.000344043720053108,0.00135852522353379,0.0364613468288695,4.52879197544154e-07,6.903742880307451e-05,0.00607015911676676,1.22240461287053e-06,0.000763756840184224,0.0135462860803268,9.88564438381206e-05,0.00113407133215406,0.00449456103495292,0.000426278717896465,0.00408555145167564,0.00538148126435267],[0.0555145007352201,0.008548783412810269,0.0029192359114446,0.0261962418543275,0.00148611237141161,0.000654249310650433,0.0092055036135936,0.00564138982723052,0.0560630315877327,0.0876239304100396,0.110308674278354,0.226878730161193,0.0112783311673729,0.0387976219525733,0.124873564666232,0.160153147058027,5.6198075893062e-18,0.0408729011164339,0.00035593389371084,0.000896817972417301,0.0211190182571078,2.59529632416733e-05,0.000625481678444941,0.0132480628491321,1.35974374426929e-05,0.0009788667158390149,0.0137537256027101,0.000375439301450893,0.00316462446655445,0.380036320070953,0.00095924148651823,0.008652317782859039,1.51448801668434e-26],[0.0482305063428165,0.0108489133929498,0.00399453037838944,0.0319112617528852,0.00201267009120022,0.000921165922323822,0.0110585526431776,0.00712842308723334,0.06889578591985759,0.0995426182039055,0.127365138691014,0.259620538873733,0.00941304603245869,0.0474728812662512,0.152889024363184,0.198544348516549,2.98307404545219e-17,0.0183102040297469,0.000427449207687839,0.00109707843496259,0.0249740520950393,3.55801500824476e-05,0.000875617210699932,0.0179299615672689,1.88290526725051e-05,0.00136817137313813,0.0187391343345381,0.0005260333172231191,0.00467092225349198,0.827214017646239,0.00130331816312282,0.0121844494039181,2.46012495649853e-25],[0.150571852763417,0.00167505271367479,0.00185546007538581,0.00822179895698605,0.00693043325481712,0.00172272050639016,0.171372202224438,0.00286297731641057,0.0424629751341318,0.239009367222657,0.0125237846851914,0.0916347664533622,0.01061366045157,0.00136443364871584,0.178609257098709,0.0892643091663347,0.0285714285714286,0.509590109560789,0.00132463991488289,0.0197231390582206,0.214387686306245,0.000180309329750104,0.00363743660855637,0.0292067441629699,0.000513436587193346,0.00156573131621124,0.0136020095319821,0.00309372852064605,0.037834490039991,0.66005168023884,0.0115503400064237,0.0219356587984099,0.0285714285714286],[0.109436392516033,0.000763504160645932,0.000613321223864444,0.00268872558595137,0.00577748009430009,0.00048816618011995,0.139287156356473,0.00206096127437342,0.0407464390268845,0.193347864378526,0.00928290112954288,0.09282423123500171,0.009956201782488631,0.000708107493202464,0.131479425738149,0.0910965105777934,0.0110803324099723,0.349286308211844,0.000565733147674545,0.013547861134076,0.220332948914489,6.65424199569206e-05,0.00235804765081937,0.0312705592104894,0.000185298147977237,0.000896188826092885,0.0117525821299627,0.00245396342541742,0.0271292173781757,0.502048157965934,0.00540870735059418,0.0153472208567948,0.0110803324099723],[0.103555640004945,0.000465541409520081,0.000455322069297441,0.00268650198513576,0.00249480073125844,0.000353614875118091,0.0447275702343603,0.0103121272283538,0.986679191711883,0.06340871413002951,0.0228730291434792,0.986908775108555,0.985536250410429,0.00816474274631916,0.09091004563891859,0.9868850018204069,0.999747336420139,0.184468755961164,0.00177978169653976,0.013381392059463,0.149929924604435,0.000758021445977355,0.00450026290116129,0.986451526521633,0.000643652243912485,0.00273064752397434,0.986361293709358,0.00396177372521499,0.0248515140710469,0.272868745019769,0.00639919834786884,0.0172103919175403,0.999747336492755],[0.0669233234737639,0.00183170341454504,0.000406195923851999,0.00222352650917678,0.0009569131228542,0.000396196773409379,0.0042379255176974,0.000603975088542844,0.0093863835897358,0.00656565551574835,0.00620247097540563,0.0189709789997539,0.0764021880638532,0.00392123990476789,0.0267305779904248,0.00727174065574914,0.0380772318458441,0.0220229914968664,0.00103213116015932,0.00203778783530069,0.0364613468288695,1.35863759263246e-06,0.000103556143204612,0.00607015911676676,3.66721383861158e-06,0.00114563526027634,0.0135462860803268,0.000296569331514362,0.00170110699823109,0.0359564882796234,0.0012788361536894,0.00612832717751346,0.0376703688504687],[0.16654350220566,0.0128231751192154,0.00875770773433379,0.0392943627814913,0.00445833711423482,0.0019627479319513,0.0138082554203904,0.0138082554203904,0.0560630315877327,0.165463011417531,0.165463011417531,0.226878730161193,0.19173162984534,0.11639286585772,0.160153147058027,0.160153147058027,3.93386531251434e-17,0.326983208931471,0.00106780168113252,0.00134522695862595,0.0211190182571078,7.785888972502e-05,0.0009382225176674109,0.0132480628491321,4.07923123280786e-05,0.00146830007375852,0.0137537256027101,0.00112631790435268,0.00474693669983168,0.89967789588586,0.00287772445955469,0.0129784766742886,1.06014161167904e-25],[0.14469151902845,0.0162733700894247,0.0119835911351683,0.0478668926293278,0.00603801027360065,0.00276349776697147,0.0165878289647663,0.0165878289647663,0.06889578591985759,0.191047708036522,0.191047708036522,0.259620538873733,0.160021782551798,0.142418643798754,0.198544348516549,0.198544348516549,2.08815183181654e-16,0.146481632237975,0.00128234762306352,0.00164561765244388,0.0249740520950393,0.000106740450247343,0.0013134258160499,0.0179299615672689,5.64871580175153e-05,0.00205225705970719,0.0187391343345381,0.00157809995166936,0.00700638338023796,0.841326935931424,0.00390995448936846,0.0182766741058772,1.72208746954897e-24],[0.451715558290251,0.00278319011307871,0.00278319011307871,0.0123326984354791,0.0123326984354791,0.00516816151917048,0.171372202224438,0.00858893194923172,0.0636944627011977,0.239009367222657,0.0375713540555743,0.137452149680043,0.18043222767669,0.00409330094614752,0.178609257098709,0.133896463749502,0.2,1,0.00397391974464865,0.0295847085873309,0.214387686306245,0.000540927989250313,0.00545615491283456,0.0292067441629699,0.00154030976158004,0.00234859697431686,0.0136020095319821,0.009281185561938139,0.0567517350599865,0.88006890698512,0.0329034881976148,0.0329034881976148,0.2],[0.328309177548099,0.0011452562409689,0.0011452562409689,0.008066176757854119,0.00866622014145013,0.00146449854035985,0.139287156356473,0.00618288382312027,0.0611196585403267,0.193347864378526,0.0278487033886286,0.139236346852502,0.169255430302307,0.00212432247960739,0.131479425738149,0.131479425738149,0.0775623268698061,1,0.00169719944302364,0.020321791701114,0.220332948914489,0.000199627259870762,0.00353707147622905,0.0312705592104894,0.0005558944439317119,0.00134428323913933,0.0117525821299627,0.00736189027625225,0.0406938260672635,0.793809053449829,0.0162261220517825,0.0230208312851922,0.0775623268698061],[0.310666920014834,0.000698312114280122,0.000698312114280122,0.00402975297770364,0.00402975297770364,0.00106084462535427,0.0670913553515404,0.0309363816850615,0.986679191711883,0.0951130711950442,0.06861908743043769,0.986908775108555,0.985536250410429,0.0244942282389575,0.136365068458378,0.9868850018204069,0.999747336420139,0.803712833314751,0.00533934508961929,0.0200720880891945,0.149929924604435,0.00227406433793207,0.00675039435174194,0.986451526521633,0.00193095673173746,0.00409597128596151,0.986361293709358,0.011885321175645,0.0372772711065703,0.709037577694249,0.0191975950436065,0.0258155878763105,0.999747336492755],[11,15,12,14,11,12,6,1,0,5,1,0,0,1,3,0,0,32,20,14,5,21,15,6,20,15,6,20,14,33,19,14,2],[12,8,5,9,6,5,17,16,6,18,16,6,8,22,14,6,2,23,3,3,1,2,2,0,3,2,0,3,3,47,4,3,0],[46,45,45,46,46,44,64,64,64,55,55,55,83,56,56,56,17,58,77,77,77,76,76,76,72,72,72,82,82,52,80,80,2],[105,106,106,105,105,107,85,85,85,96,96,96,101,95,95,95,2,54,72,72,72,75,75,75,79,79,79,67,67,63,71,71,17],["KIT","KIT","KRAS","KIT","KRAS","KRAS","KIT","KRAS","NRAS","KIT","KRAS","NRAS","ERBB2","KIT","KRAS","NRAS","RB1","TP53","KIT","KRAS","NRAS","KIT","KRAS","NRAS","KIT","KRAS","NRAS","KIT","KRAS","KRAS","KIT","KRAS","RB1"],["sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig"],[4.254247018588678e-05,0.026700237936908,0.01926399045415082,0.01091603276302454,0.01114297742532962,0.3059225837789045,-14.41679635385762,-24.07767831218834,-20.78404057660337,-11.71596559960603,-16.71595838552913,-15.56327286143588,-17.22916189126384,-15.54740398434414,-8.937458238769839,-24.0636448247357,-3.109048518765066,1.348226112232643,0.7584444458457027,0.7346544810253285,0.5407120192855698,1.923052709514769,1.264614960691206,0.7556451608551193,1.574952722296177,1.150836410473848,0.8989971351635975,1.021556028302514,0.9864946454463376,1.671790020634393,1.105115177649618,0.9214101007431453,2.900680225691619],["TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","CESC","TGCT","TGCT","TGCT","GBM","PAAD","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","PAAD","TGCT","TGCT","GBM"],["Abundance_IGK","Abundance_TRA","Abundance_TRA","Abundance_TRB","Abundance_TRB","Abundance_TRG","Clonality_IGH","Clonality_IGH","Clonality_IGH","Clonality_IGK","Clonality_IGK","Clonality_IGK","Clonality_IGL","Clonality_IGL","Clonality_IGL","Clonality_IGL","Clonality_TRD","Entropy_IGH","Entropy_IGH","Entropy_IGH","Entropy_IGH","Entropy_IGK","Entropy_IGK","Entropy_IGK","Entropy_IGL","Entropy_IGL","Entropy_IGL","Entropy_TRA","Entropy_TRA","Entropy_TRB","Entropy_TRB","Entropy_TRB","Entropy_TRD"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>dd.p<\/th>\n      <th>mlr.p<\/th>\n      <th>mlr.v2.p<\/th>\n      <th>fisher.p<\/th>\n      <th>binom.p<\/th>\n      <th>lr.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>mlr.fdr<\/th>\n      <th>mlr.v2.fdr<\/th>\n      <th>fisher.fdr<\/th>\n      <th>binom.fdr<\/th>\n      <th>lr.fdr<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>E1<\/th>\n      <th>E0<\/th>\n      <th>gene<\/th>\n      <th>mode<\/th>\n      <th>alpha<\/th>\n      <th>tumor<\/th>\n      <th>pheno<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,19]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"dd.p","targets":1},{"name":"mlr.p","targets":2},{"name":"mlr.v2.p","targets":3},{"name":"fisher.p","targets":4},{"name":"binom.p","targets":5},{"name":"lr.p","targets":6},{"name":"dd.fdr","targets":7},{"name":"mlr.fdr","targets":8},{"name":"mlr.v2.fdr","targets":9},{"name":"fisher.fdr","targets":10},{"name":"binom.fdr","targets":11},{"name":"lr.fdr","targets":12},{"name":"mut.E1","targets":13},{"name":"mut.E0","targets":14},{"name":"E1","targets":15},{"name":"E0","targets":16},{"name":"gene","targets":17},{"name":"mode","targets":18},{"name":"alpha","targets":19},{"name":"tumor","targets":20},{"name":"pheno","targets":21}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="table-under-reg-mode" class="section level2">
+<h2>Table under “Reg” Mode</h2>
+<pre class="r"><code>diff_table_reg &lt;- subset(diff_table, mode == &quot;reg&quot;)
+datatable(diff_table_reg, options = list(pageLength = 10))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1662b273260d1abeaa23" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1662b273260d1abeaa23">{"x":{"filter":"none","vertical":false,"data":[["KIT","KIT2","KRAS","KIT3","KRAS3","KRAS4","KIT4","KRAS5","NRAS","KIT5","KRAS6","NRAS2","ERBB2","KIT6","KRAS7","NRAS3","RB1","TP53","KIT7","KRAS8","NRAS4","KIT8","KRAS9","NRAS5","KIT9","KRAS10","NRAS6","KIT10","KRAS19","KIT20","KRAS111","NRAS7","RB12"],[0.021249940040441,0.000648357363177504,0.000264586344474956,0.00135299183450427,0.000603056504513854,0.000130446928322596,0.00268038322551763,0.000410025261527602,0.0101712777456594,0.0054496169677784,0.00227854052977153,0.023002773479686,0.00419860988677613,0.00070398706726656,0.0197245985353081,0.00512497695846722,0.00519167490315895,0.00356636428960707,0.000564902277040894,0.00134765579625466,0.0239750244303568,2.35122763921444e-06,8.09955175523837e-05,0.00779090614843979,2.75896809527453e-06,0.000309803645958385,0.00704445915259384,0.000207706351508792,0.00135580429967766,0.000382607748645595,0.00367898749170421,0.08925053092698571,0.00504688026540616],[0.0555145007352201,0.008548783412810269,0.0029192359114446,0.0261962418543275,0.00148611237141161,0.000654249310650433,0.0092055036135936,0.00564138982723052,0.0560630315877327,0.0876239304100396,0.110308674278354,0.226878730161193,0.0112783311673729,0.0387976219525733,0.124873564666232,0.160153147058027,5.6198075893062e-18,0.0408729011164339,0.00035593389371084,0.000896817972417301,0.0211190182571078,2.59529632416733e-05,0.000625481678444941,0.0132480628491321,1.35974374426929e-05,0.0009788667158390149,0.0137537256027101,0.000375439301450893,0.00316462446655445,0.00095924148651823,0.008652317782859039,0.197740798782617,1.51448801668434e-26],[0.0482305063428165,0.0108489133929498,0.00399453037838944,0.0319112617528852,0.00201267009120022,0.000921165922323822,0.0110585526431776,0.00712842308723334,0.06889578591985759,0.0995426182039055,0.127365138691014,0.259620538873733,0.00941304603245869,0.0474728812662512,0.152889024363184,0.198544348516549,2.98307404545219e-17,0.0183102040297469,0.000427449207687839,0.00109707843496259,0.0249740520950393,3.55801500824476e-05,0.000875617210699932,0.0179299615672689,1.88290526725051e-05,0.00136817137313813,0.0187391343345381,0.0005260333172231191,0.00467092225349198,0.00130331816312282,0.0121844494039181,0.256555210058018,2.46012495649853e-25],[0.150571852763417,0.00167505271367479,0.00185546007538581,0.00822179895698605,0.00693043325481712,0.00172272050639016,0.171372202224438,0.00286297731641057,0.0424629751341318,0.239009367222657,0.0125237846851914,0.0916347664533622,0.01061366045157,0.00136443364871584,0.178609257098709,0.0892643091663347,0.0285714285714286,0.509590109560789,0.00132463991488289,0.0197231390582206,0.214387686306245,0.000180309329750104,0.00363743660855637,0.0292067441629699,0.000513436587193346,0.00156573131621124,0.0136020095319821,0.00309372852064605,0.037834490039991,0.0115503400064237,0.0219356587984099,0.219483381238704,0.0285714285714286],[0.109436392516033,0.000763504160645932,0.000613321223864444,0.00268872558595137,0.00577748009430009,0.00048816618011995,0.139287156356473,0.00206096127437342,0.0407464390268845,0.193347864378526,0.00928290112954288,0.09282423123500171,0.009956201782488631,0.000708107493202464,0.131479425738149,0.0910965105777934,0.0110803324099723,0.349286308211844,0.000565733147674545,0.013547861134076,0.220332948914489,6.65424199569206e-05,0.00235804765081937,0.0312705592104894,0.000185298147977237,0.000896188826092885,0.0117525821299627,0.00245396342541742,0.0271292173781757,0.00540870735059418,0.0153472208567948,0.223739746380103,0.0110803324099723],[0.103555640004945,0.000465541409520081,0.000455322069297441,0.00268650198513576,0.00249480073125844,0.000353614875118091,0.0447275702343603,0.0103121272283538,0.986679191711883,0.06340871413002951,0.0228730291434792,0.986908775108555,0.985536250410429,0.00816474274631916,0.09091004563891859,0.9868850018204069,0.999747336420139,0.184468755961164,0.00177978169653976,0.013381392059463,0.149929924604435,0.000758021445977355,0.00450026290116129,0.986451526521633,0.000643652243912485,0.00273064752397434,0.986361293709358,0.00396177372521499,0.0248515140710469,0.00639919834786884,0.0172103919175403,0.164425602894171,0.999747336492755],[0.0637498201213231,0.000972536044766256,0.000793759033424868,0.0020294877517564,0.00180916951354156,0.000391340784967789,0.00402057483827644,0.0012300757845828,0.0101712777456594,0.00817442545166761,0.0068356215893146,0.023002773479686,0.07137636807519419,0.00211196120179968,0.0197245985353081,0.00768746543770082,0.0363417243221127,0.0285309143168566,0.00169470683112268,0.00202148369438199,0.0239750244303568,7.05368291764332e-06,0.000121493276328576,0.00779090614843979,8.2769042858236e-06,0.000464705468937577,0.00704445915259384,0.000623119054526376,0.00203370644951649,0.00114782324593679,0.00551848123755632,0.08925053092698571,0.0353281618578431],[0.16654350220566,0.0128231751192154,0.00875770773433379,0.0392943627814913,0.00445833711423482,0.0019627479319513,0.0138082554203904,0.0138082554203904,0.0560630315877327,0.165463011417531,0.165463011417531,0.226878730161193,0.19173162984534,0.11639286585772,0.160153147058027,0.160153147058027,3.93386531251434e-17,0.326983208931471,0.00106780168113252,0.00134522695862595,0.0211190182571078,7.785888972502e-05,0.0009382225176674109,0.0132480628491321,4.07923123280786e-05,0.00146830007375852,0.0137537256027101,0.00112631790435268,0.00474693669983168,0.00287772445955469,0.0129784766742886,0.197740798782617,1.06014161167904e-25],[0.14469151902845,0.0162733700894247,0.0119835911351683,0.0478668926293278,0.00603801027360065,0.00276349776697147,0.0165878289647663,0.0165878289647663,0.06889578591985759,0.191047708036522,0.191047708036522,0.259620538873733,0.160021782551798,0.142418643798754,0.198544348516549,0.198544348516549,2.08815183181654e-16,0.146481632237975,0.00128234762306352,0.00164561765244388,0.0249740520950393,0.000106740450247343,0.0013134258160499,0.0179299615672689,5.64871580175153e-05,0.00205225705970719,0.0187391343345381,0.00157809995166936,0.00700638338023796,0.00390995448936846,0.0182766741058772,0.256555210058018,1.72208746954897e-24],[0.451715558290251,0.00278319011307871,0.00278319011307871,0.0123326984354791,0.0123326984354791,0.00516816151917048,0.171372202224438,0.00858893194923172,0.0636944627011977,0.239009367222657,0.0375713540555743,0.137452149680043,0.18043222767669,0.00409330094614752,0.178609257098709,0.133896463749502,0.2,1,0.00397391974464865,0.0295847085873309,0.214387686306245,0.000540927989250313,0.00545615491283456,0.0292067441629699,0.00154030976158004,0.00234859697431686,0.0136020095319821,0.009281185561938139,0.0567517350599865,0.0329034881976148,0.0329034881976148,0.219483381238704,0.2],[0.328309177548099,0.0011452562409689,0.0011452562409689,0.008066176757854119,0.00866622014145013,0.00146449854035985,0.139287156356473,0.00618288382312027,0.0611196585403267,0.193347864378526,0.0278487033886286,0.139236346852502,0.169255430302307,0.00212432247960739,0.131479425738149,0.131479425738149,0.0775623268698061,1,0.00169719944302364,0.020321791701114,0.220332948914489,0.000199627259870762,0.00353707147622905,0.0312705592104894,0.0005558944439317119,0.00134428323913933,0.0117525821299627,0.00736189027625225,0.0406938260672635,0.0162261220517825,0.0230208312851922,0.223739746380103,0.0775623268698061],[0.310666920014834,0.000698312114280122,0.000698312114280122,0.00402975297770364,0.00402975297770364,0.00106084462535427,0.0670913553515404,0.0309363816850615,0.986679191711883,0.0951130711950442,0.06861908743043769,0.986908775108555,0.985536250410429,0.0244942282389575,0.136365068458378,0.9868850018204069,0.999747336420139,0.803712833314751,0.00533934508961929,0.0200720880891945,0.149929924604435,0.00227406433793207,0.00675039435174194,0.986451526521633,0.00193095673173746,0.00409597128596151,0.986361293709358,0.011885321175645,0.0372772711065703,0.0191975950436065,0.0258155878763105,0.164425602894171,0.999747336492755],[11,15,12,14,11,12,6,1,0,5,1,0,0,1,3,0,0,32,20,14,5,21,15,6,20,15,6,20,14,19,14,5,2],[12,8,5,9,6,5,17,16,6,18,16,6,8,22,14,6,2,23,3,3,1,2,2,0,3,2,0,3,3,4,3,1,0],[46,45,45,46,46,44,64,64,64,55,55,55,83,56,56,56,17,58,77,77,77,76,76,76,72,72,72,82,82,80,80,80,2],[105,106,106,105,105,107,85,85,85,96,96,96,101,95,95,95,2,54,72,72,72,75,75,75,79,79,79,67,67,71,71,71,17],["KIT","KIT","KRAS","KIT","KRAS","KRAS","KIT","KRAS","NRAS","KIT","KRAS","NRAS","ERBB2","KIT","KRAS","NRAS","RB1","TP53","KIT","KRAS","NRAS","KIT","KRAS","NRAS","KIT","KRAS","NRAS","KIT","KRAS","KIT","KRAS","NRAS","RB1"],["reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg"],[4.316333792217547e-05,0.02739316915505527,0.01984672817977053,0.01147521722457172,0.01129207196079873,0.3263852974711659,-14.01711161960933,-23.21450171311495,-21.35034003344174,-12.39946097493007,-18.04820730817169,-15.83778508919755,-17.36964570053746,-15.41991972141123,-9.902417487075237,-24.01869887499029,-3.120031890467445,1.343573035545007,0.7303645791948712,0.7565458208634022,0.5963033521211548,1.613133314840719,1.318715354302939,0.8606485965418029,1.448544835436853,1.164338733873212,0.9747049254029031,0.9922304428432801,0.9998299010267839,1.035029659874639,0.9615001215074995,0.7401750049742496,2.91208855269085],["TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","CESC","TGCT","TGCT","TGCT","GBM","PAAD","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","TGCT","GBM"],["Abundance_IGK","Abundance_TRA","Abundance_TRA","Abundance_TRB","Abundance_TRB","Abundance_TRG","Clonality_IGH","Clonality_IGH","Clonality_IGH","Clonality_IGK","Clonality_IGK","Clonality_IGK","Clonality_IGL","Clonality_IGL","Clonality_IGL","Clonality_IGL","Clonality_TRD","Entropy_IGH","Entropy_IGH","Entropy_IGH","Entropy_IGH","Entropy_IGK","Entropy_IGK","Entropy_IGK","Entropy_IGL","Entropy_IGL","Entropy_IGL","Entropy_TRA","Entropy_TRA","Entropy_TRB","Entropy_TRB","Entropy_TRB","Entropy_TRD"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>dd.p<\/th>\n      <th>mlr.p<\/th>\n      <th>mlr.v2.p<\/th>\n      <th>fisher.p<\/th>\n      <th>binom.p<\/th>\n      <th>lr.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>mlr.fdr<\/th>\n      <th>mlr.v2.fdr<\/th>\n      <th>fisher.fdr<\/th>\n      <th>binom.fdr<\/th>\n      <th>lr.fdr<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>E1<\/th>\n      <th>E0<\/th>\n      <th>gene<\/th>\n      <th>mode<\/th>\n      <th>alpha<\/th>\n      <th>tumor<\/th>\n      <th>pheno<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,19]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"dd.p","targets":1},{"name":"mlr.p","targets":2},{"name":"mlr.v2.p","targets":3},{"name":"fisher.p","targets":4},{"name":"binom.p","targets":5},{"name":"lr.p","targets":6},{"name":"dd.fdr","targets":7},{"name":"mlr.fdr","targets":8},{"name":"mlr.v2.fdr","targets":9},{"name":"fisher.fdr","targets":10},{"name":"binom.fdr","targets":11},{"name":"lr.fdr","targets":12},{"name":"mut.E1","targets":13},{"name":"mut.E0","targets":14},{"name":"E1","targets":15},{"name":"E0","targets":16},{"name":"gene","targets":17},{"name":"mode","targets":18},{"name":"alpha","targets":19},{"name":"tumor","targets":20},{"name":"pheno","targets":21}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="plotting-the-number-of-significant-differential-genes"
+class="section level1">
+<h1>Plotting the Number of Significant Differential Genes</h1>
+<p>The provided function generates bar plots illustrating the number of
+significantly differentially expressed genes (<strong>dd.fdr &lt;
+0.1</strong>) for each tumor type across different phenotype
+contexts.</p>
+<pre class="r"><code>plot_diff_number &lt;- function(filedf, mode = c(&quot;all&quot;, &quot;reg&quot;, &quot;sig&quot;)){
+  mode &lt;- match.arg(mode)
+  
+  if (mode != &quot;all&quot;){
+    filedf &lt;- filedf[filedf$mode == mode, ]
+  }
+  
+  pheno_all &lt;- unique(filedf$phenotype)
+  numlist &lt;- list()
+  
+  for (p in pheno_all){
+    p_txtfiles &lt;- filedf[filedf$phenotype == p, ]
+    numlist[[p]] &lt;- list()
+    for (t in 1:nrow(p_txtfiles)){
+      txtf &lt;- p_txtfiles[t, &quot;filetxt&quot;]
+      tumor &lt;- p_txtfiles[t, &quot;tumor&quot;]
+      res &lt;- read.table(txtf, header = TRUE)
+      numlist[[p]][[tumor]] &lt;- c(
+        nrow(res[res$dd.fdr &lt; 0.1,]),
+        nrow(res) - nrow(res[res$dd.fdr &lt; 0.1,])
+      )
+    }
+  }
+  
+  par(mfrow = c(length(numlist),1), mar = c(3,5,2,0))
+  for (phenotype in names(numlist)) {
+    colors &lt;- rainbow(length(numlist[[phenotype]]))
+    plot(
+      NULL,
+      xlim = c(0.5, length(numlist[[phenotype]]) + 0.5),
+      ylim = c(0, max(unlist(sapply(numlist[[phenotype]], `[`, 1)))),
+      xlab = &quot;Tumor Type&quot;,
+      ylab = &quot;No. Genes&quot;,
+      main = paste(&quot;Context:&quot;, phenotype),
+      xaxt = &quot;n&quot;, bty = &#39;n&#39;
+    )
+    grid()
+    
+    axis(
+      1,
+      at = 1:length(numlist[[phenotype]]),
+      labels = names(numlist[[phenotype]]),
+      las = 2
+    )
+    
+    for (i in seq_along(numlist[[phenotype]])) {
+      bar_height &lt;- numlist[[phenotype]][[i]][1]
+      rect(i - 0.4, 0, i + 0.4, bar_height, col = colors[i], border = NA)
+    }
+  }
+}</code></pre>
+<div id="visualization-under-sig-mode" class="section level2">
+<h2>Visualization under “Sig” Mode</h2>
+<pre class="r"><code>plot_diff_number(filedf, mode = &quot;sig&quot;)</code></pre>
+<p><img src="figure/diversity.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="visualization-under-reg-mode" class="section level2">
+<h2>Visualization under “Reg” Mode</h2>
+<pre class="r"><code>plot_diff_number(filedf, mode = &quot;reg&quot;)</code></pre>
+<p><img src="figure/diversity.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="plot-specific-genes" class="section level1">
+<h1>Plot specific genes</h1>
+<p>To visualize the data for specific genes, diffdriver has a plotting
+function:</p>
+<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/TGCT/TGCT_mutations.txt&quot;
+mut &lt;- read.table(mut_path, header = TRUE, sep = &quot;\t&quot;)
+head(mut)</code></pre>
+<pre><code>  Chromosome  Position Ref Alt     SampleID
+1         16  30748991   C   T TCGA-SN-A84Y
+2         17   8439201   G   A TCGA-XE-AAOB
+3         14  96858506   G   A TCGA-YU-A94I
+4          7 100679429   T   A TCGA-2G-AAL5
+5          7 156802391   G   A TCGA-WZ-A7V3
+6          3 189586427   G   T TCGA-2G-AAG7</code></pre>
+<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C1.txt&quot;
+pheno &lt;- read.table(pheno_path, header = TRUE, sep = &quot;\t&quot;)
+head(pheno)</code></pre>
+<pre><code>      SampleID C1
+1 TCGA-2G-AAFI  0
+2 TCGA-2G-AAFM  0
+3 TCGA-2G-AAFY  0
+4 TCGA-2G-AAG0  0
+5 TCGA-2G-AAG9  0
+6 TCGA-2G-AAGG  0</code></pre>
+<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;KIT&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
+                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;
+[1] &quot;Only keeping the first two columns of the phenotype data frame.&quot;
+[1] &quot;phenotype name is C1&quot;
+[1] &quot;number of samples shared in phenotype and mutation file: 147&quot;</code></pre>
+<p><img src="figure/diversity.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.2 (2024-10-31)
+Platform: x86_64-conda-linux-gnu
+Running under: Ubuntu 24.04.1 LTS
+
+Matrix products: default
+BLAS/LAPACK: /dartfs-hpc/rc/home/p/f0070pp/.conda/envs/diffdriver/lib/libopenblasp-r0.3.29.so;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] DT_0.33          kableExtra_1.4.0 knitr_1.50       workflowr_1.7.1 
+
+loaded via a namespace (and not attached):
+ [1] Matrix_1.7-3      jsonlite_2.0.0    compiler_4.4.2    promises_1.3.2   
+ [5] Rcpp_1.0.14       xml2_1.3.8        stringr_1.5.1     git2r_0.35.0     
+ [9] callr_3.7.6       later_1.4.1       jquerylib_0.1.4   systemfonts_1.2.1
+[13] scales_1.3.0      yaml_2.3.10       fastmap_1.2.0     lattice_0.22-6   
+[17] R6_2.6.1          htmlwidgets_1.6.4 tibble_3.2.1      munsell_0.5.1    
+[21] rprojroot_2.0.4   svglite_2.1.3     diffdriver_0.1.6  bslib_0.9.0      
+[25] pillar_1.10.1     rlang_1.1.5       cachem_1.1.0      stringi_1.8.7    
+[29] httpuv_1.6.15     xfun_0.52         getPass_0.2-4     fs_1.6.5         
+[33] sass_0.4.9        viridisLite_0.4.2 cli_3.6.4         magrittr_2.0.3   
+[37] crosstalk_1.2.1   ps_1.8.1          grid_4.4.2        digest_0.6.37    
+[41] processx_3.8.6    rstudioapi_0.17.1 lifecycle_1.0.4   vctrs_0.6.5      
+[45] data.table_1.17.0 evaluate_1.0.3    glue_1.8.0        whisker_0.4.1    
+[49] colorspace_2.1-1  rmarkdown_2.29    httr_1.4.7        tools_4.4.2      
+[53] pkgconfig_2.0.3   htmltools_0.5.8.1</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
