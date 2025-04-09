@@ -14,3 +14,4 @@ Welcome to my research website.
 - [Immune Subtypes](immunesubtypes.html)
 - [Immunertaits](immunetraits.html)
 - [PRS](PRS.html)
+- [Diversity](diversity.html)

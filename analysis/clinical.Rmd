@@ -184,7 +184,7 @@ plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
     }
   }
   
-  par(mfrow = c(length(numlist),1), mar = c(2,4,1,0))
+  par(mfrow = c(length(numlist),1), mar = c(3,5,2,0))
   for (phenotype in names(numlist)) {
     colors <- rainbow(length(numlist[[phenotype]]))
     plot(
@@ -213,14 +213,14 @@ plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
 }
 ```
 
-## Visualization under "Reg" Mode
-```{r}
-plot_diff_number(filedf, mode = "reg")
+## Visualization under "Sig" Mode
+```{r, fig.width=7, fig.height=8} 
+plot_diff_number(filedf, mode = "sig")
 ```
 
-## Visualization under "Sig" Mode
-```{r}
-plot_diff_number(filedf, mode = "sig")
+## Visualization under "Reg" Mode
+```{r, fig.width=7, fig.height=8} 
+plot_diff_number(filedf, mode = "reg")
 ```
 
 # Plot specific genes

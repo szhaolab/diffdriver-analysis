@@ -1,14 +1,118 @@
 ---
-title: "example"
+title: "PRS"
 author: "Qirui Zhang"
-date: "2025-03-23"
-output: html_document
+date: "2025-04-08"
+output: 
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
 ---
 
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+# Overview
 
+In total, **920 analyses** were conducted successfully across **20 tumor types**, involving **46 distinct phenotypes**:
+
+- Allergic_disease
+
+- ukbEUR_ASTHMA
+
+- BIP_Cell_2018
+
+- ukbEUR_BMI
+
+- BMD_2018
+
+- ukbEUR_CANCER
+
+- Breast_Cancer
+
+- ukbEUR_CARD
+
+- CigarettesPerDay
+
+- ukbEUR_CASES
+
+- DrinksPerWeek
+
+- ukbEUR_CI_cojo
+
+- EA_NG_2018_excluding_23andMe
+
+- ukbEUR_DIA2
+
+- IBD_NG2017.hap3
+
+- ukbEUR_DYSLIPID
+
+- IQ_NG_2018
+
+- kbEUR_HEMORRHOIDS
+
+- MDD_NG_2018
+
+- ukbEUR_HERNIA_ABDOMINOPELVIC
+
+- Ovarian_cancer
+
+- ukbEUR_HYPER
+
+- PD_GWAS_2017_N300k
+
+- ukbEUR_Height
+
+- Prostate_cancer_2017_common
+
+- ukbEUR_IRON_DEFICIENCY
+
+- RA_NG2010.hap3
+
+- ukbEUR_IRRITABLE_BOWEL
+
+- SCZ_Cell_2018
+
+- ukbEUR_OBESITY
+
+- SWB_NG_2015
+
+- ukbEUR_OSTIOA
+
+- SmokingCessation
+
+- ukbEUR_OSTIOP
+
+- SmokingInitiation
+
+- ukbEUR_PEPTIC_ULCERS
+
+- Stroke_GWAS_2018
+
+- ukbEUR_PSYCHIATRIC
+
+- T2D_DIAGRAM_2017
+
+- ukbEUR_PVD
+
+- UC_NG_2015
+
+- ukbEUR_SEVERE_OBESITY
+
+- Vitiligo
+
+- ukbEUR_TI_cojo
+
+- ukbEUR_ALLERGIC_RHINITIS
+
+- ukbEUR_VARICOSE_VEINS
+
+All 920 analyses were successfully completed without any errors.
+
+# Extracting and Summarizing Analysis Results
+This code segment scans through analysis output directories, identifies relevant result files (*_resdd.Rd), extracts corresponding tumor types, immune phenotypes, and analysis modes(sig/reg).
 ```{r}
 get_files <- function(outputdir, tumors = NULL, phenotypes = NULL) {
   files <- list.files(
@@ -22,8 +126,8 @@ get_files <- function(outputdir, tumors = NULL, phenotypes = NULL) {
   
   analysis_mode <- ifelse(grepl("_sig_", basename(files)), "sig", "reg")
 
-  inner_folder_names      <- basename(dirname(files))            # e.g. "Aneuploidy.Score_BLCA_mutations"
-  phenotype_folder_names  <- basename(dirname(dirname(files)))   # e.g. "Aneuploidy.Score"
+  inner_folder_names      <- basename(dirname(files))           
+  phenotype_folder_names  <- basename(dirname(dirname(files)))  
   
   tumor_names <- mapply(function(inner_name, phen) {
     pattern_front <- paste0("^", phen, "_")
@@ -60,7 +164,8 @@ filedf <- get_files(
 
 head(filedf)
 ```
-
+# Summary Table of Significant Differential Genes
+The provided function extracts and compiles results from analyses, filtering specifically for significant differential genes based on a threshold (**`dd.fdr < 0.1`**). 
 ```{r}
 get_diff_table <- function(filedf){
   pheno_all <- unique(filedf$phenotype)
@@ -120,17 +225,21 @@ get_diff_table <- function(filedf){
 diff_table <- get_diff_table(filedf)
 ```
 
+## Table under "Sig" Mode
 ```{r}
 library(DT)
 diff_table_sig <- subset(diff_table, mode == "sig")
 datatable(diff_table_sig, options = list(pageLength = 10))
 ```
 
+## Table under "Reg" Mode
 ```{r}
 diff_table_reg <- subset(diff_table, mode == "reg")
 datatable(diff_table_reg, options = list(pageLength = 10))
 ```
 
+# Plotting the Number of Significant Differential Genes
+The provided function generates bar plots illustrating the number of significantly differentially expressed genes (**`dd.fdr < 0.1`**) for each tumor type across different phenotype contexts.
 ```{r}
 plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
   mode <- match.arg(mode)
@@ -156,7 +265,7 @@ plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
     }
   }
   
-  par(mfrow = c(length(numlist),1), mar = c(0,0,0,0))
+  par(mfrow = c(length(numlist),1), mar = c(3,5,2,0))
   for (phenotype in names(numlist)) {
     colors <- rainbow(length(numlist[[phenotype]]))
     plot(
@@ -185,77 +294,17 @@ plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
 }
 ```
 
-```{r}
+## Visualization under "Sig" Mode
+```{r, fig.width=7, fig.height=50} 
+plot_diff_number(filedf, mode = "sig")
+```
+## Visualization under "Reg" Mode
+```{r, fig.width=7, fig.height=50} 
 plot_diff_number(filedf, mode = "reg")
 ```
 
-```{r}
-plot_diff_number(filedf, mode = "sig")
-```
-
-```{r}
-plot_each <- function(outdt, path.base){
-  options(repr.plot.width = 7, repr.plot.height = 3)
-  
-  for (i in seq_len(nrow(outdt))) {
-
-    hits_i <- paste0(
-      "testdiffdriver_",
-      outdt$mode[i], "_",
-      outdt$pheno[i],
-      "_resdd.Rd"
-    )
-    
-    subfolder <- paste0(outdt$pheno[i], "_", outdt$tumor[i], "_mutations")
-    path <- file.path(path.base, outdt$pheno[i], subfolder, hits_i)
-    
-    load(path)
-    ganno <- fannoallg[[ outdt$gene[i] ]]
-    cannoj <- e
-    names(cannoj) <- "Phenotype"
-    mutmtx <- riallg[[ outdt$gene[i] ]] 
-    bmrmtx <- bmrallg[[ outdt$gene[i] ]]
-    
-    message("Plotting: ", outdt$tumor[i], "_", outdt$gene[i], "_", outdt$pheno[i], "_", outdt$mode[i])
-    
-    colnames(mutmtx)[colnames(mutmtx) == "chrom"] <- "Chromosome"
-    colnames(mutmtx)[colnames(mutmtx) == "start"] <- "Start"
-    colnames(mutmtx)[colnames(mutmtx) == "ref"]   <- "Ref"
-    colnames(mutmtx)[colnames(mutmtx) == "alt"]   <- "Alt"
-
-    diffdriver::plot_mut(
-      gene_name   = outdt$gene[i], 
-      mut         = mutmtx,        
-      pheno       = cannoj,       
-      totalnttype = 96,         
-      anno_dir    = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96",
-      output_prefix = paste(
-      outdt$tumor[i], outdt$gene[i], outdt$pheno[i], outdt$mode[i],
-      sep = "_"
-      ),
-      output_dir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/workflowr/diffdriver/output/"
-    )
-    
-    diffdriver::plot_mut(gene_name = "PIK3CA", mut= mut, pheno = pheno, totalnttype = 9, anno_dir = "~/temp/annodir9")
-  
-  }
-}
-```
-
-```{r}
-outdt <- data.frame(
-  tumor = c("BLCA", "BLCA"),
-  pheno = c("Aneuploidy.Score", "Aneuploidy.Score"),
-  gene  = c("FGFR3", "NFE2L2"),
-  mode  = c("reg", "reg")
-)
-
-##plot_each(
-##  outdt     = outdt,
-##  path.base = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output"
-##)
-```
-
+# Plot specific genes
+To visualize the data for specific genes, diffdriver has a plotting function:
 ```{r}
 mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/HNSC/HNSC_mutations.txt"
 mut <- read.table(mut_path, header = TRUE, sep = "\t")
@@ -271,105 +320,4 @@ head(pheno)
 ```{r}
 diffdriver::plot_mut(gene_name = "CDKN2A", mut= mut, pheno = pheno, totalnttype = 96, 
                      anno_dir =  "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96")
-```
-
-```{r}
-library(dplyr)
-
-df_summary <- diff_table %>%
-  filter(mode == "sig") %>%               
-  group_by(tumor, pheno) %>%          
-  summarise(num_genes = n_distinct(gene)) %>% 
-  ungroup()
-
-head(df_summary)
-```
-```{r}
-plot_one_pheno <- function(df_single, pheno_name) {
-
-  par(mfrow=c(1,1), mar = c(3,5,2,0))
-  
-  colors <- rainbow(nrow(df_single))
-  ymax   <- max(df_single$num_genes)
-  
-  plot(
-    NULL,
-    xlim = c(0.5, nrow(df_single) + 0.5),
-    ylim = c(0, ymax),
-    xlab = "Tumor Type",
-    ylab = "No. Genes",
-    main = paste("Context:", pheno_name),
-    xaxt = "n", bty = 'n'
-  )
-  grid()
-  axis(
-    1,
-    at = 1:nrow(df_single),
-    labels = df_single$tumor,
-    las=2
-  )
-  
-  for(i in seq_len(nrow(df_single))) {
-    rect(i-0.4, 0, i+0.4, df_single$num_genes[i],
-         col=colors[i], border=NA)
-  }
-}
-
-df_single <- subset(df_summary, pheno == "BIP_Cell_2018")
-plot_one_pheno(
-  df_single  = df_single, 
-  pheno_name = "BIP_Cell_2018" 
-)
-```
-
-```{r}
-df_table <- diff_table %>%
-  filter(mode == "sig") %>%
-  transmute(
-    Tumor   = tumor,
-    Context = pheno,
-    Gene    = gene,
-    p       = dd.p,
-    FDR     = dd.fdr
-  ) %>%
-  filter(FDR < 0.1) %>%
-  arrange(FDR)
-
-head(df_table)
-```
-```{r}
-library(gt)
-
-df_table %>%
-  head(8) %>%
-  gt() %>%
-  tab_header(
-    title = "Significant Drivers",
-    subtitle = "FDR < 0.1"
-  ) %>%
-
-  tab_style(
-    style = list(
-      cell_fill(color = "#B60059"), 
-      cell_text(color = "white", weight = "bold")
-    ),
-    locations = cells_column_labels(everything())
-  ) %>%
-  fmt_scientific(
-    columns = c(p, FDR),
-    decimals = 2
-  ) %>%
-  tab_options(
-    table.border.top.style = "none",
-    table.border.bottom.style = "none",
-    table.border.left.style = "none",
-    table.border.right.style = "none",
-    
-    column_labels.border.bottom.style = "solid",
-    column_labels.border.bottom.width = px(2),
-    column_labels.border.bottom.color = "black",
-    
-    data_row.padding = px(4),   
-    table.width = pct(50)           
-  )
 ```
