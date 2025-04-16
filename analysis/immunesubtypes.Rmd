@@ -1,7 +1,7 @@
 ---
 title: "Immune Subtypes"
 author: "Qirui Zhang"
-date: "2025-04-07"
+date: "2025-04-16"
 output: 
   html_document:
     theme: flatly
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Overview
 
-In total, **120 analyses** were conducted across **20 tumor types**, each classified into **6 distinct immune phenotype groups (C1–C6)**. Among these analyses, **87 completed successfully**, while **33 encountered errors**. The specific tumor type and phenotype combinations for unsuccessful analyses are detailed below.
+In total, **80 analyses** were conducted across **20 tumor types**, each classified into **4 distinct immune phenotype groups (C1–C4)**. Among these analyses, **70 completed successfully**, while **10 encountered errors**. The specific tumor type and phenotype combinations for unsuccessful analyses are detailed below.
 
 # Summary of Unsuccessful Analyses
 
@@ -28,22 +28,13 @@ library(kableExtra)
 
 failure_data <- data.frame(
   Combination = c("C1_SKCM_mutations", "C2_SKCM_mutations", "C2_GBM_mutations", "C2_KICH_mutations",
-                  "C3_GBM_mutations", "C3_CESC_mutations", "C3_LUSC_mutations", "C3_SKCM_mutations", "C3_UCS_mutations",
-                  "C4_SKCM_mutations", "C5_SARC_mutations", "C5_HNSC_mutations", "C5_ESCA_mutations", 
-                  "C5_UCEC_mutations", "C5_LUAD_mutations", "C5_LIHC_mutations", "C5_CESC_mutations", 
-                  "C5_LUSC_mutations", "C5_SKCM_mutations", "C5_PAAD_mutations", "C5_BLCA_mutations", 
-                  "C5_UCS_mutations", "C5_CHOL_mutations", "C5_TGCT_mutations", "C5_PRAD_mutations", 
-                  "C5_BRCA_mutations", "C6_CESC_mutations", "C6_UCS_mutations", "C6_GBM_mutations",
-                  "C6_TGCT_mutations", "C6_PRAD_mutations", "C6_KICH_mutations", "C6_SKCM_mutations"),
+                  "C3_GBM_mutations", "C3_CESC_mutations", "C3_LUSC_mutations", "C3_SKCM_mutations", 
+                  "C3_UCS_mutations","C4_SKCM_mutations"),
   Reason = c("Insufficient data (only two samples)",
              "Insufficient data (only two samples)",
              rep("Lacked phenotype variation (all samples category 0)", 5),
              "Insufficient data (only two samples)",
              "Lacked phenotype variation (all samples category 0)",
-             "Insufficient data (only two samples)",
-             rep("Lacked phenotype variation (all samples category 0)", 8),
-             "Insufficient data (only two samples)",
-             rep("Lacked phenotype variation (all samples category 0)", 13),
              "Insufficient data (only two samples)")
 )
 
@@ -100,7 +91,7 @@ get_files <- function(outputdir, tumors = NULL, phenotypes = NULL) {
 }
 
 filedf <- get_files(
-  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunesubtypes"
+  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/new_plot/immunesubtypes"
 )
 
 head(filedf)
@@ -109,7 +100,7 @@ head(filedf)
 # Summary Table of Significant Differential Genes
 The provided function extracts and compiles results from analyses, filtering specifically for significant differential genes based on a threshold (**`dd.fdr < 0.1`**).  
 ```{r}
-get_diff_table <- function(filedf){
+get_diff_table <- function(filedf, include_nonsig = TRUE){
   pheno_all <- unique(filedf$phenotype)
   numlist <- list()
   
@@ -135,9 +126,15 @@ get_diff_table <- function(filedf){
           res_rdata[[gene]][["dd"]][["res.alt"]]$alpha[2]
       })
       
-      sig_res <- res[res$dd.fdr < 0.1, ]
-      if (nrow(sig_res) > 0){
-        numlist[[p]][[ paste0(tumor, "_", mode) ]] <- sig_res
+      res$significant <- res$dd.fdr < 0.1
+      
+      if (include_nonsig) {
+        numlist[[p]][[ paste0(tumor, "_", mode) ]] <- res
+      } else {
+        sig_res <- res[res$dd.fdr < 0.1, ]
+        if (nrow(sig_res) > 0){
+          numlist[[p]][[ paste0(tumor, "_", mode) ]] <- sig_res
+        }
       }
     }
     
@@ -152,7 +149,6 @@ get_diff_table <- function(filedf){
       numlist.pheno <- numlist[[pheno]]
       df.pheno <- do.call(rbind, lapply(names(numlist.pheno), function(tname) {
         df <- numlist.pheno[[tname]]
-
         df$tumor <- sub("_.*", "", tname) 
         df$mode  <- sub(".*_", "", tname) 
         return(df)
@@ -164,7 +160,8 @@ get_diff_table <- function(filedf){
   return(combined_df)
 }
 
-diff_table <- get_diff_table(filedf)
+diff_table_all <- get_diff_table(filedf, include_nonsig = TRUE)
+diff_table <-  get_diff_table(filedf, include_nonsig = FALSE)
 ```
 
 ## Table under "Sig" Mode
@@ -181,17 +178,18 @@ datatable(diff_table_reg, options = list(pageLength = 10))
 ```
 
 # Plotting the Number of Significant Differential Genes
-The provided function generates bar plots illustrating the number of significantly differentially expressed genes (**dd.fdr < 0.1**) for each tumor type across immune phenotype contexts (C1–C6).
+The provided function generates bar plots illustrating the number of significantly differentially expressed genes (**dd.fdr < 0.1**) for each tumor type across immune phenotype contexts (C1–C4).
 ```{r}
-plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
-  mode <- match.arg(mode)
+library(scales)
+
+plot_diff_number <- function(filedf, mode = c("reg", "sig")){
   
-  if (mode != "all"){
-    filedf <- filedf[filedf$mode == mode, ]
-  }
+  filedf <- filedf[filedf$mode == mode, ]
   
   pheno_all <- unique(filedf$phenotype)
   numlist <- list()
+  
+  pt <- scales::pseudo_log_trans()
   
   for (p in pheno_all){
     p_txtfiles <- filedf[filedf$phenotype == p, ]
@@ -207,20 +205,29 @@ plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
     }
   }
   
-  par(mfrow = c(length(numlist),1), mar = c(3,5,1,0))
+  par(mfrow = c(length(numlist),1), mar = c(3,5,2,0))
   for (phenotype in names(numlist)) {
     colors <- rainbow(length(numlist[[phenotype]]))
+    max_height <- max(unlist(lapply(numlist[[phenotype]], function(x) sum(x))))
+    
+    max_plot_height <- pt$transform(max_height)
+    
     plot(
       NULL,
       xlim = c(0.5, length(numlist[[phenotype]]) + 0.5),
-      ylim = c(0, max(unlist(sapply(numlist[[phenotype]], `[`, 1)))),
+      ylim = c(0, max_plot_height * 1.1),
       xlab = "Tumor Type",
       ylab = "No. Genes",
       main = paste("Context:", phenotype),
-      xaxt = "n", bty = 'n'
+      xaxt = "n", yaxt = "n", bty = 'n'
     )
-    grid()
     
+    y_ticks <- c(0, 1, 2, 5, 10, 30, 60)
+    y_ticks <- y_ticks[y_ticks <= max_height]
+    axis(2, at = pt$transform(y_ticks), labels = y_ticks)
+    
+    grid()
+
     axis(
       1,
       at = 1:length(numlist[[phenotype]]),
@@ -229,21 +236,180 @@ plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
     )
     
     for (i in seq_along(numlist[[phenotype]])) {
-      bar_height <- numlist[[phenotype]][[i]][1]
-      rect(i - 0.4, 0, i + 0.4, bar_height, col = colors[i], border = NA)
+      sig_count <- numlist[[phenotype]][[i]][1]
+      nonsig_count <- numlist[[phenotype]][[i]][2]
+
+      rect(i - 0.4, pt$transform(sig_count), i + 0.4, 
+          pt$transform(sig_count + nonsig_count),
+          col = adjustcolor(colors[i], alpha.f = 0.15), 
+          border = NA)
+      
+      if (sig_count > 0) {
+        rect(i - 0.4, pt$transform(0), i + 0.4, pt$transform(sig_count),
+             col = colors[i], border = NA)
+        text(i, pt$transform(sig_count) * 1.2, sig_count, cex = 0.7)
+      }
     }
+    
   }
 }
 ```
 
 ## Visualization under "Sig" Mode
-```{r}
+```{r, fig.width=7, fig.height=5} 
 plot_diff_number(filedf, mode = "sig")
 ```
 
 ## Visualization under "Reg" Mode
-```{r}
+```{r, fig.width=7, fig.height=5} 
 plot_diff_number(filedf, mode = "reg")
+```
+
+# Multi-Faceted Dot Plot for Differential Gene Analysis
+This function generates a series of dot plots to illustrate differential gene analysis results across various tumors and phenotypes. Each plot highlights significance (positive, negative, non-significant), p-values, and relative effect sizes.
+```{r}
+library(dplyr)
+library(ggplot2)
+
+plot_diff_gene <- function(diff_table_all, filedf, mode = c("sig", "reg")) {
+  dt <- diff_table_all[diff_table_all$mode == mode, ]
+  
+  all_tumors <- sort(unique(filedf$tumor))
+  all_phenos <- sort(unique(filedf$phenotype))
+   
+  dt <- dt %>%
+    mutate(
+      tumor = factor(tumor, levels = all_tumors),
+      pheno = factor(pheno, levels = all_phenos)
+    )
+  
+  gene_order <- dt %>%
+    group_by(gene) %>%
+    summarise(n = n()) %>%
+    arrange(desc(n)) %>%
+    pull(gene)
+  
+  dt <- dt %>% mutate(gene = factor(gene, levels = gene_order))
+
+  all_genes  <- levels(dt$gene)
+
+  plots_list <- list()
+
+  for (current_gene in all_genes) {
+    df_gene <- dt %>% filter(gene == current_gene)
+    
+    full_grid <- expand.grid(
+      tumor = all_tumors,
+      pheno = all_phenos,
+      KEEP.OUT.ATTRS = FALSE
+    )
+    full_grid$tumor <- factor(full_grid$tumor, levels = all_tumors)
+    full_grid$pheno <- factor(full_grid$pheno, levels = all_phenos)
+    
+    df_plot <- full_grid %>%
+      left_join(df_gene, by = c("tumor", "pheno")) %>%
+      mutate(
+        signcat = case_when(
+          is.na(significant)                 ~ "none",
+          significant == FALSE               ~ "ns",
+          significant == TRUE & alpha > 0    ~ "pos",
+          significant == TRUE & alpha < 0    ~ "neg"
+        ),
+        pvalue = dd.p,
+        log_pvalue = case_when(
+          !is.na(dd.p) & dd.p > 0 ~ -log10(dd.p),
+          !is.na(dd.p) & dd.p == 0 ~ 10,
+          TRUE ~ NA_real_
+        ),
+        signed_log_pvalue = case_when(
+          signcat == "pos" ~ log_pvalue,
+          signcat == "neg" ~ -log_pvalue,
+          TRUE ~ NA_real_
+        )
+    ) %>%
+    group_by(pheno) %>%
+      mutate(
+        ref_alpha = median(abs(alpha), na.rm = TRUE),  # mean/max/a specified tumor
+        ratio_alpha = if_else(is.na(ref_alpha) | ref_alpha == 0, 
+                              NA_real_, 
+                              abs(alpha) / ref_alpha), 
+        size_value = case_when(
+          signcat %in% c("pos", "neg", "ns") ~ ratio_alpha,
+          TRUE                               ~ NA_real_
+        )
+      ) %>%
+      ungroup()
+    
+    p <- ggplot() +
+      # For significant points (both positive and negative)
+      geom_point(
+        data = df_plot %>% filter(signcat %in% c("pos", "neg")),
+        aes(x = tumor, y = pheno, size = size_value, fill = signed_log_pvalue),
+        shape = 21,
+        color = "black", 
+        stroke = 0.2, 
+        na.rm = TRUE
+      ) +
+      # For non-significant points
+      geom_point(
+        data = df_plot %>% filter(signcat == "ns"),
+        aes(x = tumor, y = pheno, size = size_value),
+        shape = 21,
+        fill = "grey90",
+        color = "black",
+        stroke = 0.2,
+        alpha = 0.3,
+        na.rm = TRUE
+      ) +
+      geom_blank(
+        data = df_plot %>% filter(signcat == "none"),
+        aes(x = tumor, y = pheno)
+      ) +
+      
+      scale_fill_gradient2(
+        low = "darkblue", 
+        mid = "white",
+        high = "darkred",
+        midpoint = 0,
+        name = "Directional Significance\n(-log10 p-value)",
+        guide = guide_colorbar(direction = "vertical"),
+        na.value = "orange",
+        limits = c(-10, 10),
+        oob = scales::squish
+      ) +
+  
+      scale_size_continuous(
+        range = c(1, 8), 
+        name = "Relative size (|alpha| / ref)"
+      ) +
+      
+      scale_x_discrete(drop = FALSE) +
+      scale_y_discrete(drop = FALSE) +
+      
+      theme_bw(base_size = 14) +
+      theme(
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = "right",
+        legend.box = "vertical"
+      ) +
+      labs(
+        x = "Tumor",
+        y = "Phenotype",
+        title = paste("Gene:", current_gene, "Mode:", mode)
+      )
+    
+    plots_list[[current_gene]] <- p
+  }
+  
+  return(plots_list)
+}
+```
+
+```{r, fig.width=10, fig.height=5}
+plots <- plot_diff_gene(diff_table_all, filedf, mode = "sig")
+print(plots[["TP53"]])
+print(plots[["KRAS"]])
+# plot_diff_gene(diff_table_all, filedf, mode = "sig")
 ```
 
 # Plot specific genes
