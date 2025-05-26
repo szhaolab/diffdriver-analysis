@@ -1,7 +1,7 @@
 ---
 title: "Clinical"
 author: "Qirui Zhang"
-date: "2025-04-16"
+date: "2025-05-21"
 output: 
   html_document:
     theme: flatly
@@ -395,6 +395,261 @@ print(plots[["TP53"]])
 print(plots[["KRAS"]])
 ```
 
+# GSEA
+```{r}
+library(msigdbr)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(GseaVis)
+
+tmb         <- subset(diff_table_sig, pheno == "TMB.nonsynonymous")
+
+survival    <- subset(diff_table_sig, pheno %in% c("Months.of.disease.specific.survival",
+                                                   "Progress.Free.Survival.Months"))
+
+age         <- subset(diff_table_sig, pheno == "Diagnosis.Age")
+
+instability <- subset(diff_table_sig, pheno %in% c("Fraction.Genome.Altered",
+                                                   "Aneuploidy.Score"))
+
+tmb_pos <- subset(tmb, alpha >  0)
+tmb_neg <- subset(tmb, alpha <  0)
+
+survival_pos <- subset(survival, alpha >  0)
+survival_neg <- subset(survival, alpha <  0)
+
+age_pos <- subset(age, alpha >  0)
+age_neg <- subset(age, alpha <  0)
+
+instability_pos <- subset(instability, alpha >  0)
+instability_neg <- subset(instability, alpha <  0)
+```
+
+```{r}
+h.kegg <- msigdbr(
+  species      = "Homo sapiens",
+  collection   = "C2",
+  subcollection= "CP:KEGG_LEGACY"
+)[, c("gs_name", "gene_symbol")]
+
+tables <- list(
+  tmb_pos        = tmb_pos, 
+  tmb_neg        = tmb_neg,
+  survival_pos   = survival_pos, 
+  survival_neg   = survival_neg,
+  age_pos        = age_pos, 
+  age_neg        = age_neg,
+  instability_pos= instability_pos, 
+  instability_neg= instability_neg
+)
+
+gsea_results <- list()
+
+for (nm in names(tables)) {
+  tbl <- tables[[nm]]
+  
+  tbl_unique <- tbl %>%
+    group_by(gene) %>%
+    summarise(alpha = mean(alpha), .groups = "drop")
+
+  deg <- tbl_unique$alpha
+  names(deg) <- tbl_unique$gene
+  deg <- sort(deg, decreasing = TRUE)
+  
+  scoreType <- if      (min(deg) >= 0) "pos"
+               else if (max(deg) <= 0) "neg"
+  
+  gsea <- GSEA(
+    geneList     = deg,
+    TERM2GENE    = h.kegg,
+    pvalueCutoff = 0.5,
+    scoreType    = scoreType
+  )
+  gsea_results[[nm]] <- gsea
+  
+  if (!is.null(gsea) && nrow(gsea@result) > 0) {
+    dotplot(gsea, showCategory = 10, title = nm)
+  } else {
+    message(sprintf("[%s] No enriched terms with p ≤ 0.5", nm))
+  }
+}
+
+library(enrichplot)
+gseaplot2(
+  gsea_results$instability_neg, 
+  geneSetID = 1,
+  pvalue_table = TRUE, 
+  title = gsea_results$instability_neg@result$Description[1]
+)
+```
+## KEGG GSEA
+```{r}
+kegg_t2g <- msigdbr(
+  species       = "Homo sapiens",
+  collection    = "C2",
+  subcollection = "CP:KEGG_LEGACY"
+)[, c("gs_name", "gene_symbol")]
+
+groups <- list(
+  tmb_pos         = tmb_pos,  
+  tmb_neg         = tmb_neg,
+  survival_pos    = survival_pos,  
+  survival_neg    = survival_neg,
+  age_pos         = age_pos,  
+  age_neg         = age_neg,
+  instability_pos = instability_pos,  
+  instability_neg = instability_neg
+)
+
+for (nm in names(groups)) {
+
+  df <- groups[[nm]] |>
+        group_by(gene) |>
+        summarise(alpha = mean(alpha), .groups = "drop")
+
+  gene_list <- sort(setNames(df$alpha, df$gene), decreasing = TRUE)
+  if (length(gene_list) < 10) {
+    message(nm, ": too few genes – skipped.")
+    next
+  }
+
+  scoreType <- if      (min(gene_list) >= 0) "pos" 
+               else if (max(gene_list) <= 0) "neg" 
+               else                     NULL
+
+  gsea <- GSEA(
+    geneList     = gene_list,
+    TERM2GENE    = kegg_t2g,
+    pvalueCutoff = 0.5,
+    scoreType    = scoreType
+  )
+
+  if (nrow(gsea@result) == 0) {
+    message(nm, ": no significant pathways.")
+    next
+  }
+
+  cat("\n==== ", nm, " × KEGG ====\n")
+  print(head(gsea@result[, c("ID","Description","p.adjust","NES")], 10))
+
+  print(dotplot(gsea, showCategory = 10,
+                title = paste0(nm, " × KEGG")))
+
+  for (id in head(gsea@result$ID, 3)) {
+    print(
+      gseaNb(object    = gsea,
+             geneSetID = id,
+             addPval   = TRUE,
+             pvalY     = 0.8)
+    )
+  }
+}
+```
+
+## GO-BP GSEA
+```{r}
+gobp_t2g <- msigdbr(
+  species     = "Homo sapiens",
+  category    = "C5",
+  subcategory = "GO:BP"
+)[, c("gs_name", "gene_symbol")]
+
+for (nm in names(groups)) {
+
+  df <- groups[[nm]] |>
+        group_by(gene) |>
+        summarise(alpha = mean(alpha), .groups = "drop")
+
+  gene_list <- sort(setNames(df$alpha, df$gene), decreasing = TRUE)
+  if (length(gene_list) < 10) {
+    message(nm, ": too few genes – skipped.")
+    next
+  }
+
+  scoreType <- if      (min(gene_list) >= 0) "pos" 
+               else if (max(gene_list) <= 0) "neg" 
+               else                     NULL
+
+  gsea <- GSEA(
+    geneList     = gene_list,
+    TERM2GENE    = gobp_t2g,
+    pvalueCutoff = 0.5,
+    scoreType    = scoreType
+  )
+
+  if (nrow(gsea@result) == 0) {
+    message(nm, ": no significant pathways.")
+    next
+  }
+
+  cat("\n==== ", nm, " × GO-BP ====\n")
+  print(head(gsea@result[, c("ID","Description","p.adjust","NES")], 10))
+
+  print(dotplot(gsea, showCategory = 10,
+                title = paste0(nm, " × GO-BP")))
+
+  for (id in head(gsea@result$ID, 3)) {
+    print(
+      gseaNb(object    = gsea,
+             geneSetID = id,
+             addPval   = TRUE,
+             pvalY     = 0.8)
+    )
+  }
+}
+```
+
+## Hallmark GSEA
+```{r}
+hallmark_t2g <- msigdbr(
+  species  = "Homo sapiens",
+  category = "H"
+)[, c("gs_name", "gene_symbol")]
+
+for (nm in names(groups)) {
+
+  df <- groups[[nm]] |>
+        group_by(gene) |>
+        summarise(alpha = mean(alpha), .groups = "drop")
+
+  gene_list <- sort(setNames(df$alpha, df$gene), decreasing = TRUE)
+  if (length(gene_list) < 10) {
+    message(nm, ": too few genes – skipped.")
+    next
+  }
+
+  scoreType <- if      (min(gene_list) >= 0) "pos" 
+               else if (max(gene_list) <= 0) "neg" 
+               else                     NULL
+
+  gsea <- GSEA(
+    geneList     = gene_list,
+    TERM2GENE    = hallmark_t2g,
+    pvalueCutoff = 0.5,
+    scoreType    = scoreType
+  )
+
+  if (nrow(gsea@result) == 0) {
+    message(nm, ": no significant pathways.")
+    next
+  }
+
+  cat("\n==== ", nm, " × Hallmark ====\n")
+  print(head(gsea@result[, c("ID","Description","p.adjust","NES")], 10))
+
+  print(dotplot(gsea, showCategory = 10,
+                title = paste0(nm, " × Hallmark")))
+
+  for (id in head(gsea@result$ID, 3)) {
+    print(
+      gseaNb(object     = gsea,
+             geneSetID  = id,
+             addPval    = TRUE,
+             pvalY      = 0.8)
+    )
+  }
+}
+```
 
 # Plot specific genes
 To visualize the data for specific genes, diffdriver has a plotting function:
