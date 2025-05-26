@@ -660,7 +660,7 @@ for (nm in names(groups)) {
 }
 ```
 
-## GO:MF GSEA
+## GO- MF GSEA
 ```{r}
 gomf_t2g <- msigdbr(
   species     = "Homo sapiens",
@@ -705,7 +705,7 @@ for (nm in names(groups)) {
 }
 ```
 
-## GO:CC GSEA
+## GO-CC GSEA
 ```{r}
 gocc_t2g <- msigdbr(
   species     = "Homo sapiens",
