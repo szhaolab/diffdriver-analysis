@@ -152,13 +152,29 @@ diff_table <-  get_diff_table(filedf, include_nonsig = FALSE)
 ```{r}
 library(DT)
 diff_table_sig <- subset(diff_table, mode == "sig")
-datatable(diff_table_sig, options = list(pageLength = 10))
+datatable(
+  diff_table_sig,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
 ```
 
 ## Table under "Reg" Mode
 ```{r}
 diff_table_reg <- subset(diff_table, mode == "reg")
-datatable(diff_table_reg, options = list(pageLength = 10))
+datatable(
+  diff_table_reg,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
 ```
 
 # Plotting the Number of Significant Differential Genes
@@ -426,6 +442,58 @@ instability_neg <- subset(instability, alpha <  0)
 ```
 
 ```{r}
+dfs <- list(
+  tmb_pos         = tmb_pos,
+  tmb_neg         = tmb_neg,
+  survival_pos    = survival_pos,
+  survival_neg    = survival_neg,
+  age_pos         = age_pos,
+  age_neg         = age_neg,
+  instability_pos = instability_pos,
+  instability_neg = instability_neg
+)
+
+df_list <- lapply(dfs, function(subdf) {
+  data.frame(
+    rowname = rownames(subdf),
+    gene    = subdf$gene,
+    stringsAsFactors = FALSE
+  )
+})
+
+max_n <- max(sapply(df_list, nrow))
+
+df_list_padded <- lapply(df_list, function(x) {
+  if (nrow(x) < max_n) {
+    n_pad <- max_n - nrow(x)
+    pad <- data.frame(
+      rowname = rep(NA, n_pad),
+      gene    = rep(NA, n_pad),
+      stringsAsFactors = FALSE
+    )
+    x <- rbind(x, pad)
+  }
+  x
+})
+
+wide_df <- do.call(cbind, df_list_padded)
+
+colnames(wide_df) <- unlist(lapply(names(df_list_padded), function(nm) {
+  c(paste0(nm, "_row"), paste0(nm, "_gene"))
+}))
+
+datatable(
+  wide_df,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip',
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 45
+  )
+)
+```
+
+```{r}
 h.kegg <- msigdbr(
   species      = "Homo sapiens",
   collection   = "C2",
@@ -584,17 +652,99 @@ for (nm in names(groups)) {
 
   cat("\n==== ", nm, " × GO-BP ====\n")
   print(head(gsea@result[, c("ID","Description","p.adjust","NES")], 10))
-
-  print(dotplot(gsea, showCategory = 10,
-                title = paste0(nm, " × GO-BP")))
+  print(dotplot(gsea, showCategory = 10, title = paste0(nm, " × GO-BP")))
 
   for (id in head(gsea@result$ID, 3)) {
-    print(
-      gseaNb(object    = gsea,
-             geneSetID = id,
-             addPval   = TRUE,
-             pvalY     = 0.8)
-    )
+    print(gseaNb(object = gsea, geneSetID = id, addPval = TRUE, pvalY = 0.8))
+  }
+}
+```
+
+## GO:MF GSEA
+```{r}
+gomf_t2g <- msigdbr(
+  species     = "Homo sapiens",
+  category    = "C5",
+  subcategory = "GO:MF"
+)[, c("gs_name", "gene_symbol")]
+
+for (nm in names(groups)) {
+  
+  df <- groups[[nm]] %>%
+    group_by(gene) %>%
+    summarise(alpha = mean(alpha), .groups = "drop")
+  
+  gene_list <- sort(setNames(df$alpha, df$gene), decreasing = TRUE)
+  if (length(gene_list) < 10) {
+    message(nm, ": too few genes – skipped.")
+    next
+  }
+  
+  scoreType <- if      (min(gene_list) >= 0) "pos" 
+               else if (max(gene_list) <= 0) "neg" 
+               else                     NULL
+  
+  gsea <- GSEA(
+    geneList     = gene_list,
+    TERM2GENE    = gomf_t2g,
+    pvalueCutoff = 0.5,
+    scoreType    = scoreType
+  )
+  
+  if (nrow(gsea@result) == 0) {
+    message(nm, ": no significant pathways.")
+    next
+  }
+  
+  cat("\n==== ", nm, " × GO-MF ====\n")
+  print(head(gsea@result[, c("ID","Description","p.adjust","NES")], 10))
+  print(dotplot(gsea, showCategory = 10, title = paste0(nm, " × GO-MF")))
+  for (id in head(gsea@result$ID, 3)) {
+    print(gseaNb(gsea, geneSetID = id, addPval = TRUE, pvalY = 0.8))
+  }
+}
+```
+
+## GO:CC GSEA
+```{r}
+gocc_t2g <- msigdbr(
+  species     = "Homo sapiens",
+  category    = "C5",
+  subcategory = "GO:CC"
+)[, c("gs_name", "gene_symbol")]
+
+for (nm in names(groups)) {
+  df <- groups[[nm]] %>%
+    group_by(gene) %>%
+    summarise(alpha = mean(alpha), .groups = "drop")
+  
+  gene_list <- sort(setNames(df$alpha, df$gene), decreasing = TRUE)
+  if (length(gene_list) < 10) {
+    message(nm, ": too few genes – skipped.")
+    next
+  }
+  
+  scoreType <- if      (min(gene_list) >= 0) "pos" 
+               else if (max(gene_list) <= 0) "neg" 
+               else                     NULL
+  
+  gsea <- GSEA(
+    geneList     = gene_list,
+    TERM2GENE    = gocc_t2g,
+    pvalueCutoff = 0.5,
+    scoreType    = scoreType
+  )
+  
+  if (nrow(gsea@result) == 0) {
+    message(nm, ": no significant pathways.")
+    next
+  }
+  
+  cat("\n==== ", nm, " × GO-CC ====\n")
+  print(head(gsea@result[, c("ID","Description","p.adjust","NES")], 10))
+  print(dotplot(gsea, showCategory = 10, title = paste0(nm, " × GO-CC")))
+  for (id in head(gsea@result$ID, 3)) {
+    print(gseaNb(gsea, geneSetID = id, addPval = TRUE, pvalY = 0.8))
   }
 }
 ```
