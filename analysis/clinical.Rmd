@@ -412,6 +412,7 @@ print(plots[["KRAS"]])
 ```
 
 # GSEA
+We organized our differential analysis data into eight gene sets through a two-step process. First, we filtered the full `diff_table_sig` table by each phenotype of interest—non-synonymous TMB, disease-specific survival and progression-free survival, diagnosis age, and genomic instability metrics (fraction genome altered and aneuploidy score)—to create four initial subsets (`tmb`, `survival`, `age`, `instability`). Second, within each subset we partitioned genes by the sign of their effect size (`alpha > 0` for positively associated genes, `alpha < 0` for negatively associated genes), yielding eight final groups (`tmb_pos`/`tmb_neg`, `survival_pos`/`survival_neg`, `age_pos`/`age_neg`, `instability_pos`/`instability_neg`). These groups serve as the candidate ranked gene lists for downstream GSEA.
 ```{r}
 library(msigdbr)
 library(clusterProfiler)
