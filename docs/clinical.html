@@ -407,7 +407,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-05-26
+<strong>Last updated:</strong> 2025-05-27
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -538,15 +538,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreecd263f09f5da9d9fa921f8dda3415064f3f005dbtargetblankcd263f0a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree61c25d6a083a0fe2f3a1752343ee397c19966836targetblank61c25d6a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/cd263f09f5da9d9fa921f8dda3415064f3f005db" target="_blank">cd263f0</a>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/61c25d6a083a0fe2f3a1752343ee397c19966836" target="_blank">61c25d6</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreecd263f09f5da9d9fa921f8dda3415064f3f005dbtargetblankcd263f0a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree61c25d6a083a0fe2f3a1752343ee397c19966836targetblank61c25d6a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -556,7 +556,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/cd263f09f5da9d9fa921f8dda3415064f3f005db" target="_blank">cd263f0</a>.
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/61c25d6a083a0fe2f3a1752343ee397c19966836" target="_blank">61c25d6</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -624,6 +624,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/61c25d6a083a0fe2f3a1752343ee397c19966836/analysis/clinical.Rmd" target="_blank">61c25d6</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-05-27
+</td>
+<td>
+wflow_publish("analysis/clinical.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/6fa71f9a514d041b8b1df31e1efd8de2800e30c1/docs/clinical.html" target="_blank">6fa71f9</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-05-26
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1554,6 +1588,22 @@ Qirui Zhang
 </div>
 <div id="gsea" class="section level1">
 <h1>GSEA</h1>
+<p>We organized our differential analysis data into eight gene sets
+through a two-step process. First, we filtered the full
+<code>diff_table_sig</code> table by each phenotype of
+interest—non-synonymous TMB, disease-specific survival and
+progression-free survival, diagnosis age, and genomic instability
+metrics (fraction genome altered and aneuploidy score)—to create four
+initial subsets (<code>tmb</code>, <code>survival</code>,
+<code>age</code>, <code>instability</code>). Second, within each subset
+we partitioned genes by the sign of their effect size
+(<code>alpha &gt; 0</code> for positively associated genes,
+<code>alpha &lt; 0</code> for negatively associated genes), yielding
+eight final groups (<code>tmb_pos</code>/<code>tmb_neg</code>,
+<code>survival_pos</code>/<code>survival_neg</code>,
+<code>age_pos</code>/<code>age_neg</code>,
+<code>instability_pos</code>/<code>instability_neg</code>). These groups
+serve as the candidate ranked gene lists for downstream GSEA.</p>
 <pre class="r"><code>library(msigdbr)
 library(clusterProfiler)</code></pre>
 <pre><code></code></pre>
