@@ -802,6 +802,159 @@ for (nm in names(groups)) {
 }
 ```
 
+# ORA
+```{r}
+library(clusterProfiler)
+gene_lists <- list(
+  tmb_pos         = unique(tmb_pos$gene),
+  tmb_neg         = unique(tmb_neg$gene),
+  survival_pos    = unique(survival_pos$gene),
+  survival_neg    = unique(survival_neg$gene),
+  age_pos         = unique(age_pos$gene),
+  age_neg         = unique(age_neg$gene),
+  instability_pos = unique(instability_pos$gene),
+  instability_neg = unique(instability_neg$gene)
+)
+```
+
+## GO-BP ORA
+```{r}
+for (nm in names(gene_lists)) {
+  genes   <- gene_lists[[nm]]
+  ego_bp  <- enrichGO(
+    gene          = genes,
+    OrgDb         = org.Hs.eg.db,
+    keyType       = "SYMBOL",
+    ont           = "BP",
+    pAdjustMethod = "BH",
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.20
+  )
+  
+  message("---- Group: ", nm, " | Number of enriched GO-BP terms = ", nrow(ego_bp@result))
+  print(head(ego_bp@result, 3))  # Print the first 3 rows
+
+  if (nrow(ego_bp@result) > 0) {
+    print(dotplot(ego_bp, showCategory = 10, title = paste(nm, "GO-BP")))
+  } else {
+    message("   -> No significant GO-BP terms found; skipping plot.")
+  }
+}
+```
+
+## GO-CC ORA
+```{r}
+for (nm in names(gene_lists)) {
+  genes <- gene_lists[[nm]]
+  
+  ego_cc <- enrichGO(
+    gene          = genes,
+    OrgDb         = org.Hs.eg.db,
+    keyType       = "SYMBOL",
+    ont           = "CC",
+    pAdjustMethod = "BH",
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.20
+  )
+  
+  nTerm <- nrow(ego_cc@result)
+  message("---- Group: ", nm,
+          " | Number of enriched GO-CC terms = ", nTerm)
+  print(head(ego_cc@result, 3))
+  
+  if (nTerm > 0) {
+    nToShow <- min(10, nTerm)
+    
+    tryCatch({
+      print(                 
+        dotplot(
+          ego_cc,
+          showCategory = nToShow,
+          title        = paste(nm, "GO-CC")
+        )
+      )
+      
+    }, error = function(e) {   
+       message("   -> Plotting failed for ", nm, " (KEGG).")
+    })
+    
+  } else {
+    message("   -> No significant GO-CC terms found; skipping plot.")
+  }
+}
+
+```
+
+## GO-MF ORA
+```{r}
+for (nm in names(gene_lists)) {
+  genes   <- gene_lists[[nm]]
+  ego_mf  <- enrichGO(
+    gene          = genes,
+    OrgDb         = org.Hs.eg.db,
+    keyType       = "SYMBOL",
+    ont           = "MF",
+    pAdjustMethod = "BH",
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.20
+  )
+  
+  message("---- Group: ", nm, " | Number of enriched GO-MF terms = ", nrow(ego_mf@result))
+  print(head(ego_mf@result, 3))  # Print the first 3 rows
+
+  if (nrow(ego_mf@result) > 0) {
+    print(dotplot(ego_mf, showCategory = 10, title = paste(nm, "GO-MF")))
+  } else {
+    message("   -> No significant GO-MF terms found; skipping plot.")
+  }
+}
+```
+
+## KEGG ORA
+```{r}
+for (nm in names(gene_lists)) {
+  genes <- gene_lists[[nm]]
+  
+  gene_entrez <- bitr(
+    genes,
+    fromType = "SYMBOL",
+    toType   = "ENTREZID",
+    OrgDb    = org.Hs.eg.db
+  )
+  
+  ego_kegg <- enrichKEGG(
+    gene          = gene_entrez$ENTREZID,
+    organism      = "hsa",
+    pAdjustMethod = "BH",
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.20
+  )
+  
+  nTerm <- nrow(ego_kegg@result)
+  message("---- Group: ", nm, " | Number of enriched KEGG pathways = ", nTerm)
+  print(head(ego_kegg@result, 3))
+  
+  if (nTerm > 0) {
+    nToShow <- min(10, nTerm)
+    
+    tryCatch({
+      print(
+        dotplot(
+          ego_kegg,
+          showCategory = nToShow,
+          title        = paste(nm, "KEGG")
+        )
+      )
+    }, error = function(e) {
+       message("   -> Plotting failed for ", nm, " (KEGG).")
+    })
+    
+  } else {
+    message("   -> No significant KEGG pathways found; skipping plot.")
+  }
+}
+```
+
 # Plot specific genes
 To visualize the data for specific genes, diffdriver has a plotting function:
 ```{r}
