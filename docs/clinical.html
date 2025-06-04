@@ -407,7 +407,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-05-27
+<strong>Last updated:</strong> 2025-06-04
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -538,15 +538,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree61c25d6a083a0fe2f3a1752343ee397c19966836targetblank61c25d6a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree44d6823606d262e9d2ce8c714974cbbcf08f4fb1targetblank44d6823a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/61c25d6a083a0fe2f3a1752343ee397c19966836" target="_blank">61c25d6</a>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/44d6823606d262e9d2ce8c714974cbbcf08f4fb1" target="_blank">44d6823</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree61c25d6a083a0fe2f3a1752343ee397c19966836targetblank61c25d6a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree44d6823606d262e9d2ce8c714974cbbcf08f4fb1targetblank44d6823a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -556,7 +556,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/61c25d6a083a0fe2f3a1752343ee397c19966836" target="_blank">61c25d6</a>.
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/44d6823606d262e9d2ce8c714974cbbcf08f4fb1" target="_blank">44d6823</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -624,6 +624,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/44d6823606d262e9d2ce8c714974cbbcf08f4fb1/analysis/clinical.Rmd" target="_blank">44d6823</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+<td>
+workflowr::wflow_publish("analysis/clinical.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/f2da5ac5f35316d3e758a89afe2f61e2a6ee7aeb/docs/clinical.html" target="_blank">f2da5ac</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-05-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2361,40 +2395,228 @@ for (nm in names(groups)) {
 <pre><code>instability_neg: no significant pathways.</code></pre>
 </div>
 </div>
-<div id="plot-specific-genes" class="section level1">
-<h1>Plot specific genes</h1>
-<p>To visualize the data for specific genes, diffdriver has a plotting
-function:</p>
-<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/HNSC/HNSC_mutations.txt&quot;
-mut &lt;- read.table(mut_path, header = TRUE, sep = &quot;\t&quot;)
-head(mut)</code></pre>
-<pre><code>  Chromosome Position Ref Alt     SampleID
-1          4 44700691   C   G TCGA-CR-7386
-2          9 35074164   C   T TCGA-CR-7395
-3         22 37914082   T   A TCGA-CQ-5325
-4          6 30571952   C   T TCGA-CR-6467
-5         19 38127001   C   G TCGA-CV-5434
-6          8 23290623   C   T TCGA-HD-7754</code></pre>
-<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Aneuploidy.Score.txt&quot;
-pheno &lt;- read.table(pheno_path, header = TRUE, sep = &quot;\t&quot;)
-head(pheno)</code></pre>
-<pre><code>      SampleID Aneuploidy.Score
-1 TCGA-02-0001               15
-2 TCGA-02-0003                4
-3 TCGA-02-0006               11
-4 TCGA-02-0007                5
-5 TCGA-02-0009                6
-6 TCGA-02-0010                1</code></pre>
-<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;CDKN2A&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
-                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
-<pre><code>[1] &quot;coding...&quot;
-[1] &quot;processing ...&quot;
-[1] &quot;for qnvars, filling in missing values ...&quot;
-[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
-[1] &quot;normalizing categorical variables in annotation matrix ...&quot;
-[1] &quot;Only keeping the first two columns of the phenotype data frame.&quot;
-[1] &quot;phenotype name is Aneuploidy.Score&quot;
-[1] &quot;number of samples shared in phenotype and mutation file: 482&quot;</code></pre>
+<div id="ora" class="section level1">
+<h1>ORA</h1>
+<pre class="r"><code>library(clusterProfiler)
+gene_lists &lt;- list(
+  tmb_pos         = unique(tmb_pos$gene),
+  tmb_neg         = unique(tmb_neg$gene),
+  survival_pos    = unique(survival_pos$gene),
+  survival_neg    = unique(survival_neg$gene),
+  age_pos         = unique(age_pos$gene),
+  age_neg         = unique(age_neg$gene),
+  instability_pos = unique(instability_pos$gene),
+  instability_neg = unique(instability_neg$gene)
+)</code></pre>
+<div id="go-bp-ora" class="section level2">
+<h2>GO-BP ORA</h2>
+<pre class="r"><code>for (nm in names(gene_lists)) {
+  genes   &lt;- gene_lists[[nm]]
+  ego_bp  &lt;- enrichGO(
+    gene          = genes,
+    OrgDb         = org.Hs.eg.db,
+    keyType       = &quot;SYMBOL&quot;,
+    ont           = &quot;BP&quot;,
+    pAdjustMethod = &quot;BH&quot;,
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.20
+  )
+  
+  message(&quot;---- Group: &quot;, nm, &quot; | Number of enriched GO-BP terms = &quot;, nrow(ego_bp@result))
+  print(head(ego_bp@result, 3))  # Print the first 3 rows
+
+  if (nrow(ego_bp@result) &gt; 0) {
+    print(dotplot(ego_bp, showCategory = 10, title = paste(nm, &quot;GO-BP&quot;)))
+  } else {
+    message(&quot;   -&gt; No significant GO-BP terms found; skipping plot.&quot;)
+  }
+}</code></pre>
+<pre><code>---- Group: tmb_pos | Number of enriched GO-BP terms = 338</code></pre>
+<pre><code>                   ID                                            Description
+GO:0043405 GO:0043405                      regulation of MAP kinase activity
+GO:0071900 GO:0071900 regulation of protein serine/threonine kinase activity
+GO:0033034 GO:0033034  positive regulation of myeloid cell apoptotic process
+           GeneRatio   BgRatio  RichFactor FoldEnrichment    zScore
+GO:0043405       2/4 123/18986 0.016260163       77.17886 12.303990
+GO:0071900       2/4 262/18986 0.007633588       36.23282  8.336104
+GO:0033034       1/4  10/18986 0.100000000      474.65000 21.748010
+                 pvalue   p.adjust     qvalue    geneID Count
+GO:0043405 0.0002476705 0.04847198 0.01449178 CDK12/NF1     2
+GO:0071900 0.0011175999 0.04847198 0.01449178 CDK12/NF1     2
+GO:0033034 0.0021053178 0.04847198 0.01449178       NF1     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: tmb_neg | Number of enriched GO-BP terms = 2232</code></pre>
+<pre><code>                   ID                                 Description GeneRatio
+GO:0071214 GO:0071214       cellular response to abiotic stimulus     11/33
+GO:0104004 GO:0104004 cellular response to environmental stimulus     11/33
+GO:0007265 GO:0007265             Ras protein signal transduction      8/33
+             BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0071214 342/18986 0.03216374       18.50487 13.63094 7.500099e-12
+GO:0104004 342/18986 0.03216374       18.50487 13.63094 7.500099e-12
+GO:0007265 121/18986 0.06611570       38.03857 17.05461 2.616561e-11
+               p.adjust       qvalue
+GO:0071214 8.370111e-09 3.497415e-09
+GO:0104004 8.370111e-09 3.497415e-09
+GO:0007265 1.946721e-08 8.134291e-09
+                                                                     geneID
+GO:0071214 CDKN1A/CREBBP/FBXW7/HRAS/RHOB/TP53/MAP3K1/PIK3CA/EGFR/STK11/PTEN
+GO:0104004 CDKN1A/CREBBP/FBXW7/HRAS/RHOB/TP53/MAP3K1/PIK3CA/EGFR/STK11/PTEN
+GO:0007265                     CDKN1A/HRAS/KRAS/TP53/CDKN2A/NOTCH1/RB1/NRAS
+           Count
+GO:0071214    11
+GO:0104004    11
+GO:0007265     8</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-20-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: survival_pos | Number of enriched GO-BP terms = 456</code></pre>
+<pre><code>                   ID                                       Description
+GO:0070661 GO:0070661                           leukocyte proliferation
+GO:0030521 GO:0030521               androgen receptor signaling pathway
+GO:0120162 GO:0120162 positive regulation of cold-induced thermogenesis
+           GeneRatio   BgRatio  RichFactor FoldEnrichment    zScore
+GO:0070661       3/5 341/18986 0.008797654       33.40645  9.800726
+GO:0030521       2/5  49/18986 0.040816327      154.98776 17.516987
+GO:0120162       2/5 101/18986 0.019801980       75.19208 12.133623
+                 pvalue   p.adjust      qvalue            geneID Count
+GO:0070661 5.591508e-05 0.01480390 0.004032458 BAP1/ZBTB7B/MAPK1     3
+GO:0030521 6.492940e-05 0.01480390 0.004032458     SMARCA4/MAPK1     2
+GO:0120162 2.772947e-04 0.02619654 0.007135716    SMARCA4/ZBTB7B     2</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-20-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: survival_neg | Number of enriched GO-BP terms = 363</code></pre>
+<pre><code>                   ID                             Description GeneRatio
+GO:0051095 GO:0051095         regulation of helicase activity       1/1
+GO:1903799 GO:1903799 negative regulation of miRNA processing       1/1
+GO:0006983 GO:0006983                    ER overload response       1/1
+            BgRatio RichFactor FoldEnrichment   zScore       pvalue   p.adjust
+GO:0051095 10/18986 0.10000000         1898.6 43.56145 0.0005267039 0.01012201
+GO:1903799 10/18986 0.10000000         1898.6 43.56145 0.0005267039 0.01012201
+GO:0006983 11/18986 0.09090909         1726.0 41.53312 0.0005793743 0.01012201
+           qvalue geneID Count
+GO:0051095     NA   TP53     1
+GO:1903799     NA   TP53     1
+GO:0006983     NA   TP53     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-20-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: age_pos | Number of enriched GO-BP terms = 889</code></pre>
+<pre><code>                   ID
+GO:0043525 GO:0043525
+GO:2001241 GO:2001241
+GO:0007406 GO:0007406
+                                                                                 Description
+GO:0043525                                   positive regulation of neuron apoptotic process
+GO:2001241 positive regulation of extrinsic apoptotic signaling pathway in absence of ligand
+GO:0007406                                   negative regulation of neuroblast proliferation
+           GeneRatio  BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0043525       3/6 70/18986 0.04285714       135.6143 20.06127 9.523602e-07
+GO:2001241       2/6 10/18986 0.20000000       632.8667 35.53497 3.741119e-06
+GO:0007406       2/6 12/18986 0.16666667       527.3889 32.43028 5.485434e-06
+               p.adjust       qvalue         geneID Count
+GO:0043525 0.0008466483 0.0002796932 CASP8/NF1/TP53     3
+GO:2001241 0.0016255168 0.0005369951    NF1/PPP2R1A     2
+GO:0007406 0.0016255168 0.0005369951       NF1/TP53     2</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-20-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: age_neg | Number of enriched GO-BP terms = 822</code></pre>
+<pre><code>                   ID                           Description GeneRatio   BgRatio
+GO:0097091 GO:0097091           synaptic vesicle clustering       2/4  17/18986
+GO:0099504 GO:0099504                synaptic vesicle cycle       3/4 222/18986
+GO:0099003 GO:0099003 vesicle-mediated transport in synapse       3/4 258/18986
+           RichFactor FoldEnrichment   zScore       pvalue    p.adjust
+GO:0097091 0.11764706      558.41176 33.37665 4.522915e-06 0.002570774
+GO:0099504 0.01351351       64.14189 13.73712 6.254924e-06 0.002570774
+GO:0099003 0.01162791       55.19186 12.72221 9.822530e-06 0.002691373
+                 qvalue           geneID Count
+GO:0097091 0.0004312606      PTEN/CTNNB1     2
+GO:0099504 0.0004312606 BRAF/PTEN/CTNNB1     3
+GO:0099003 0.0004514917 BRAF/PTEN/CTNNB1     3</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-20-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: instability_pos | Number of enriched GO-BP terms = 650</code></pre>
+<pre><code>                   ID                                Description GeneRatio
+GO:0034599 GO:0034599      cellular response to oxidative stress       3/5
+GO:1902882 GO:1902882 regulation of response to oxidative stress       2/5
+GO:0060218 GO:0060218    hematopoietic stem cell differentiation       2/5
+             BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0034599 251/18986 0.01195219       45.38486 11.48883 2.238883e-05
+GO:1902882  36/18986 0.05555556      210.95556 20.46467 3.483133e-05
+GO:0060218  37/18986 0.05405405      205.25405 20.18409 3.681781e-05
+              p.adjust      qvalue            geneID Count
+GO:0034599 0.004880601 0.001240898 TP53/NFE2L2/KEAP1     3
+GO:1902882 0.004880601 0.001240898      NFE2L2/KEAP1     2
+GO:0060218 0.004880601 0.001240898       TP53/NFE2L2     2</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-20-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: instability_neg | Number of enriched GO-BP terms = 2082</code></pre>
+<pre><code>                   ID                             Description GeneRatio
+GO:0010720 GO:0010720 positive regulation of cell development     10/28
+GO:1902105 GO:1902105 regulation of leukocyte differentiation      9/28
+GO:1903706 GO:1903706               regulation of hemopoiesis      9/28
+             BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0010720 460/18986 0.02173913       14.74068 11.46527 5.615144e-10
+GO:1902105 337/18986 0.02670623       18.10873 12.17848 8.069601e-10
+GO:1903706 433/18986 0.02078522       14.09386 10.59236 7.225713e-09
+               p.adjust       qvalue
+GO:0010720 8.400455e-07 3.503906e-07
+GO:1902105 8.400455e-07 3.503906e-07
+GO:1903706 5.014645e-06 2.091654e-06
+                                                               geneID Count
+GO:0010720 SMARCA4/CASP8/EP300/TGFBR2/KRAS/BRAF/CBFB/RUNX1/NOTCH1/KIT    10
+GO:1902105       SMARCA4/CASP8/EP300/HLA-B/TGFBR2/BRAF/CBFB/RUNX1/NF1     9
+GO:1903706       SMARCA4/CASP8/EP300/HLA-B/TGFBR2/BRAF/CBFB/RUNX1/NF1     9</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-20-8.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="go-cc-ora" class="section level2">
+<h2>GO-CC ORA</h2>
+<pre class="r"><code>for (nm in names(gene_lists)) {
+  genes &lt;- gene_lists[[nm]]
+  
+  ego_cc &lt;- enrichGO(
+    gene          = genes,
+    OrgDb         = org.Hs.eg.db,
+    keyType       = &quot;SYMBOL&quot;,
+    ont           = &quot;CC&quot;,
+    pAdjustMethod = &quot;BH&quot;,
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.20
+  )
+  
+  nTerm &lt;- nrow(ego_cc@result)
+  message(&quot;---- Group: &quot;, nm,
+          &quot; | Number of enriched GO-CC terms = &quot;, nTerm)
+  print(head(ego_cc@result, 3))
+  
+  if (nTerm &gt; 0) {
+    nToShow &lt;- min(10, nTerm)
+    
+    tryCatch({
+      print(                 
+        dotplot(
+          ego_cc,
+          showCategory = nToShow,
+          title        = paste(nm, &quot;GO-CC&quot;)
+        )
+      )
+      
+    }, error = function(e) {   
+       message(&quot;   -&gt; Plotting failed for &quot;, nm, &quot; (KEGG).&quot;)
+    })
+    
+  } else {
+    message(&quot;   -&gt; No significant GO-CC terms found; skipping plot.&quot;)
+  }
+}</code></pre>
+<pre><code>---- Group: tmb_pos | Number of enriched GO-CC terms = 15</code></pre>
+<pre><code>                   ID
+GO:0019908 GO:0019908
+GO:0032806 GO:0032806
+GO:0008023 GO:0008023
+                                                          Description GeneRatio
+GO:0019908 nuclear cyclin-dependent protein kinase holoenzyme complex       1/4
+GO:0032806             carboxy-terminal domain protein kinase complex       1/4
+GO:0008023                    transcription elongation factor complex       1/4
+            BgRatio RichFactor FoldEnrichment    zScore      pvalue   p.adjust
+GO:0019908 14/19960 0.07142857      356.42857 18.834369 0.002802871 0.03151571
+GO:0032806 21/19960 0.04761905      237.61905 15.359260 0.004202095 0.03151571
+GO:0008023 51/19960 0.01960784       97.84314  9.803742 0.010182098 0.03531662
+                qvalue geneID Count
+GO:0019908 0.006634887  CDK12     1
+GO:0032806 0.006634887  CDK12     1
+GO:0008023 0.007435078  CDK12     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
@@ -2433,6 +2655,499 @@ Qirui Zhang
 </table>
 </div>
 </div>
+<pre><code>---- Group: tmb_neg | Number of enriched GO-CC terms = 168</code></pre>
+<pre><code>                   ID                      Description GeneRatio   BgRatio
+GO:0016514 GO:0016514                  SWI/SNF complex      3/33  30/19960
+GO:0070603 GO:0070603 SWI/SNF superfamily-type complex      4/33  94/19960
+GO:1904949 GO:1904949                   ATPase complex      4/33 126/19960
+           RichFactor FoldEnrichment    zScore       pvalue    p.adjust
+GO:0016514 0.10000000       60.48485 13.268406 1.621488e-05 0.001427879
+GO:0070603 0.04255319       25.73823  9.783242 1.699856e-05 0.001427879
+GO:1904949 0.03174603       19.20154  8.340530 5.375597e-05 0.003010334
+                 qvalue                geneID Count
+GO:0016514 0.0008588746      PBRM1/RB1/ARID1A     3
+GO:0070603 0.0008588746 PBRM1/RB1/ARID1A/CHD4     4
+GO:1904949 0.0018107275 PBRM1/RB1/ARID1A/CHD4     4</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: survival_pos | Number of enriched GO-CC terms = 39</code></pre>
+<pre><code>                   ID   Description GeneRatio  BgRatio RichFactor
+GO:0140092 GO:0140092  bBAF complex       1/5 10/19960 0.10000000
+GO:0071564 GO:0071564 npBAF complex       1/5 14/19960 0.07142857
+GO:0140288 GO:0140288  GBAF complex       1/5 14/19960 0.07142857
+           FoldEnrichment   zScore      pvalue   p.adjust     qvalue  geneID
+GO:0140092       399.2000 19.93693 0.002502752 0.02925873 0.01184564 SMARCA4
+GO:0071564       285.1429 16.83454 0.003502448 0.02925873 0.01184564 SMARCA4
+GO:0140288       285.1429 16.83454 0.003502448 0.02925873 0.01184564 SMARCA4
+           Count
+GO:0140092     1
+GO:0071564     1
+GO:0140288     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: survival_neg | Number of enriched GO-CC terms = 8</code></pre>
+<pre><code>                   ID                     Description GeneRatio  BgRatio
+GO:0043073 GO:0043073               germ cell nucleus       1/1 68/19960
+GO:0005657 GO:0005657                replication fork       1/1 75/19960
+GO:0017053 GO:0017053 transcription repressor complex       1/1 79/19960
+           RichFactor FoldEnrichment   zScore      pvalue    p.adjust qvalue
+GO:0043073 0.01470588       293.5294 17.10349 0.003406814 0.007500716     NA
+GO:0005657 0.01333333       266.1333 16.28292 0.003757515 0.007500716     NA
+GO:0017053 0.01265823       252.6582 15.86374 0.003957916 0.007500716     NA
+           geneID Count
+GO:0043073   TP53     1
+GO:0005657   TP53     1
+GO:0017053   TP53     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-21-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: age_pos | Number of enriched GO-CC terms = 47</code></pre>
+<pre><code>                   ID                         Description GeneRatio   BgRatio
+GO:0030027 GO:0030027                       lamellipodium       2/6 203/19960
+GO:0090443 GO:0090443             FAR/SIN/STRIPAK complex       1/6  17/19960
+GO:0000159 GO:0000159 protein phosphatase type 2A complex       1/6  18/19960
+            RichFactor FoldEnrichment    zScore      pvalue   p.adjust
+GO:0030027 0.009852217       32.77504  7.890484 0.001502971 0.06248387
+GO:0090443 0.058823529      195.68627 13.924980 0.005099989 0.06248387
+GO:0000159 0.055555556      184.81481 13.528898 0.005399312 0.06248387
+               qvalue     geneID Count
+GO:0030027 0.02938771 CASP8/RAC1     2
+GO:0090443 0.02938771    PPP2R1A     1
+GO:0000159 0.02938771    PPP2R1A     1</code></pre>
+<pre><code>Warning in rep(yes, length.out = len): &#39;x&#39; is NULL so the result will be NULL</code></pre>
+<pre><code>   -&gt; Plotting failed for age_pos (KEGG).</code></pre>
+<pre><code>---- Group: age_neg | Number of enriched GO-CC terms = 77</code></pre>
+<pre><code>                   ID                 Description GeneRatio   BgRatio
+GO:0014069 GO:0014069        postsynaptic density       2/4 359/19960
+GO:0032279 GO:0032279          asymmetric synapse       2/4 375/19960
+GO:0099572 GO:0099572 postsynaptic specialization       2/4 396/19960
+            RichFactor FoldEnrichment   zScore      pvalue  p.adjust
+GO:0014069 0.005571031       27.79944 7.254317 0.001889805 0.0228981
+GO:0032279 0.005333333       26.61333 7.088961 0.002060028 0.0228981
+GO:0099572 0.005050505       25.20202 6.887047 0.002294279 0.0228981
+                qvalue      geneID Count
+GO:0014069 0.005947559 PTEN/CTNNB1     2
+GO:0032279 0.005947559 PTEN/CTNNB1     2
+GO:0099572 0.005947559 PTEN/CTNNB1     2</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-21-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: instability_pos | Number of enriched GO-CC terms = 29</code></pre>
+<pre><code>                   ID                         Description GeneRatio  BgRatio
+GO:0090443 GO:0090443             FAR/SIN/STRIPAK complex       1/5 17/19960
+GO:0000159 GO:0000159 protein phosphatase type 2A complex       1/5 18/19960
+GO:0016592 GO:0016592                    mediator complex       1/5 37/19960
+           RichFactor FoldEnrichment   zScore      pvalue   p.adjust     qvalue
+GO:0090443 0.05882353       234.8235 15.26673 0.004251695 0.05176632 0.02066895
+GO:0000159 0.05555556       221.7778 14.83323 0.004501343 0.05176632 0.02066895
+GO:0016592 0.02702703       107.8919 10.30141 0.009235160 0.05176632 0.02066895
+            geneID Count
+GO:0090443 PPP2R1A     1
+GO:0000159 PPP2R1A     1
+GO:0016592  NFE2L2     1</code></pre>
+<pre><code>Warning in rep(yes, length.out = len): &#39;x&#39; is NULL so the result will be NULL</code></pre>
+<pre><code>   -&gt; Plotting failed for instability_pos (KEGG).</code></pre>
+<pre><code>---- Group: instability_neg | Number of enriched GO-CC terms = 140</code></pre>
+<pre><code>                   ID                         Description GeneRatio   BgRatio
+GO:0030027 GO:0030027                       lamellipodium      5/28 203/19960
+GO:0009898 GO:0009898 cytoplasmic side of plasma membrane      4/28 163/19960
+GO:0098562 GO:0098562        cytoplasmic side of membrane      4/28 210/19960
+           RichFactor FoldEnrichment   zScore       pvalue    p.adjust
+GO:0030027 0.02463054       17.55806 8.887301 8.414956e-06 0.001178094
+GO:0009898 0.02453988       17.49343 7.924611 7.531598e-05 0.005272119
+GO:0098562 0.01904762       13.57823 6.867816 1.999809e-04 0.009332442
+                 qvalue                       geneID Count
+GO:0030027 0.0007352014 CASP8/RAC1/CDH1/PIK3CA/EPHA2     5
+GO:0009898 0.0032901192           KRAS/PTEN/CDH1/KIT     4
+GO:0098562 0.0058240053           KRAS/PTEN/CDH1/KIT     4</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-21-6.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="go-mf-ora" class="section level2">
+<h2>GO-MF ORA</h2>
+<pre class="r"><code>for (nm in names(gene_lists)) {
+  genes   &lt;- gene_lists[[nm]]
+  ego_mf  &lt;- enrichGO(
+    gene          = genes,
+    OrgDb         = org.Hs.eg.db,
+    keyType       = &quot;SYMBOL&quot;,
+    ont           = &quot;MF&quot;,
+    pAdjustMethod = &quot;BH&quot;,
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.20
+  )
+  
+  message(&quot;---- Group: &quot;, nm, &quot; | Number of enriched GO-MF terms = &quot;, nrow(ego_mf@result))
+  print(head(ego_mf@result, 3))  # Print the first 3 rows
+
+  if (nrow(ego_mf@result) &gt; 0) {
+    print(dotplot(ego_mf, showCategory = 10, title = paste(nm, &quot;GO-MF&quot;)))
+  } else {
+    message(&quot;   -&gt; No significant GO-MF terms found; skipping plot.&quot;)
+  }
+}</code></pre>
+<pre><code>---- Group: tmb_pos | Number of enriched GO-MF terms = 39</code></pre>
+<pre><code>                   ID
+GO:0061629 GO:0061629
+GO:0008353 GO:0008353
+GO:0046975 GO:0046975
+                                                                   Description
+GO:0061629 RNA polymerase II-specific DNA-binding transcription factor binding
+GO:0008353           RNA polymerase II CTD heptapeptide repeat kinase activity
+GO:0046975                            histone H3K36 methyltransferase activity
+           GeneRatio   BgRatio  RichFactor FoldEnrichment    zScore      pvalue
+GO:0061629       2/4 349/18737 0.005730659       26.84384  7.121431 0.002024862
+GO:0008353       1/4  10/18737 0.100000000      468.42500 21.604419 0.002133276
+GO:0046975       1/4  13/18737 0.076923077      360.32692 18.937685 0.002772592
+            p.adjust      qvalue     geneID Count
+GO:0061629 0.0166076 0.003137739 NSD1/KEAP1     2
+GO:0008353 0.0166076 0.003137739      CDK12     1
+GO:0046975 0.0166076 0.003137739       NSD1     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: tmb_neg | Number of enriched GO-MF terms = 213</code></pre>
+<pre><code>                   ID
+GO:0097718 GO:0097718
+GO:0061629 GO:0061629
+GO:0031625 GO:0031625
+                                                                   Description
+GO:0097718                                  disordered domain specific binding
+GO:0061629 RNA polymerase II-specific DNA-binding transcription factor binding
+GO:0031625                                    ubiquitin protein ligase binding
+           GeneRatio   BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0097718      5/33  28/18737 0.17857143      101.39069 22.32931 1.178393e-09
+GO:0061629      9/33 349/18737 0.02578797       14.64209 10.80574 6.332085e-09
+GO:0031625      8/33 301/18737 0.02657807       15.09071 10.35168 3.958779e-08
+               p.adjust       qvalue
+GO:0097718 2.509976e-07 1.364455e-07
+GO:0061629 6.743671e-07 3.665944e-07
+GO:0031625 2.810733e-06 1.527950e-06
+                                                           geneID Count
+GO:0097718                           TP53/CDKN2A/KEAP1/RB1/CTNNB1     5
+GO:0061629 CREBBP/NFE2L2/TP53/CDKN2A/KEAP1/RB1/ARID1A/CHD4/CTNNB1     9
+GO:0031625          CDKN1A/FBXW7/NFE2L2/TP53/EGFR/RB1/CTNNB1/SPOP     8</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: survival_pos | Number of enriched GO-MF terms = 46</code></pre>
+<pre><code>                   ID
+GO:0031490 GO:0031490
+GO:0001164 GO:0001164
+GO:0008353 GO:0008353
+                                                            Description
+GO:0031490                                        chromatin DNA binding
+GO:0001164 RNA polymerase I core promoter sequence-specific DNA binding
+GO:0008353    RNA polymerase II CTD heptapeptide repeat kinase activity
+           GeneRatio   BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0031490       2/5 128/18737   0.015625       58.55313 10.67441 0.0004568621
+GO:0001164       1/5  10/18737   0.100000      374.74000 19.31376 0.0026659542
+GO:0008353       1/5  10/18737   0.100000      374.74000 19.31376 0.0026659542
+             p.adjust      qvalue       geneID Count
+GO:0031490 0.02101566 0.008656334 SMARCA4/BAP1     2
+GO:0001164 0.02697658 0.011111634      SMARCA4     1
+GO:0008353 0.02697658 0.011111634        MAPK1     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-22-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: survival_neg | Number of enriched GO-MF terms = 33</code></pre>
+<pre><code>                   ID                                      Description
+GO:0001094 GO:0001094 TFIID-class transcription factor complex binding
+GO:0140666 GO:0140666                               annealing activity
+GO:0097371 GO:0097371                 MDM2/MDM4 family protein binding
+           GeneRatio  BgRatio RichFactor FoldEnrichment   zScore       pvalue
+GO:0001094       1/1 10/18737 0.10000000       1873.700 43.27470 0.0005337034
+GO:0140666       1/1 11/18737 0.09090909       1703.364 41.25971 0.0005870737
+GO:0097371       1/1 12/18737 0.08333333       1561.417 39.50211 0.0006404440
+              p.adjust qvalue geneID Count
+GO:0001094 0.007044884     NA   TP53     1
+GO:0140666 0.007044884     NA   TP53     1
+GO:0097371 0.007044884     NA   TP53     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-22-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: age_pos | Number of enriched GO-MF terms = 61</code></pre>
+<pre><code>                   ID                                      Description
+GO:0001094 GO:0001094 TFIID-class transcription factor complex binding
+GO:0031996 GO:0031996                             thioesterase binding
+GO:0140666 GO:0140666                               annealing activity
+           GeneRatio  BgRatio RichFactor FoldEnrichment   zScore      pvalue
+GO:0001094       1/6 10/18737 0.10000000       312.2833 17.62201 0.003198377
+GO:0031996       1/6 10/18737 0.10000000       312.2833 17.62201 0.003198377
+GO:0140666       1/6 11/18737 0.09090909       283.8939 16.79697 0.003517745
+             p.adjust    qvalue geneID Count
+GO:0001094 0.03648395 0.0132211   TP53     1
+GO:0031996 0.03648395 0.0132211   RAC1     1
+GO:0140666 0.03648395 0.0132211   TP53     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-22-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: age_neg | Number of enriched GO-MF terms = 51</code></pre>
+<pre><code>                   ID                                             Description
+GO:0045296 GO:0045296                                        cadherin binding
+GO:0031434 GO:0031434         mitogen-activated protein kinase kinase binding
+GO:0034594 GO:0034594 phosphatidylinositol trisphosphate phosphatase activity
+           GeneRatio   BgRatio  RichFactor FoldEnrichment    zScore      pvalue
+GO:0045296       2/4 334/18737 0.005988024        28.0494  7.288721 0.001856308
+GO:0031434       1/4  10/18737 0.100000000       468.4250 21.604419 0.002133276
+GO:0034594       1/4  10/18737 0.100000000       468.4250 21.604419 0.002133276
+             p.adjust      qvalue      geneID Count
+GO:0045296 0.01739917 0.004668508 IDH1/CTNNB1     2
+GO:0031434 0.01739917 0.004668508        BRAF     1
+GO:0034594 0.01739917 0.004668508        PTEN     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-22-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: instability_pos | Number of enriched GO-MF terms = 57</code></pre>
+<pre><code>                   ID
+GO:0097718 GO:0097718
+GO:0140693 GO:0140693
+GO:0061629 GO:0061629
+                                                                   Description
+GO:0097718                                  disordered domain specific binding
+GO:0140693                              molecular condensate scaffold activity
+GO:0061629 RNA polymerase II-specific DNA-binding transcription factor binding
+           GeneRatio   BgRatio  RichFactor FoldEnrichment    zScore
+GO:0097718       2/5  28/18737 0.071428571      267.67143 23.070743
+GO:0140693       2/5  47/18737 0.042553191      159.46383 17.770751
+GO:0061629       3/5 349/18737 0.008595989       32.21261  9.616275
+                 pvalue    p.adjust       qvalue            geneID Count
+GO:0097718 2.147529e-05 0.001183987 0.0001967845        TP53/KEAP1     2
+GO:0140693 6.129021e-05 0.001183987 0.0001967845       TP53/NFE2L2     2
+GO:0061629 6.231510e-05 0.001183987 0.0001967845 TP53/NFE2L2/KEAP1     3</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-22-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>---- Group: instability_neg | Number of enriched GO-MF terms = 164</code></pre>
+<pre><code>                   ID                                    Description GeneRatio
+GO:0001221 GO:0001221              transcription coregulator binding      5/28
+GO:0019199 GO:0019199 transmembrane receptor protein kinase activity      4/28
+GO:0031490 GO:0031490                          chromatin DNA binding      4/28
+             BgRatio RichFactor FoldEnrichment    zScore       pvalue
+GO:0001221 117/18737 0.04273504       28.59737 11.584120 7.632764e-07
+GO:0019199  79/18737 0.05063291       33.88246 11.330197 5.548632e-06
+GO:0031490 128/18737 0.03125000       20.91183  8.744738 3.746536e-05
+               p.adjust       qvalue                          geneID Count
+GO:0001221 0.0001251773 6.347246e-05 NFE2L2/CTCF/SMARCA4/EP300/RUNX1     5
+GO:0019199 0.0004549878 2.307063e-04          FGFR3/TGFBR2/EPHA2/KIT     4
+GO:0031490 0.0016490277 8.361565e-04       CTCF/SMARCA4/EP300/NOTCH1     4</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-22-8.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="kegg-ora" class="section level2">
+<h2>KEGG ORA</h2>
+<pre class="r"><code>for (nm in names(gene_lists)) {
+  genes &lt;- gene_lists[[nm]]
+  
+  gene_entrez &lt;- bitr(
+    genes,
+    fromType = &quot;SYMBOL&quot;,
+    toType   = &quot;ENTREZID&quot;,
+    OrgDb    = org.Hs.eg.db
+  )
+  
+  ego_kegg &lt;- enrichKEGG(
+    gene          = gene_entrez$ENTREZID,
+    organism      = &quot;hsa&quot;,
+    pAdjustMethod = &quot;BH&quot;,
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.20
+  )
+  
+  nTerm &lt;- nrow(ego_kegg@result)
+  message(&quot;---- Group: &quot;, nm, &quot; | Number of enriched KEGG pathways = &quot;, nTerm)
+  print(head(ego_kegg@result, 3))
+  
+  if (nTerm &gt; 0) {
+    nToShow &lt;- min(10, nTerm)
+    
+    tryCatch({
+      print(
+        dotplot(
+          ego_kegg,
+          showCategory = nToShow,
+          title        = paste(nm, &quot;KEGG&quot;)
+        )
+      )
+    }, error = function(e) {
+       message(&quot;   -&gt; Plotting failed for &quot;, nm, &quot; (KEGG).&quot;)
+    })
+    
+  } else {
+    message(&quot;   -&gt; No significant KEGG pathways found; skipping plot.&quot;)
+  }
+}</code></pre>
+<pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>Reading KEGG annotation online: &quot;https://rest.kegg.jp/link/hsa/pathway&quot;...</code></pre>
+<pre><code>Reading KEGG annotation online: &quot;https://rest.kegg.jp/list/pathway/hsa&quot;...</code></pre>
+<pre><code>---- Group: tmb_pos | Number of enriched KEGG pathways = 9</code></pre>
+<pre><code>               category                     subcategory       ID
+hsa00310     Metabolism           Amino acid metabolism hsa00310
+hsa01521 Human Diseases Drug resistance: antineoplastic hsa01521
+hsa05418 Human Diseases          Cardiovascular disease hsa05418
+                                       Description GeneRatio  BgRatio
+hsa00310                        Lysine degradation       1/3  63/8964
+hsa01521 EGFR tyrosine kinase inhibitor resistance       1/3  80/8964
+hsa05418    Fluid shear stress and atherosclerosis       1/3 141/8964
+          RichFactor FoldEnrichment   zScore     pvalue  p.adjust     qvalue
+hsa00310 0.015873016       47.42857 6.766207 0.02093882 0.0970894 0.05677742
+hsa01521 0.012500000       37.35000 5.975224 0.02653846 0.0970894 0.05677742
+hsa05418 0.007092199       21.19149 4.421594 0.04645549 0.0970894 0.05677742
+         geneID Count
+hsa00310  64324     1
+hsa01521   4763     1
+hsa05418   9817     1</code></pre>
+<pre><code>Warning in rep(yes, length.out = len): &#39;x&#39; is NULL so the result will be NULL</code></pre>
+<pre><code>   -&gt; Plotting failed for tmb_pos (KEGG).</code></pre>
+<pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>---- Group: tmb_neg | Number of enriched KEGG pathways = 167</code></pre>
+<pre><code>               category            subcategory       ID
+hsa05225 Human Diseases Cancer: specific types hsa05225
+hsa05215 Human Diseases Cancer: specific types hsa05215
+hsa05219 Human Diseases Cancer: specific types hsa05219
+                      Description GeneRatio  BgRatio RichFactor FoldEnrichment
+hsa05225 Hepatocellular carcinoma     17/31 170/8964  0.1000000       28.91613
+hsa05215          Prostate cancer     13/31  98/8964  0.1326531       38.35813
+hsa05219           Bladder cancer     10/31  41/8964  0.2439024       70.52714
+           zScore       pvalue     p.adjust       qvalue
+hsa05225 21.64688 4.976776e-22 8.311216e-20 2.828904e-20
+hsa05215 21.90500 2.460089e-18 2.054174e-16 6.991831e-17
+hsa05219 26.28450 5.066551e-17 2.820380e-15 9.599781e-16
+                                                                                       geneID
+hsa05225 1026/3265/3845/4780/7157/1029/7048/5290/55193/673/1956/9817/5925/4893/5728/8289/1499
+hsa05215                      1026/1387/3265/3845/7157/5290/673/1956/5925/4893/5728/1499/2263
+hsa05219                                     1026/2261/3265/3845/7157/1029/673/1956/5925/4893
+         Count
+hsa05225    17
+hsa05215    13
+hsa05219    10</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>---- Group: survival_pos | Number of enriched KEGG pathways = 121</code></pre>
+<pre><code>                   category            subcategory       ID
+hsa05225     Human Diseases Cancer: specific types hsa05225
+hsa05216     Human Diseases Cancer: specific types hsa05216
+hsa04960 Organismal Systems       Excretory system hsa04960
+                                       Description GeneRatio  BgRatio
+hsa05225                  Hepatocellular carcinoma       2/4 170/8964
+hsa05216                            Thyroid cancer       1/4  37/8964
+hsa04960 Aldosterone-regulated sodium reabsorption       1/4  38/8964
+         RichFactor FoldEnrichment   zScore      pvalue   p.adjust     qvalue
+hsa05225 0.01176471       26.36471 7.054460 0.002092264 0.09953144 0.06234244
+hsa05216 0.02702703       60.56757 7.671153 0.016411273 0.09953144 0.06234244
+hsa04960 0.02631579       58.97368 7.566533 0.016851999 0.09953144 0.06234244
+            geneID Count
+hsa05225 6597/5594     2
+hsa05216      5594     1
+hsa04960      5594     1</code></pre>
+<pre><code>Warning in rep(yes, length.out = len): &#39;x&#39; is NULL so the result will be NULL</code></pre>
+<pre><code>   -&gt; Plotting failed for survival_pos (KEGG).</code></pre>
+<pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>---- Group: survival_neg | Number of enriched KEGG pathways = 50</code></pre>
+<pre><code>                   category            subcategory       ID    Description
+hsa05216     Human Diseases Cancer: specific types hsa05216 Thyroid cancer
+hsa05219     Human Diseases Cancer: specific types hsa05219 Bladder cancer
+hsa04216 Cellular Processes  Cell growth and death hsa04216    Ferroptosis
+         GeneRatio BgRatio RichFactor FoldEnrichment   zScore      pvalue
+hsa05216       1/1 37/8964 0.02702703       242.2703 15.53288 0.004127622
+hsa05219       1/1 41/8964 0.02439024       218.6341 14.75243 0.004573851
+hsa04216       1/1 42/8964 0.02380952       213.4286 14.57493 0.004685408
+           p.adjust qvalue geneID Count
+hsa05216 0.02931956     NA   7157     1
+hsa05219 0.02931956     NA   7157     1
+hsa04216 0.02931956     NA   7157     1</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>---- Group: age_pos | Number of enriched KEGG pathways = 112</code></pre>
+<pre><code>                                     category               subcategory
+hsa04071 Environmental Information Processing       Signal transduction
+hsa05160                       Human Diseases Infectious disease: viral
+hsa05167                       Human Diseases Infectious disease: viral
+               ID                                     Description GeneRatio
+hsa04071 hsa04071                  Sphingolipid signaling pathway       3/5
+hsa05160 hsa05160                                     Hepatitis C       3/5
+hsa05167 hsa05167 Kaposi sarcoma-associated herpesvirus infection       3/5
+          BgRatio RichFactor FoldEnrichment    zScore       pvalue    p.adjust
+hsa04071 122/8964 0.02459016       44.08525 11.319185 2.411429e-05 0.002437495
+hsa05160 159/8964 0.01886792       33.82642  9.865958 5.335594e-05 0.002437495
+hsa05167 196/8964 0.01530612       27.44082  8.841675 9.967683e-05 0.002437495
+              qvalue         geneID Count
+hsa04071 0.001214166 5879/5518/7157     3
+hsa05160 0.001214166  841/5518/7157     3
+hsa05167 0.001214166  841/5879/7157     3</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>---- Group: age_neg | Number of enriched KEGG pathways = 79</code></pre>
+<pre><code>               category            subcategory       ID        Description
+hsa05213 Human Diseases Cancer: specific types hsa05213 Endometrial cancer
+hsa05215 Human Diseases Cancer: specific types hsa05215    Prostate cancer
+hsa05224 Human Diseases Cancer: specific types hsa05224      Breast cancer
+         GeneRatio  BgRatio RichFactor FoldEnrichment   zScore       pvalue
+hsa05213       3/4  59/8964 0.05084746      113.94915 18.39055 1.078486e-06
+hsa05215       3/4  98/8964 0.03061224       68.60204 14.21712 5.029235e-06
+hsa05224       3/4 148/8964 0.02027027       45.42568 11.51415 1.743127e-05
+             p.adjust       qvalue        geneID Count
+hsa05213 8.520036e-05 3.405744e-05 673/5728/1499     3
+hsa05215 1.986548e-04 7.940897e-05 673/5728/1499     3
+hsa05224 4.590233e-04 1.834870e-04 673/5728/1499     3</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-23-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>---- Group: instability_pos | Number of enriched KEGG pathways = 120</code></pre>
+<pre><code>                                     category            subcategory       ID
+hsa05225                       Human Diseases Cancer: specific types hsa05225
+hsa04071 Environmental Information Processing    Signal transduction hsa04071
+hsa05418                       Human Diseases Cardiovascular disease hsa05418
+                                    Description GeneRatio  BgRatio RichFactor
+hsa05225               Hepatocellular carcinoma       4/5 170/8964 0.02352941
+hsa04071         Sphingolipid signaling pathway       3/5 122/8964 0.02459016
+hsa05418 Fluid shear stress and atherosclerosis       3/5 141/8964 0.02127660
+         FoldEnrichment   zScore       pvalue     p.adjust       qvalue
+hsa05225       42.18353 12.80668 6.153606e-07 7.384327e-05 4.275137e-05
+hsa04071       44.08525 11.31919 2.411429e-05 1.446857e-03 8.376542e-04
+hsa05418       38.14468 10.50219 3.723185e-05 1.489274e-03 8.622113e-04
+                      geneID Count
+hsa05225 7157/5604/4780/9817     4
+hsa04071      7157/5604/5518     3
+hsa05418      7157/4780/9817     3</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-23-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
+<pre><code>---- Group: instability_neg | Number of enriched KEGG pathways = 178</code></pre>
+<pre><code>                                     category               subcategory
+hsa04010 Environmental Information Processing       Signal transduction
+hsa05166                       Human Diseases Infectious disease: viral
+hsa05161                       Human Diseases Infectious disease: viral
+               ID                             Description GeneRatio  BgRatio
+hsa04010 hsa04010                  MAPK signaling pathway     11/26 300/8964
+hsa05166 hsa05166 Human T-cell leukemia virus 1 infection     10/26 224/8964
+hsa05161 hsa05161                             Hepatitis B      9/26 163/8964
+         RichFactor FoldEnrichment   zScore       pvalue     p.adjust
+hsa04010 0.03666667       12.64154 11.06127 2.428661e-10 2.478935e-08
+hsa05166 0.04464286       15.39148 11.76433 2.909587e-10 2.478935e-08
+hsa05161 0.05521472       19.03634 12.53341 4.177981e-10 2.478935e-08
+               qvalue                                                geneID
+hsa04010 8.062769e-09 2261/3265/4214/5879/7048/3845/673/6416/4763/1969/3815
+hsa05166 8.062769e-09     3265/4214/2033/3105/3106/7048/3845/5728/6416/5290
+hsa05161 8.062769e-09            3265/4214/841/2033/7048/3845/673/6416/5290
+         Count
+hsa04010    11
+hsa05166    10
+hsa05161     9</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-23-6.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="plot-specific-genes" class="section level1">
+<h1>Plot specific genes</h1>
+<p>To visualize the data for specific genes, diffdriver has a plotting
+function:</p>
+<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/HNSC/HNSC_mutations.txt&quot;
+mut &lt;- read.table(mut_path, header = TRUE, sep = &quot;\t&quot;)
+head(mut)</code></pre>
+<pre><code>  Chromosome Position Ref Alt     SampleID
+1          4 44700691   C   G TCGA-CR-7386
+2          9 35074164   C   T TCGA-CR-7395
+3         22 37914082   T   A TCGA-CQ-5325
+4          6 30571952   C   T TCGA-CR-6467
+5         19 38127001   C   G TCGA-CV-5434
+6          8 23290623   C   T TCGA-HD-7754</code></pre>
+<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Aneuploidy.Score.txt&quot;
+pheno &lt;- read.table(pheno_path, header = TRUE, sep = &quot;\t&quot;)
+head(pheno)</code></pre>
+<pre><code>      SampleID Aneuploidy.Score
+1 TCGA-02-0001               15
+2 TCGA-02-0003                4
+3 TCGA-02-0006               11
+4 TCGA-02-0007                5
+5 TCGA-02-0009                6
+6 TCGA-02-0010                1</code></pre>
+<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;CDKN2A&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
+                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;
+[1] &quot;Only keeping the first two columns of the phenotype data frame.&quot;
+[1] &quot;phenotype name is Aneuploidy.Score&quot;
+[1] &quot;number of samples shared in phenotype and mutation file: 482&quot;</code></pre>
+<p><img src="figure/clinical.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2477,7 +3192,7 @@ loaded via a namespace (and not attached):
   [7] farver_2.1.2            rmarkdown_2.29          GlobalOptions_0.1.2    
  [10] fs_1.6.6                zlibbioc_1.52.0         vctrs_0.6.5            
  [13] memoise_2.0.1           ggtree_3.14.0           polynom_1.4-1          
- [16] htmltools_0.5.8.1       curl_6.2.2              gridGraphics_0.5-1     
+ [16] htmltools_0.5.8.1       curl_6.2.3              gridGraphics_0.5-1     
  [19] sass_0.4.10             bslib_0.9.0             htmlwidgets_1.6.4      
  [22] plyr_1.8.9              cachem_1.1.0            whisker_0.4.1          
  [25] igraph_2.1.4            lifecycle_1.0.4         pkgconfig_2.0.3        
@@ -2493,10 +3208,10 @@ loaded via a namespace (and not attached):
  [55] ggpp_0.5.8-1            tools_4.4.2             ape_5.8-1              
  [58] httpuv_1.6.16           R.oo_1.27.1             glue_1.8.0             
  [61] callr_3.7.6             nlme_3.1-168            GOSemSim_2.32.0        
- [64] promises_1.3.2          grid_4.4.2              getPass_0.2-4          
+ [64] promises_1.3.3          grid_4.4.2              getPass_0.2-4          
  [67] reshape2_1.4.4          fgsea_1.32.4            generics_0.1.4         
  [70] gtable_0.3.6            R.methodsS3_1.8.2       tidyr_1.3.1            
- [73] data.table_1.17.2       XVector_0.46.0          ggrepel_0.9.6          
+ [73] data.table_1.17.4       XVector_0.46.0          ggrepel_0.9.6          
  [76] pillar_1.10.2           stringr_1.5.1           yulab.utils_0.2.0      
  [79] babelgene_22.9          later_1.4.2             circlize_0.4.16        
  [82] splines_4.4.2           treeio_1.30.0           lattice_0.22-7         
