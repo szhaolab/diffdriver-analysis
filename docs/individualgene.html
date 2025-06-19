@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Qirui Zhang" />
+
+<meta name="date" content="2025-06-16" />
+
+<title>Individual gene</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">diffdriver_run</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/LD-ZhangQR/diffdriver">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Individual gene</h1>
+<h4 class="author">Qirui Zhang</h4>
+<h4 class="date">2025-06-16</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2025-06-19
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>diffdriver/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250319code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250319)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250319code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250319)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreeb6a2027f1f000fc19276f389f10fa5ffc0ffb77ftargetblankb6a2027a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/b6a2027f1f000fc19276f389f10fa5ffc0ffb77f" target="_blank">b6a2027</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreeb6a2027f1f000fc19276f389f10fa5ffc0ffb77ftargetblankb6a2027a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/b6a2027f1f000fc19276f389f10fa5ffc0ffb77f" target="_blank">b6a2027</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  code/run_workflowr.R
+
+Unstaged changes:
+    Deleted:    analysis/clinical_newplot.Rmd
+    Deleted:    analysis/example.Rmd
+    Modified:   analysis/immunesubtypes.Rmd
+    Deleted:    analysis/immunesubtypes_newplot.Rmd
+    Modified:   diffdriver.Rproj
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/individualgene.Rmd</code>) and
+HTML (<code>docs/individualgene.html</code>) files. If you’ve configured
+a remote Git repository (see <code>?wflow_git_remote</code>), click on
+the hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/b6a2027f1f000fc19276f389f10fa5ffc0ffb77f/analysis/individualgene.Rmd" target="_blank">b6a2027</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-19
+</td>
+<td>
+Publish analysis
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>get_files &lt;- function(outputdir, tumors = NULL, phenotypes = NULL) {
+  files &lt;- list.files(
+    path = outputdir,
+    pattern = &quot;_resdd\\.Rd$&quot;,
+    recursive = TRUE,
+    full.names = TRUE
+  )
+  
+  matching_files_txt &lt;- sub(&quot;\\.Rd$&quot;, &quot;.txt&quot;, files)
+  
+  analysis_mode &lt;- ifelse(grepl(&quot;_sig_&quot;, basename(files)), &quot;sig&quot;, &quot;reg&quot;)
+
+  inner_folder_names      &lt;- basename(dirname(files))            
+  phenotype_folder_names  &lt;- basename(dirname(dirname(files)))  
+  
+  tumor_names &lt;- mapply(function(inner_name, phen) {
+    pattern_front &lt;- paste0(&quot;^&quot;, phen, &quot;_&quot;)
+    tmp &lt;- sub(pattern_front, &quot;&quot;, inner_name)
+    tmp &lt;- sub(&quot;_mutations$&quot;, &quot;&quot;, tmp)
+    return(tmp)
+  }, inner_folder_names, phenotype_folder_names)
+  
+  phenos_all &lt;- phenotype_folder_names
+  
+  filedf &lt;- data.frame(
+    tumor      = tumor_names,
+    phenotype  = phenos_all,
+    mode       = analysis_mode,   
+    file       = files,
+    filetxt    = matching_files_txt,
+    stringsAsFactors = FALSE
+  )
+  
+  if (!is.null(tumors)) {
+    filedf &lt;- filedf[filedf$tumor %in% tumors, ]
+  }
+  if (!is.null(phenotypes)) {
+    filedf &lt;- filedf[filedf$phenotype %in% phenotypes, ]
+  }
+
+  rownames(filedf) &lt;- NULL
+  return(filedf)
+}
+
+get_diff_table &lt;- function(filedf, include_nonsig = TRUE){
+  pheno_all &lt;- unique(filedf$phenotype)
+  numlist &lt;- list()
+  
+  for (p in pheno_all){
+    p_txtfiles &lt;- filedf[filedf$phenotype == p, ]
+    numlist[[p]] &lt;- list()
+    
+    for (t in seq_len(nrow(p_txtfiles))){
+      txtf  &lt;- p_txtfiles[t, &quot;filetxt&quot;]
+      rdf   &lt;- p_txtfiles[t, &quot;file&quot;] 
+      tumor &lt;- p_txtfiles[t, &quot;tumor&quot;] 
+      mode  &lt;- p_txtfiles[t, &quot;mode&quot;]     # reg / sig
+      
+      env &lt;- new.env()
+      load(rdf, envir = env)
+      res_rdata &lt;- env$res
+      
+      res &lt;- read.table(txtf, header = TRUE)
+      res$gene &lt;- row.names(res)
+      res$mode &lt;- mode
+      
+      res$alpha &lt;- sapply(res$gene, function(gene){
+          res_rdata[[gene]][[&quot;dd&quot;]][[&quot;res.alt&quot;]]$alpha[2]
+      })
+      
+      res$significant &lt;- res$dd.fdr &lt; 0.1
+      
+      if (include_nonsig) {
+        numlist[[p]][[ paste0(tumor, &quot;_&quot;, mode) ]] &lt;- res
+      } else {
+        sig_res &lt;- res[res$dd.fdr &lt; 0.1, ]
+        if (nrow(sig_res) &gt; 0){
+          numlist[[p]][[ paste0(tumor, &quot;_&quot;, mode) ]] &lt;- sig_res
+        }
+      }
+    }
+    
+    if (length(numlist[[p]]) == 0){
+      numlist[[p]] &lt;- NULL
+    }
+  }
+  
+  combined_df &lt;- do.call(
+    rbind,
+    lapply(names(numlist), function(pheno) {
+      numlist.pheno &lt;- numlist[[pheno]]
+      df.pheno &lt;- do.call(rbind, lapply(names(numlist.pheno), function(tname) {
+        df &lt;- numlist.pheno[[tname]]
+        df$tumor &lt;- sub(&quot;_.*&quot;, &quot;&quot;, tname) 
+        df$mode  &lt;- sub(&quot;.*_&quot;, &quot;&quot;, tname) 
+        return(df)
+      }))
+      df.pheno$pheno &lt;- pheno
+      return(df.pheno)
+    })
+  )
+  return(combined_df)
+}</code></pre>
+<pre class="r"><code>dirs &lt;- c(
+  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/new_plot/immunesubtypes&quot;,
+  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/new_plot/clinical&quot;,
+  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/diversity&quot;,
+  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/immunetraits&quot;,
+  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/PRS&quot;
+)
+
+res_list &lt;- list()
+
+for (dir_path in dirs) {
+  filedf &lt;- get_files(outputdir = dir_path)
+  
+  diff_table &lt;- get_diff_table(filedf, include_nonsig = FALSE)
+  
+  diff_TGCT_KIT &lt;- subset(diff_table, mode == &quot;sig&quot; &amp; tumor == &quot;TGCT&quot; &amp; gene == &quot;KIT&quot;)
+  
+  if (nrow(diff_TGCT_KIT) &gt; 0) {
+    source_name &lt;- basename(dir_path)
+    diff_TGCT_KIT$source &lt;- source_name
+    
+    res_list[[source_name]] &lt;- diff_TGCT_KIT
+  }
+}
+
+all_res &lt;- do.call(rbind, res_list)</code></pre>
+<pre class="r"><code>subset_res &lt;- all_res[c(&quot;pheno&quot;, &quot;source&quot;)]
+subset_res</code></pre>
+<pre><code>                                       pheno         source
+immunesubtypes.KIT1                       C1 immunesubtypes
+immunesubtypes.KIT11                      C2 immunesubtypes
+clinical             Fraction.Genome.Altered       clinical
+diversity.KIT1                 Abundance_IGK      diversity
+diversity.KIT11                Abundance_TRA      diversity
+diversity.KIT12                Abundance_TRB      diversity
+diversity.KIT13                Clonality_IGH      diversity
+diversity.KIT14                Clonality_IGK      diversity
+diversity.KIT15                Clonality_IGL      diversity
+diversity.KIT16                  Entropy_IGH      diversity
+diversity.KIT17                  Entropy_IGK      diversity
+diversity.KIT18                  Entropy_IGL      diversity
+diversity.KIT19                  Entropy_TRA      diversity
+diversity.KIT110                 Entropy_TRB      diversity
+immunetraits                        NK_cells   immunetraits
+PRS                            ukbEUR_OSTIOP            PRS</code></pre>
+<pre class="r"><code>prep_pheno_mut_data_full &lt;- function(mut, pheno) {
+  library(data.table)
+
+  mut   &lt;- as.data.table(mut)
+  pheno &lt;- as.data.table(pheno)
+
+  if (!grepl(&quot;chr&quot;, mut$Chromosome[1], fixed = TRUE)) {
+    mut[ , Chromosome := paste0(&quot;chr&quot;, Chromosome)]
+  }
+
+  shared &lt;- intersect(mut$SampleID, pheno$SampleID)
+  if (length(shared) &lt; 10)
+    stop(&quot;too few samples with both phenotype and mutation data.&quot;)
+
+  mut   &lt;- mut  [SampleID %in% shared]
+  pheno &lt;- pheno[SampleID %in% shared]
+
+  if (anyDuplicated(pheno$SampleID)) {
+    pheno &lt;- pheno[ , lapply(.SD, mean, na.rm = TRUE), by = SampleID]
+  }
+
+  ci &lt;- pheno[ , .(SampleID, cidx = .I)]
+
+  list(mut = mut, pheno = pheno, ci = ci)
+}
+
+
+prep_mut_matrix &lt;- function(gene_name, mut, pheno,
+                            totalnttype = 96,
+                            anno_dir    = &quot;.&quot;,
+                            output_prefix = &quot;plot&quot;,
+                            output_dir    = &quot;.&quot;) {
+
+  library(data.table)
+  library(Matrix)
+
+  mut        &lt;- as.data.table(mut)
+  pheno_full &lt;- as.data.table(pheno)
+
+  afileinfo &lt;- list(
+    file        = file.path(anno_dir,
+                            paste0(&quot;anno&quot;, totalnttype,
+                                   &quot;_nttypeXXX_annodata.txt&quot;)),
+    header      = diffdriver:::aheader,
+    coltype     = diffdriver:::acoltype,
+    totalntype  = totalnttype)
+
+  rdata &lt;- diffdriver:::prep_positional_data(
+              gene_name, afileinfo, BMRreg = NULL,
+              output_prefix = output_prefix,
+              output_dir    = output_dir)
+
+  fanno  &lt;- rdata$fanno
+  ri     &lt;- rdata$ri
+  ri[ , ridx := .I]
+
+  cdata &lt;- prep_pheno_mut_data_full(mut, pheno_full)
+  mut   &lt;- cdata$mut
+  pheno &lt;- cdata$pheno    
+  ci    &lt;- cdata$ci
+
+  nmutdt &lt;- data.table(table(mut$SampleID))
+  setnames(nmutdt, c(&quot;SampleID&quot;, &quot;Nmut&quot;))
+  pheno &lt;- merge(pheno, nmutdt, by = &quot;SampleID&quot;, all.x = TRUE, sort = FALSE)
+
+  muti &lt;- na.omit(
+            ci[ ri[mut,
+                    on = c(chrom = &quot;Chromosome&quot;,
+                           start = &quot;Position&quot;,
+                           ref   = &quot;Ref&quot;,
+                           alt   = &quot;Alt&quot;)],
+                on = &quot;SampleID&quot;])
+
+  mutmtx &lt;- sparseMatrix(
+              i = muti$ridx,
+              j = muti$cidx,
+              dims = c(max(ri$ridx), max(ci$cidx)))
+
+  list(fanno = fanno, pheno = pheno, mutmtx = mutmtx)
+}
+
+
+plot_mut_multi &lt;- function(gene_name,
+                           mut, pheno,
+                           pheno_cols = colnames(pheno)[-1], 
+                           totalnttype = 96,
+                           anno_dir    = &quot;.&quot;,
+                           output_prefix = &quot;plot&quot;,
+                           output_dir    = &quot;.&quot;,
+                           mycolors = c(&quot;#FF3D2E&quot;, &quot;#2b8cbe&quot;, &quot;#fdae61&quot;,
+                                        &quot;#41ab5d&quot;, &quot;pink&quot;, &quot;#8C2DA6&quot;, &quot;#a65628&quot;)) {
+
+  pdata  &lt;- prep_mut_matrix(gene_name, mut, pheno,
+                            totalnttype, anno_dir,
+                            output_prefix, output_dir)
+  fanno  &lt;- pdata$fanno
+  pheno  &lt;- pdata$pheno
+  mutmtx &lt;- pdata$mutmtx
+
+  metr_mat &lt;- rbind(
+    Nonsyn = Matrix::colSums(mutmtx),
+    LoF    = Matrix::colSums(mutmtx[fanno$functypecode8 &gt; 0, ]),
+    Cons.  = Matrix::colSums(mutmtx[fanno$mycons        &gt; 0, ]),
+    `#Mut` = pheno$Nmut
+  )
+
+  pheno_mat &lt;- t(as.matrix(pheno[, pheno_cols, with = FALSE]))
+  rownames(pheno_mat) &lt;- pheno_cols
+
+  df  &lt;- rbind(pheno_mat, metr_mat)
+  # ord &lt;- order(df[1, ])
+  # df  &lt;- df[, ord]
+  
+  fac_C1 &lt;- df[&quot;C1&quot;, ]            
+  fac_C2 &lt;- df[&quot;C2&quot;, ]
+  val_FGA &lt;- df[&quot;FGA&quot;, ]
+  
+  ord &lt;- order(fac_C1, fac_C2, val_FGA, na.last = TRUE)
+  df  &lt;- df[, ord] 
+
+  n_row &lt;- nrow(df)
+  par(mfrow = c(n_row, 1), mar = c(0.5, 5, 0.5, 1))
+
+  for (i in seq_len(n_row)) {
+    vec &lt;- df[i, ]
+
+    if (length(unique(vec)) == 2 &amp;&amp; i &lt;= nrow(pheno_mat)) {
+      barplot(rep(1, length(vec)),
+              col = c(&quot;white&quot;, &quot;salmon&quot;)[as.factor(vec)],
+              xaxt = &quot;n&quot;, yaxt = &quot;n&quot;,
+              ylab = rownames(df)[i], border = NA)
+    } else {
+      ylim_i &lt;- if (rownames(df)[i] == &quot;#Mut&quot;) {
+                  c(0, quantile(vec, 0.99)[[1]])
+                } else NULL
+
+      barplot(vec,
+              col = if (i &lt;= nrow(pheno_mat))
+                      &quot;grey70&quot;  
+                    else
+                      mycolors[i - nrow(pheno_mat) + 1],
+              xaxt = &quot;n&quot;, yaxt = &quot;n&quot;,
+              ylab = rownames(df)[i],
+              border = NA,
+              ylim = ylim_i)
+    }
+  }
+}</code></pre>
+<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/TGCT/TGCT_mutations.txt&quot;
+mut &lt;- read.table(mut_path, header = TRUE, sep = &quot;\t&quot;)
+head(mut)</code></pre>
+<pre><code>  Chromosome  Position Ref Alt     SampleID
+1         16  30748991   C   T TCGA-SN-A84Y
+2         17   8439201   G   A TCGA-XE-AAOB
+3         14  96858506   G   A TCGA-YU-A94I
+4          7 100679429   T   A TCGA-2G-AAL5
+5          7 156802391   G   A TCGA-WZ-A7V3
+6          3 189586427   G   T TCGA-2G-AAG7</code></pre>
+<pre class="r"><code>library(data.table)
+pheno_files &lt;- list(
+  C1  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C1.txt&quot;,
+  C2 = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C2.txt&quot;,
+  FGA = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Fraction.Genome.Altered.txt&quot;,
+  Abun_IGK = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_IGK.txt&quot;,
+  Abun_TRA = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRA.txt&quot;,
+  Abun_TRB = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRB.txt&quot;,
+  Clon_IGH = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGH.txt&quot;,
+  # Clon_IGK = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGK.txt&quot;
+  # Clon_IGL = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGL.txt&quot;,
+  # Ent_IGH = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGH.txt&quot;,
+  # Ent_IGK = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGK.txt&quot;,
+  # Ent_IGL = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGL.txt&quot;,
+  # Ent_TRA = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRA.txt&quot;,
+  # Ent_TRB = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRB.txt&quot;,
+  NK_cells = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/TGCT/TGCT_NK_cells.txt&quot;,
+  OSTIOP = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch5/tumor_specific_input/TGCT/46/TGCT_ukbEUR_OSTIOP.txt&quot;
+)
+
+pheno_list &lt;- lapply(names(pheno_files), function(nm) {
+  dt &lt;- fread(pheno_files[[nm]], header = TRUE, sep = &quot;\t&quot;)
+  setnames(dt, old = colnames(dt)[2], new = nm) 
+  dt
+})
+
+pheno_wide &lt;- Reduce(function(x, y) merge(x, y, by = &quot;SampleID&quot;, all = TRUE),
+                     pheno_list)
+
+pheno_cols &lt;- names(pheno_files)</code></pre>
+<pre class="r"><code>plot_mut_multi(
+  gene_name  = &quot;KIT&quot;,                      
+  mut        = mut,                        
+  pheno      = pheno_wide,                  
+  pheno_cols = pheno_cols,    
+  anno_dir   = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;
+)</code></pre>
+<pre><code>Warning: package &#39;Matrix&#39; was built under R version 4.4.3</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;</code></pre>
+<p><img src="figure/individualgene.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/TGCT/TGCT_mutations.txt&quot;
+mut &lt;- read.table(mut_path, header = TRUE, sep = &quot;\t&quot;)
+head(mut)</code></pre>
+<pre><code>  Chromosome  Position Ref Alt     SampleID
+1         16  30748991   C   T TCGA-SN-A84Y
+2         17   8439201   G   A TCGA-XE-AAOB
+3         14  96858506   G   A TCGA-YU-A94I
+4          7 100679429   T   A TCGA-2G-AAL5
+5          7 156802391   G   A TCGA-WZ-A7V3
+6          3 189586427   G   T TCGA-2G-AAG7</code></pre>
+<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C1.txt&quot;
+pheno &lt;- read.table(pheno_path, header = TRUE, sep = &quot;\t&quot;)
+head(pheno)</code></pre>
+<pre><code>      SampleID C1
+1 TCGA-2G-AAFI  0
+2 TCGA-2G-AAFM  0
+3 TCGA-2G-AAFY  0
+4 TCGA-2G-AAG0  0
+5 TCGA-2G-AAG9  0
+6 TCGA-2G-AAGG  0</code></pre>
+<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;KIT&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
+                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;
+[1] &quot;Only keeping the first two columns of the phenotype data frame.&quot;
+[1] &quot;phenotype name is C1&quot;
+[1] &quot;number of samples shared in phenotype and mutation file: 147&quot;</code></pre>
+<p><img src="figure/individualgene.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C2.txt&quot;
+pheno &lt;- read.table(pheno_path, header = TRUE, sep = &quot;\t&quot;)
+head(pheno)</code></pre>
+<pre><code>      SampleID C2
+1 TCGA-2G-AAFI  1
+2 TCGA-2G-AAFM  1
+3 TCGA-2G-AAFY  1
+4 TCGA-2G-AAG0  1
+5 TCGA-2G-AAG9  1
+6 TCGA-2G-AAGG  1</code></pre>
+<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;KIT&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
+                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;
+[1] &quot;Only keeping the first two columns of the phenotype data frame.&quot;
+[1] &quot;phenotype name is C2&quot;
+[1] &quot;number of samples shared in phenotype and mutation file: 147&quot;</code></pre>
+<p><img src="figure/individualgene.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>library(data.table)
+
+pheno_files &lt;- list(
+  C1        = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C1.txt&quot;,
+  C2        = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C2.txt&quot;,
+  FGA       = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Fraction.Genome.Altered.txt&quot;,
+  Abun_IGK  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_IGK.txt&quot;,
+  Abun_TRA  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRA.txt&quot;,
+  Abun_TRB  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRB.txt&quot;,
+  Clon_IGH  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGH.txt&quot;,
+  Clon_IGK  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGK.txt&quot;,
+  Clon_IGL  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGL.txt&quot;,
+  Ent_IGH   = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGH.txt&quot;,
+  Ent_IGK   = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGK.txt&quot;,
+  Ent_IGL   = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGL.txt&quot;,
+  Ent_TRA   = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRA.txt&quot;,
+  Ent_TRB   = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRB.txt&quot;,
+  NK_cells  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/TGCT/TGCT_NK_cells.txt&quot;,
+  OSTIOP    = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch5/tumor_specific_input/TGCT/46/TGCT_ukbEUR_OSTIOP.txt&quot;
+)
+
+check_consistency &lt;- function(path, colname) {
+  dt &lt;- fread(path)
+  setnames(dt, old = names(dt)[1], new = &quot;SampleID&quot;)
+  setnames(dt, old = names(dt)[2], new = colname)
+
+  dup_dt &lt;- dt[duplicated(SampleID) | duplicated(SampleID, fromLast = TRUE)]
+
+  inconsistent &lt;- dup_dt[ , .(n_value = uniqueN(get(colname))), by = SampleID][n_value &gt; 1]
+
+  data.table(
+    file          = basename(path),
+    dup_rows      = nrow(dup_dt),
+    dup_samples   = uniqueN(dup_dt$SampleID),
+    conflict_samp = nrow(inconsistent)
+  )
+}
+
+result &lt;- rbindlist(
+  Map(check_consistency,
+      path     = pheno_files,
+      colname  = names(pheno_files))
+)
+
+print(result)</code></pre>
+<pre><code>                           file dup_rows dup_samples conflict_samp
+                         &lt;char&gt;    &lt;int&gt;       &lt;int&gt;         &lt;int&gt;
+ 1:                 TGCT_C1.txt        0           0             0
+ 2:                 TGCT_C2.txt        0           0             0
+ 3: Fraction.Genome.Altered.txt       20          10             9
+ 4:           Abundance_IGK.txt     1620         781           779
+ 5:           Abundance_TRA.txt     1620         781           761
+ 6:           Abundance_TRB.txt     1620         781           769
+ 7:           Clonality_IGH.txt     1461         707           704
+ 8:           Clonality_IGK.txt     1605         775           775
+ 9:           Clonality_IGL.txt     1550         749           747
+10:             Entropy_IGH.txt     1461         707           704
+11:             Entropy_IGK.txt     1605         775           775
+12:             Entropy_IGL.txt     1550         749           747
+13:             Entropy_TRA.txt     1491         723           716
+14:             Entropy_TRB.txt     1536         747           742
+15:           TGCT_NK_cells.txt        0           0             0
+16:      TGCT_ukbEUR_OSTIOP.txt        0           0             0</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.2 (2024-10-31)
+Platform: x86_64-conda-linux-gnu
+Running under: Ubuntu 24.04.1 LTS
+
+Matrix products: default
+BLAS/LAPACK: /dartfs-hpc/rc/home/p/f0070pp/.conda/envs/diffdriver/lib/libopenblasp-r0.3.29.so;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] Matrix_1.7-3      data.table_1.17.4 workflowr_1.7.1  
+
+loaded via a namespace (and not attached):
+ [1] jsonlite_2.0.0    compiler_4.4.2    promises_1.3.3    Rcpp_1.0.14      
+ [5] stringr_1.5.1     git2r_0.36.2      callr_3.7.6       later_1.4.2      
+ [9] jquerylib_0.1.4   yaml_2.3.10       fastmap_1.2.0     lattice_0.22-7   
+[13] R6_2.6.1          knitr_1.50        tibble_3.2.1      rprojroot_2.0.4  
+[17] bslib_0.9.0       pillar_1.10.2     diffdriver_0.1.6  rlang_1.1.6      
+[21] cachem_1.1.0      stringi_1.8.7     httpuv_1.6.16     xfun_0.52        
+[25] getPass_0.2-4     fs_1.6.6          sass_0.4.10       cli_3.6.5        
+[29] magrittr_2.0.3    ps_1.9.1          digest_0.6.37     grid_4.4.2       
+[33] processx_3.8.6    rstudioapi_0.17.1 lifecycle_1.0.4   vctrs_0.6.5      
+[37] evaluate_1.0.3    glue_1.8.0        whisker_0.4.1     rmarkdown_2.29   
+[41] httr_1.4.7        tools_4.4.2       pkgconfig_2.0.3   htmltools_0.5.8.1</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
