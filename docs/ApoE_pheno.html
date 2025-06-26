@@ -521,15 +521,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreecb90e40de7e2ea3c76dcb229b48398ddc0781aa4targetblankcb90e40a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree398102f60681e0349942e772fae2c20aca18a296targetblank398102fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/cb90e40de7e2ea3c76dcb229b48398ddc0781aa4" target="_blank">cb90e40</a>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/398102f60681e0349942e772fae2c20aca18a296" target="_blank">398102f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreecb90e40de7e2ea3c76dcb229b48398ddc0781aa4targetblankcb90e40a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree398102f60681e0349942e772fae2c20aca18a296targetblank398102fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -539,7 +539,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/cb90e40de7e2ea3c76dcb229b48398ddc0781aa4" target="_blank">cb90e40</a>.
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/398102f60681e0349942e772fae2c20aca18a296" target="_blank">398102f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -610,6 +610,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/398102f60681e0349942e772fae2c20aca18a296/analysis/ApoE_pheno.Rmd" target="_blank">398102f</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-26
+</td>
+<td>
+Add ApoE_pheno
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/e9e39432a509d834bd4bd6099b83205ccfadd16b/docs/ApoE_pheno.html" target="_blank">e9e3943</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-26
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -708,9 +742,9 @@ while ((tries &lt; 5)); do
 done
 rm -f &quot;$tmp_manifest&quot;
 
-if ((ok == 0)); then
-  printf &quot;%s\t%s\t%s\t%d\tDownload_failed\n&quot; &quot;$case_id&quot; &quot;$sample_id&quot; &quot;$file_id&quot; &quot;$idx&quot; &gt;&gt; &quot;$failed_tsv&quot;
-  exit 0
+if (( ok == 0 )); then
+    echo -e &quot;$case_id\t$sample_id\t$file_id\t$idx\tDownload_failed&quot; &gt;&gt; &quot;$failed_tsv&quot;
+    exit 0
 fi</code></pre>
 <pre class="r"><code># Move downloaded BAM (and .bai) into work_dir
 mv &quot;${file_id}/$filename&quot; &quot;$work_dir/&quot;
@@ -834,7 +868,6 @@ line=$(printf &quot;%s\t%s\t%s\t%d\t%s\t%s\t%d\t%s\t%s\t%d\t%s&quot; \
               &quot;$gt2&quot; &quot;$allele2&quot; &quot;$dp2&quot; \
               &quot;$genotype&quot;)
 
-echo &quot;[DBG] printf RC=$?  line=&#39;$line&#39;&quot;
 
 echo -e &quot;$line&quot;                         
 
