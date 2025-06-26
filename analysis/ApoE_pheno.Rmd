@@ -90,9 +90,9 @@ while ((tries < 5)); do
 done
 rm -f "$tmp_manifest"
 
-if ((ok == 0)); then
-  printf "%s\t%s\t%s\t%d\tDownload_failed\n" "$case_id" "$sample_id" "$file_id" "$idx" >> "$failed_tsv"
-  exit 0
+if (( ok == 0 )); then
+    echo -e "$case_id\t$sample_id\t$file_id\t$idx\tDownload_failed" >> "$failed_tsv"
+    exit 0
 fi
 ```
 
@@ -212,7 +212,6 @@ line=$(printf "%s\t%s\t%s\t%d\t%s\t%s\t%d\t%s\t%s\t%d\t%s" \
               "$gt2" "$allele2" "$dp2" \
               "$genotype")
 
-echo "[DBG] printf RC=$?  line='$line'"
 
 echo -e "$line"                         
 
