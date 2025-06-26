@@ -1,0 +1,223 @@
+---
+title: "ApoE_pheno"
+author: "Qirui Zhang"
+date: "2025-06-26"
+output: 
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+---
+
+This document explains how the shell script calls GDC data, extracts the APOE genomic window, performs SNP calling, applies quality‑control filters, and translates the two APOE SNPs (rs429358 & rs7412) into the classical ε2/ε3/ε4 genotypes.
+```{r, eval=FALSE}
+#!/bin/bash -l
+#SBATCH --job-name=apoe_call
+#SBATCH --output=/dartfs/rc/lab/S/Szhao/qiruiz/GDC/new_result/apoe_%A_%a.out
+#SBATCH --time=24:00:00
+#SBATCH --partition=standard
+#SBATCH --account=nccc
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=32G
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --array=1-2000
+```
+
+These variables define where the pipeline will look for input lists, authentication credentials, and the reference genome.
+```{r, eval=FALSE}
+set -euo pipefail
+echo "[Task $SLURM_ARRAY_TASK_ID]  $SLURM_JOB_ID   $(hostname)  $(date)"
+source /optnfs/common/miniconda3/etc/profile.d/conda.sh
+conda activate ega    
+cd /dartfs/rc/lab/S/Szhao/qiruiz/GDC/gdc-client-v1.6.1          # gdc-client
+manifest="gdc_manifest.2025-05-01.153233.txt"
+sample_sheet="gdc_sample_sheet.2025-05-01.tsv"
+token_file="gdc-user-token.2025-06-10T15_22_33.866Z.txt"
+reference_genome="/dartfs/rc/lab/S/Szhao/qiruiz/GDC/GRCh38.primary_assembly.genome.fa"
+```
+
+```{r, eval=FALSE}
+chrom=19;  start=44908184;  end=44909322    # fully covering APOE (GRCh38)
+min_dp=3              # minimum read depth per SNP
+threads=4            # CPUs used by samtools/bcftools
+out_root="/dartfs/rc/lab/S/Szhao/qiruiz/GDC/new_apoe_analysis_output"
+mkdir -p "$out_root"
+
+master_tsv="$out_root/ApoE_genotypes.tsv"     # Success table 
+failed_tsv="$out_root/failed_samples.tsv"     # Failure table
+
+# Initialise result tables once
+if [[ ! -s $master_tsv ]]; then
+  printf "Case_ID\tSample_ID\tFile_ID\tArray_Index\tGT_rs429358\tAlleles_rs429358\tDP_rs429358\tGT_rs7412\tAlleles_rs7412\tDP_rs7412\tAPOE_genotype\n" > "$master_tsv"
+fi
+if [[ ! -s $failed_tsv ]]; then
+  printf "Case_ID\tSample_ID\tFile_ID\tArray_Index\tReason\n" > "$failed_tsv"
+fi
+```
+
+Maps the SLURM array index to the right manifest row, fetches Case_ID/Sample_ID, and creates a unique working directory.
+```{r, eval=FALSE}
+idx=$SLURM_ARRAY_TASK_ID
+line=$((idx + 1))  # +1 to skip manifest header
+
+# Read file_id & filename from manifest
+IFS=$'\t' read -r file_id filename _md5 _size _state < <(sed -n "${line}p" "$manifest")
+
+# Look up Case_ID and Sample_ID in sample_sheet
+case_id=$(awk -F'\t' -v id="$file_id" 'NR>1 && $1==id {print $6}' "$sample_sheet")
+sample_id=$(awk -F'\t' -v id="$file_id" 'NR>1 && $1==id {print $7}' "$sample_sheet")
+echo "[Task $idx]  File_ID=$file_id   Case=$case_id   Sample=$sample_id"
+
+# Unique per-sample working directory
+work_dir="${out_root}/${sample_id}_${file_id}"
+mkdir -p "$work_dir"
+```
+
+# Download BAM
+Uses a one-row manifest for gdc-client, retries up to five times, and logs any permanent failure.
+```{r, eval=FALSE}
+tmp_manifest=$(mktemp)
+{ head -n1 "$manifest"; sed -n "${line}p" "$manifest"; } > "$tmp_manifest"
+
+tries=0; ok=0
+while ((tries < 5)); do
+  ./gdc-client download -m "$tmp_manifest" -t "$token_file" && { ok=1; break; }
+  echo "[Task $idx]  download attempt $((tries+1)) failed – retrying…" >&2
+  sleep 60; ((tries++))
+done
+rm -f "$tmp_manifest"
+
+if ((ok == 0)); then
+  printf "%s\t%s\t%s\t%d\tDownload_failed\n" "$case_id" "$sample_id" "$file_id" "$idx" >> "$failed_tsv"
+  exit 0
+fi
+```
+
+```{r, eval=FALSE}
+# Move downloaded BAM (and .bai) into work_dir
+mv "${file_id}/$filename" "$work_dir/"
+[[ -f "${file_id}/${filename%.bam}.bai" ]] && mv "${file_id}/${filename%.bam}.bai" "$work_dir/"
+rm -rf "$file_id"
+bam="$work_dir/$filename"
+
+# Build index if missing
+[[ ! -f "$bam.bai" && ! -f "${bam%.bam}.bai" ]] && samtools index -@ "$threads" "$bam"
+```
+
+```{r, eval=FALSE}
+if samtools idxstats "$bam" | awk 'NR==1{print $1}' | grep -q '^chr'; then
+  pfix="chr"
+else
+  pfix=""
+fi
+
+region="${pfix}${chrom}:${start}-${end}"
+snp429358="${pfix}${chrom}:44908684"   # rs429358
+snp7412="${pfix}${chrom}:44908822"     # rs7412
+echo "[DEBUG] prefix=$pfix  region=$region"
+
+region_bam="$work_dir/region.bam"
+samtools view -@ "$threads" -bh "$bam" "$region" -o "$region_bam"
+samtools index -@ "$threads" "$region_bam"
+rm -f "$bam" "${bam%.bam}.bai"         # Remove full BAM to save disk
+```
+
+# Variant Calling & Built-In QC
+Performs bcftools mpileup and bcftools call, filtering on mapping‐quality (MQ ≥30) and base‐quality (BQ ≥20), and preserving per‐site depth (FORMAT/DP) for downstream checks.
+
+-q 30 enforces a mapping quality ≥30 (drops reads with ambiguous alignments)
+
+-Q 20 enforces a base quality ≥20 (drops likely‐erroneous bases)
+```{r, eval=FALSE}
+vcf="$work_dir/variants.vcf.gz"
+echo "[Task $idx] Starting variant calling at $(date)"
+bcftools mpileup  -f "$reference_genome" \
+        -q 30 -Q 20 -a FORMAT/DP \
+        --threads "$threads" "$region_bam" -Ou | \
+bcftools call -m -A --threads "$threads" -Oz -o "$vcf"
+
+bcftools index "$vcf"
+
+echo "[Task $idx] Variant calling completed at $(date)"
+```
+
+# Extract GT/DP 
+Use bcftools query to extract REF, ALT, genotype (GT), and depth (DP) for the two SNPs (rs429358 & rs7412). Check for missing genotype calls (./.) or depth below min_dp, appending any failures to the fail string. If any QC checks fail, write the failure reason to failed_tsv and exit early.
+```{r, eval=FALSE}
+query_fmt='%REF %ALT [%GT] [%DP]\n'       
+
+read -r ref1 alt1 gt1 dp1 < <(bcftools query -r "$snp429358" -f "$query_fmt" "$vcf") || true
+read -r ref2 alt2 gt2 dp2 < <(bcftools query -r "$snp7412"   -f "$query_fmt" "$vcf") || true
+fail=""
+for tag in 1 2; do
+  gt_var="gt${tag}"; dp_var="dp${tag}"
+  gt_val=${!gt_var}; dp_val=${!dp_var}
+  snp_name=$([[ $tag == 1 ]] && echo rs429358 || echo rs7412)
+
+  [[ -z $gt_val || $gt_val == "./." ]] && fail+="NoCall_${snp_name};"
+  [[ -z $dp_val || $dp_val == "." || $dp_val -lt $min_dp ]] && \
+      fail+="LowDP_${snp_name}(${dp_val:-0});"
+done
+
+if [[ -n $fail ]]; then
+    echo -e "$case_id\t$sample_id\t$file_id\t$idx\t$fail" >> "$failed_tsv"
+    exit 0
+fi
+```
+
+# Allele Translation & ε-Genotype Mapping
+allele() function converts a numeric allele index (0,1) into its actual nucleotide or falls back to the reference if missing. Split GT strings (0/1, 1|1, etc.) into two haplotypes for each SNP. Resolve bases for both alleles at rs429358 and rs7412, then join them into allele1 and allele2. Count C’s at rs429358 (ε4 allele) and T’s at rs7412 (ε2 allele) to get counts c4 and t2. Map counts to the six possible ε genotypes via a case statement; any unexpected combo is logged as a QC failure. Format the output line with all fields, print it for debugging, append it to the master TSV, and log completion.
+```{r, eval=FALSE}
+allele() {
+    local idx=$1 ref=$2 alt=$3
+    [[ $idx == 0 ]] && echo "$ref" || { [[ $alt == "." ]] && echo "$ref" || echo "$alt"; }
+}
+# split "0/1" etc.
+IFS='|/' read -r gt1a gt1b <<<"$gt1"   
+IFS='|/' read -r gt2a gt2b <<<"$gt2" 
+
+r1a=$(allele "$gt1a" "$ref1" "$alt1"); r1b=$(allele "$gt1b" "$ref1" "$alt1")
+r2a=$(allele "$gt2a" "$ref2" "$alt2"); r2b=$(allele "$gt2b" "$ref2" "$alt2")
+
+allele1="${r1a}/${r1b}"
+allele2="${r2a}/${r2b}"
+
+#   ε4  ↔  C at rs429358
+#   ε2  ↔  T at rs7412
+c4=0
+[[ $r1a == "C" ]] && ((++c4))
+[[ $r1b == "C" ]] && ((++c4))
+
+t2=0
+[[ $r2a == "T" ]] && ((++t2))
+[[ $r2b == "T" ]] && ((++t2))
+
+case "${c4}${t2}" in
+    20) genotype="ε4/ε4" ;;
+    10) genotype="ε3/ε4" ;;
+    11) genotype="ε2/ε4" ;;
+    00) genotype="ε3/ε3" ;;
+    01) genotype="ε2/ε3" ;;
+    02) genotype="ε2/ε2" ;;
+    *)  genotype="?" ;
+        echo -e "$case_id\t$sample_id\t$file_id\t$idx\tUnexpected_combination" >> "$failed_tsv" ;;
+esac
+
+line=$(printf "%s\t%s\t%s\t%d\t%s\t%s\t%d\t%s\t%s\t%d\t%s" \
+              "$case_id" "$sample_id" "$file_id" "$idx" \
+              "$gt1" "$allele1" "$dp1" \
+              "$gt2" "$allele2" "$dp2" \
+              "$genotype")
+
+echo "[DBG] printf RC=$?  line='$line'"
+
+echo -e "$line"                         
+
+echo -e "$line" >> "$master_tsv"
+
+echo "[Task $idx] finished  $(date)"
+```
+
