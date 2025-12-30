@@ -399,7 +399,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-04-09
+<strong>Last updated:</strong> 2025-12-29
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -530,15 +530,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree20bba1e316dbedd1c3355169ebf7c5f3e3302248targetblank20bba1ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreec9b6bd322bb24a7c795203634440e054f70e1797targetblankc9b6bd3a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/20bba1e316dbedd1c3355169ebf7c5f3e3302248" target="_blank">20bba1e</a>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/c9b6bd322bb24a7c795203634440e054f70e1797" target="_blank">c9b6bd3</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree20bba1e316dbedd1c3355169ebf7c5f3e3302248targetblank20bba1ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreec9b6bd322bb24a7c795203634440e054f70e1797targetblankc9b6bd3a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -548,7 +548,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/20bba1e316dbedd1c3355169ebf7c5f3e3302248" target="_blank">20bba1e</a>.
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/c9b6bd322bb24a7c795203634440e054f70e1797" target="_blank">c9b6bd3</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -563,13 +563,27 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .RData
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
 Untracked files:
+    Untracked:  .Rproj.user.bak_2025-12-29_193924/
+    Untracked:  .write_from_rstudio_test
+    Untracked:  analysis/ApoE_e2.Rmd
+    Untracked:  analysis/ApoE_e2_split.Rmd
+    Untracked:  analysis/ApoE_e4.Rmd
+    Untracked:  analysis/ApoE_e4_split.Rmd
+    Untracked:  analysis/new_task1.Rmd
+    Untracked:  analysis/new_task2.Rmd
     Untracked:  code/run_workflowr.R
 
 Unstaged changes:
+    Deleted:    analysis/clinical_newplot.Rmd
     Deleted:    analysis/example.Rmd
+    Modified:   analysis/immunesubtypes.Rmd
+    Deleted:    analysis/immunesubtypes_newplot.Rmd
+    Modified:   analysis/index.Rmd
     Modified:   diffdriver.Rproj
 
 </code></pre>
@@ -615,6 +629,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/c9b6bd322bb24a7c795203634440e054f70e1797/analysis/immunetraits.Rmd" target="_blank">c9b6bd3</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-12-30
+</td>
+<td>
+Fix swapped sig/reg table labels
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/9340750474922a59ddb4af86ff24e1e6b58ce1cd/docs/immunetraits.html" target="_blank">9340750</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-04-09
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -946,15 +994,15 @@ diff_table &lt;- get_diff_table(filedf)</code></pre>
 <div id="table-under-sig-mode" class="section level2">
 <h2>Table under “Sig” Mode</h2>
 <pre class="r"><code>library(DT)
-diff_table_reg &lt;- subset(diff_table, mode == &quot;sig&quot;)
-datatable(diff_table_reg, options = list(pageLength = 10))</code></pre>
+diff_table_sig &lt;- subset(diff_table, mode == &quot;sig&quot;)
+datatable(diff_table_sig, options = list(pageLength = 10))</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-321f8cf22c7d3f9f6363" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-321f8cf22c7d3f9f6363">{"x":{"filter":"none","vertical":false,"data":[["FGFR31","PTEN","CUL31","SMARCA41","KIT","KRAS1","NRAS1","FGFR311","CUL311","AXIN11","CTNNB11","KEAP11","ADAMTS121","CTNNB111","KEAP111","SMARCA411","TP531","TP533"],[3.39761152479432e-05,0.00285319016572438,0.0304102372328702,0.00254060976052753,0.00715917636847394,0.0247570311064627,0.0378549549043239,0.000625205010754497,0.0142000157023504,0.0108390089326799,0.00206538580829154,4.55274482317324e-06,0.00211319793222146,0.000491111124437873,3.73888131712791e-05,0.00259766304065656,0.00438145797380896,4.60850503529953e-05],[2.02545845081112e-05,3.20070580373959e-05,0.028335097978844,0.00536149415471397,0.000709505460703177,0.0626192391171897,0.155787212641834,0.000211806670515257,0.0131765056840103,0.00766707019548215,0.000442267267590194,9.17695619189289e-10,0.00204649176613988,5.94468146966086e-09,5.46477297840162e-10,0.000137783287501861,0.000108526204036947,0.000157082439216335],[9.1224600268142e-06,6.29326907269863e-05,0.0103899373569332,0.00551788437860028,0.000807038757880937,0.0754847348558787,0.185506030272859,7.19363107114012e-05,0.0075955544775957,0.006115842221857,0.000763924866198281,1.25302691032357e-09,0.00100075572554865,1.16176432055269e-08,1.08436214603789e-09,0.000876943267980623,0.000199275321119595,0.000472177694667471],[0.00190962665961681,0.0208021334133717,0.726018261004679,0.0407085705044025,0.0007186138241708681,0.294809831413996,0.08634092283461341,0.00319743427412164,0.06972003846731201,0.043189599649136,0.0112344469167045,0.000163357610589521,0.109388779685322,0.00228747495602515,3.10441239845456e-06,0.00325180237266798,0.00554092804177111,0.00670126361035647],[0.000823889328496719,0.0216287885675094,0.729438860919369,0.0412970640016383,0.000351759876154418,0.318071256480736,0.0892413774824268,0.00144077108058987,0.07169745711882031,0.0277528962695437,0.0047401056876582,5.01328727705542e-05,0.0932837648993922,0.000675201482476861,4.78876509298041e-07,0.00233449760593336,0.00133395856705789,0.00235699392795751],[0.000826881387199277,0.037477451486065,0.323868272950897,0.07938322369654929,0.00688082041285515,0.197679115876562,0.986847907171206,0.00158903249986685,0.105642623826174,0.0396014707775299,0.00296643187580133,2.47611469054364e-05,0.0618767247635747,0.000336164542860433,8.03210641805183e-07,0.008069332908804889,0.000558037025569901,0.000418768525732653],[0.00214049526062042,0.0941552754689045,0.0608204744657404,0.0101624390421101,0.0214775291054218,0.037135546659694,0.0378549549043239,0.0393879156775333,0.0568000628094015,0.07587306252875931,0.0289154013160816,8.65021516402915e-05,0.0211319793222146,0.00687555574213022,0.000710387450254303,0.0246777988862373,0.0131443739214269,0.00184340201411981],[0.001276038824011,0.00105623291523406,0.0377801306384587,0.0107229883094279,0.00212851638210953,0.0939288586757845,0.155787212641834,0.0133438202424612,0.0263530113680205,0.053669491368375,0.00619174174626271,1.74362167645965e-08,0.0204649176613988,8.32255405752521e-08,1.03830686589631e-08,0.00130894123126768,0.00032557861211084,0.0062832975686534],[0.000574714981689294,0.00207677879399055,0.0138532498092442,0.0110357687572006,0.00242111627364281,0.113227102283818,0.185506030272859,0.00453198757481828,0.0208202015724126,0.042810895552999,0.0106949481267759,2.38075112961478e-08,0.0100075572554865,1.62647004877376e-07,2.060288077472e-08,0.00833096104581592,0.000597825963358785,0.0188871077866989],[0.0601532397779296,0.228823467547089,0.726018261004679,0.08141714100880509,0.0021558414725126,0.294809831413996,0.12951138425192,0.201438359269663,0.24799167767539,0.302327197543952,0.157282256833863,0.0031037946012009,1,0.032024649384352,5.89838355706367e-05,0.0205947483602306,0.0166227841253133,0.109659235510309],[0.0324796074638509,0.237916674242603,0.729438860919369,0.0825941280032766,0.00105527962846325,0.318071256480736,0.13386206622364,0.090768578077162,0.25189857090882,0.194270273886806,0.06636147962721491,0.000952524582640529,0.891883627287703,0.00945282075467606,9.098653676662779e-06,0.0147851515042446,0.00400187570117368,0.07195072187221251],[0.0520935273935545,0.370116881814046,0.323868272950897,0.158766447393099,0.0206424612385654,0.296518673814842,0.986847907171206,0.100109047491612,0.422570495304694,0.277210295442709,0.0415300462612187,0.000470461791203291,0.580362465639376,0.00470630360004606,1.52610021942985e-05,0.0511057750890976,0.0016741110767097,0.008780741494632149],[12,1,3,1,1,4,0,12,1,2,24,15,10,22,11,6,13,10],[37,9,5,8,22,13,6,37,7,11,56,46,19,58,50,23,35,35],[165,225,120,120,54,54,54,160,122,146,146,200,82,148,196,196,97,89],[174,232,133,133,88,88,88,179,131,171,171,195,78,169,199,199,96,109],["FGFR3","PTEN","CUL3","SMARCA4","KIT","KRAS","NRAS","FGFR3","CUL3","AXIN1","CTNNB1","KEAP1","ADAMTS12","CTNNB1","KEAP1","SMARCA4","TP53","TP53"],["sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig","sig"],[-44.15837539237517,-51.30425783949949,-62.30273368343182,-88.62623768206841,-66.85827111827869,-56.70337270198821,-91.5067995556106,-25.02093375513396,-52.73750344952881,-77.64472665116345,-81.74573494520207,-45.67161692892164,-41.886580168336,-41.07480530904832,-42.21123573718056,-33.25173156216422,-58.21987786741909,-49.6596245708683],["BLCA","HNSC","KIRP","KIRP","TGCT","TGCT","TGCT","BLCA","KIRP","LIHC","LIHC","LUAD","LUSC","LIHC","LUAD","LUAD","SARC","UCEC"],["NK_cells","NK_cells","NK_cells","NK_cells","NK_cells","NK_cells","NK_cells","Tem_cells","Tem_cells","Tem_cells","Tem_cells","Tem_cells","Tem_cells","Tfh_cells","Tfh_cells","Tfh_cells","Tfh_cells","Tfh_cells"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>dd.p<\/th>\n      <th>mlr.p<\/th>\n      <th>mlr.v2.p<\/th>\n      <th>fisher.p<\/th>\n      <th>binom.p<\/th>\n      <th>lr.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>mlr.fdr<\/th>\n      <th>mlr.v2.fdr<\/th>\n      <th>fisher.fdr<\/th>\n      <th>binom.fdr<\/th>\n      <th>lr.fdr<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>E1<\/th>\n      <th>E0<\/th>\n      <th>gene<\/th>\n      <th>mode<\/th>\n      <th>alpha<\/th>\n      <th>tumor<\/th>\n      <th>pheno<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,19]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"dd.p","targets":1},{"name":"mlr.p","targets":2},{"name":"mlr.v2.p","targets":3},{"name":"fisher.p","targets":4},{"name":"binom.p","targets":5},{"name":"lr.p","targets":6},{"name":"dd.fdr","targets":7},{"name":"mlr.fdr","targets":8},{"name":"mlr.v2.fdr","targets":9},{"name":"fisher.fdr","targets":10},{"name":"binom.fdr","targets":11},{"name":"lr.fdr","targets":12},{"name":"mut.E1","targets":13},{"name":"mut.E0","targets":14},{"name":"E1","targets":15},{"name":"E0","targets":16},{"name":"gene","targets":17},{"name":"mode","targets":18},{"name":"alpha","targets":19},{"name":"tumor","targets":20},{"name":"pheno","targets":21}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="table-under-reg-mode" class="section level2">
 <h2>Table under “Reg” Mode</h2>
-<pre class="r"><code>diff_table_sig &lt;- subset(diff_table, mode == &quot;reg&quot;)
-datatable(diff_table_sig, options = list(pageLength = 10))</code></pre>
+<pre class="r"><code>diff_table_reg &lt;- subset(diff_table, mode == &quot;reg&quot;)
+datatable(diff_table_reg, options = list(pageLength = 10))</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-1662b273260d1abeaa23" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-1662b273260d1abeaa23">{"x":{"filter":"none","vertical":false,"data":[["FGFR3","CUL3","SMARCA4","SMARCA42","STK11","KRAS","NRAS","FGFR32","CUL32","AXIN1","CTNNB1","KEAP1","ADAMTS12","CTNNB12","KEAP12","SMARCA43","TP53","TP532"],[2.31951834754688e-05,0.0296645012002306,0.00535932272336568,0.00874152495733832,0.000406075154127332,0.0322407583217122,0.0406920352512338,0.000519989621065147,0.0128811886421008,0.01057769536362,0.00240841546494188,8.0097383808044e-06,0.0026036779572769,0.000338943304173815,8.69641949095425e-05,0.00306445009417279,0.00504095419913085,4.38214380595298e-05],[2.02545845081112e-05,0.028335097978844,0.00536149415471397,0.00180158017074959,8.235945887772079e-06,0.0626192391171897,0.155787212641834,0.000211806670515257,0.0131765056840103,0.00766707019548215,0.000442267267590194,9.17695619189289e-10,0.00204649176613988,5.94468146966086e-09,5.46477297840162e-10,0.000137783287501861,0.000108526204036947,0.000157082439216335],[9.1224600268142e-06,0.0103899373569332,0.00551788437860028,0.00677124724240289,7.10573332753236e-06,0.0754847348558787,0.185506030272859,7.19363107114012e-05,0.0075955544775957,0.006115842221857,0.000763924866198281,1.25302691032357e-09,0.00100075572554865,1.16176432055269e-08,1.08436214603789e-09,0.000876943267980623,0.000199275321119595,0.000472177694667471],[0.00190962665961681,0.726018261004679,0.0407085705044025,0.00322209987297142,0.020778882686124,0.294809831413996,0.08634092283461341,0.00319743427412164,0.06972003846731201,0.043189599649136,0.0112344469167045,0.000163357610589521,0.109388779685322,0.00228747495602515,3.10441239845456e-06,0.00325180237266798,0.00554092804177111,0.00670126361035647],[0.000823889328496719,0.729438860919369,0.0412970640016383,0.00231778711932578,0.0166858336879344,0.318071256480736,0.0892413774824268,0.00144077108058987,0.07169745711882031,0.0277528962695437,0.0047401056876582,5.01328727705542e-05,0.0932837648993922,0.000675201482476861,4.78876509298041e-07,0.00233449760593336,0.00133395856705789,0.00235699392795751],[0.000826881387199277,0.323868272950897,0.07938322369654929,0.00754269866893863,0.0110132946584055,0.197679115876562,0.986847907171206,0.00158903249986685,0.105642623826174,0.0396014707775299,0.00296643187580133,2.47611469054364e-05,0.0618767247635747,0.000336164542860433,8.03210641805183e-07,0.008069332908804889,0.000558037025569901,0.000418768525732653],[0.00146129655895453,0.0593290024004612,0.0214372908934627,0.083044487094714,0.0077154279284193,0.0610380528768507,0.0610380528768507,0.0327593461271042,0.0515247545684031,0.07404386754533999,0.0337178165091863,0.000152185029235284,0.026036779572769,0.00474520625843341,0.00165231970328131,0.0291122758946415,0.0151228625973925,0.00175285752238119],[0.001276038824011,0.0377801306384587,0.0107229883094279,0.0114100077480807,7.82414859338348e-05,0.0939288586757845,0.155787212641834,0.0133438202424612,0.0263530113680205,0.053669491368375,0.00619174174626271,1.74362167645965e-08,0.0204649176613988,8.32255405752521e-08,1.03830686589631e-08,0.00130894123126768,0.00032557861211084,0.0062832975686534],[0.000574714981689294,0.0138532498092442,0.0110357687572006,0.0428845658685517,6.75044666115574e-05,0.113227102283818,0.185506030272859,0.00453198757481828,0.0208202015724126,0.042810895552999,0.0106949481267759,2.38075112961478e-08,0.0100075572554865,1.62647004877376e-07,2.060288077472e-08,0.00833096104581592,0.000597825963358785,0.0188871077866989],[0.0601532397779296,0.726018261004679,0.08141714100880509,0.0306099487932285,0.131599590345452,0.294809831413996,0.12951138425192,0.201438359269663,0.24799167767539,0.302327197543952,0.157282256833863,0.0031037946012009,1,0.032024649384352,5.89838355706367e-05,0.0205947483602306,0.0166227841253133,0.109659235510309],[0.0324796074638509,0.729438860919369,0.0825941280032766,0.0220189776335949,0.105676946690251,0.318071256480736,0.13386206622364,0.090768578077162,0.25189857090882,0.194270273886806,0.06636147962721491,0.000952524582640529,0.891883627287703,0.00945282075467606,9.098653676662779e-06,0.0147851515042446,0.00400187570117368,0.07195072187221251],[0.0520935273935545,0.323868272950897,0.158766447393099,0.0697508661699017,0.0697508661699017,0.296518673814842,0.986847907171206,0.100109047491612,0.422570495304694,0.277210295442709,0.0415300462612187,0.000470461791203291,0.580362465639376,0.00470630360004606,1.52610021942985e-05,0.0511057750890976,0.0016741110767097,0.008780741494632149],[12,3,1,6,10,4,0,12,1,2,24,15,10,22,11,6,13,10],[37,5,8,23,25,13,6,37,7,11,56,46,19,58,50,23,35,35],[165,120,120,197,197,54,54,160,122,146,146,200,82,148,196,196,97,89],[174,133,133,198,198,88,88,179,131,171,171,195,78,169,199,199,96,109],["FGFR3","CUL3","SMARCA4","SMARCA4","STK11","KRAS","NRAS","FGFR3","CUL3","AXIN1","CTNNB1","KEAP1","ADAMTS12","CTNNB1","KEAP1","SMARCA4","TP53","TP53"],["reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg","reg"],[-45.71602918992826,-60.31388411445277,-87.65906701806234,-57.16815536529514,-49.94870054137245,-55.49714119621307,-90.98816347339033,-25.56186395202427,-52.33507070007821,-78.01547291377649,-82.01712956727017,-46.23154647944512,-41.65679205487745,-42.83641385596549,-42.39375438055522,-33.18006888058722,-57.10598561458379,-49.49085948902558],["BLCA","KIRP","KIRP","LUAD","LUAD","TGCT","TGCT","BLCA","KIRP","LIHC","LIHC","LUAD","LUSC","LIHC","LUAD","LUAD","SARC","UCEC"],["NK_cells","NK_cells","NK_cells","NK_cells","NK_cells","NK_cells","NK_cells","Tem_cells","Tem_cells","Tem_cells","Tem_cells","Tem_cells","Tem_cells","Tfh_cells","Tfh_cells","Tfh_cells","Tfh_cells","Tfh_cells"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>dd.p<\/th>\n      <th>mlr.p<\/th>\n      <th>mlr.v2.p<\/th>\n      <th>fisher.p<\/th>\n      <th>binom.p<\/th>\n      <th>lr.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>mlr.fdr<\/th>\n      <th>mlr.v2.fdr<\/th>\n      <th>fisher.fdr<\/th>\n      <th>binom.fdr<\/th>\n      <th>lr.fdr<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>E1<\/th>\n      <th>E0<\/th>\n      <th>gene<\/th>\n      <th>mode<\/th>\n      <th>alpha<\/th>\n      <th>tumor<\/th>\n      <th>pheno<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,19]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"dd.p","targets":1},{"name":"mlr.p","targets":2},{"name":"mlr.v2.p","targets":3},{"name":"fisher.p","targets":4},{"name":"binom.p","targets":5},{"name":"lr.p","targets":6},{"name":"dd.fdr","targets":7},{"name":"mlr.fdr","targets":8},{"name":"mlr.v2.fdr","targets":9},{"name":"fisher.fdr","targets":10},{"name":"binom.fdr","targets":11},{"name":"lr.fdr","targets":12},{"name":"mut.E1","targets":13},{"name":"mut.E0","targets":14},{"name":"E1","targets":15},{"name":"E0","targets":16},{"name":"gene","targets":17},{"name":"mode","targets":18},{"name":"alpha","targets":19},{"name":"tumor","targets":20},{"name":"pheno","targets":21}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
@@ -1289,24 +1337,24 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] ggplot2_3.5.1   DT_0.33         workflowr_1.7.1
+[1] ggplot2_3.5.2   DT_0.33         workflowr_1.7.1
 
 loaded via a namespace (and not attached):
- [1] sass_0.4.9        generics_0.1.3    stringi_1.8.7     diffdriver_0.1.6 
- [5] lattice_0.22-6    digest_0.6.37     magrittr_2.0.3    evaluate_1.0.3   
- [9] grid_4.4.2        fastmap_1.2.0     rprojroot_2.0.4   jsonlite_2.0.0   
-[13] Matrix_1.7-3      processx_3.8.6    whisker_0.4.1     ps_1.8.1         
-[17] promises_1.3.2    httr_1.4.7        crosstalk_1.2.1   scales_1.3.0     
-[21] jquerylib_0.1.4   cli_3.6.4         rlang_1.1.5       munsell_0.5.1    
-[25] withr_3.0.2       cachem_1.1.0      yaml_2.3.10       tools_4.4.2      
-[29] dplyr_1.1.4       colorspace_2.1-1  httpuv_1.6.15     vctrs_0.6.5      
-[33] R6_2.6.1          lifecycle_1.0.4   git2r_0.35.0      stringr_1.5.1    
-[37] fs_1.6.5          htmlwidgets_1.6.4 pkgconfig_2.0.3   callr_3.7.6      
-[41] pillar_1.10.1     bslib_0.9.0       later_1.4.1       gtable_0.3.6     
-[45] glue_1.8.0        data.table_1.17.0 Rcpp_1.0.14       xfun_0.52        
-[49] tibble_3.2.1      tidyselect_1.2.1  rstudioapi_0.17.1 knitr_1.50       
-[53] farver_2.1.2      htmltools_0.5.8.1 labeling_0.4.3    rmarkdown_2.29   
-[57] compiler_4.4.2    getPass_0.2-4    </code></pre>
+ [1] sass_0.4.10        generics_0.1.4     stringi_1.8.7      diffdriver_0.1.6  
+ [5] lattice_0.22-7     digest_0.6.37      magrittr_2.0.3     evaluate_1.0.3    
+ [9] grid_4.4.2         RColorBrewer_1.1-3 fastmap_1.2.0      rprojroot_2.0.4   
+[13] jsonlite_2.0.0     Matrix_1.7-3       processx_3.8.6     whisker_0.4.1     
+[17] ps_1.9.1           promises_1.3.3     httr_1.4.7         crosstalk_1.2.1   
+[21] scales_1.4.0       jquerylib_0.1.4    cli_3.6.5          rlang_1.1.6       
+[25] withr_3.0.2        cachem_1.1.0       yaml_2.3.10        tools_4.4.2       
+[29] dplyr_1.1.4        httpuv_1.6.16      vctrs_0.6.5        R6_2.6.1          
+[33] lifecycle_1.0.4    git2r_0.36.2       stringr_1.5.1      fs_1.6.6          
+[37] htmlwidgets_1.6.4  pkgconfig_2.0.3    callr_3.7.6        pillar_1.10.2     
+[41] bslib_0.9.0        later_1.4.2        gtable_0.3.6       glue_1.8.0        
+[45] data.table_1.17.4  Rcpp_1.0.14        xfun_0.52          tibble_3.2.1      
+[49] tidyselect_1.2.1   rstudioapi_0.17.1  knitr_1.50         farver_2.1.2      
+[53] htmltools_0.5.8.1  labeling_0.4.3     rmarkdown_2.29     compiler_4.4.2    
+[57] getPass_0.2-4     </code></pre>
 </div>
 </div>
 </div>
