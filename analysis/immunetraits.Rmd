@@ -135,14 +135,14 @@ diff_table <- get_diff_table(filedf)
 ## Table under "Sig" Mode
 ```{r}
 library(DT)
-diff_table_reg <- subset(diff_table, mode == "sig")
-datatable(diff_table_reg, options = list(pageLength = 10))
+diff_table_sig <- subset(diff_table, mode == "sig")
+datatable(diff_table_sig, options = list(pageLength = 10))
 ```
 
 ## Table under "Reg" Mode
 ```{r}
-diff_table_sig <- subset(diff_table, mode == "reg")
-datatable(diff_table_sig, options = list(pageLength = 10))
+diff_table_reg <- subset(diff_table, mode == "reg")
+datatable(diff_table_reg, options = list(pageLength = 10))
 ```
 
 # Plotting the Number of Significant Differential Genes
