@@ -64,8 +64,6 @@ get_files <- function(outputdir, tumors = NULL, phenotypes = NULL) {
 filedf <- get_files(
   outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/serous/"
 )
-
-head(filedf)
 ```
 
 # Summary Table of Significant Differential Genes
@@ -149,6 +147,174 @@ datatable(
 diff_table_reg <- subset(diff_table, mode == "reg")
 datatable(
   diff_table_reg,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+```{r}
+get_diff_table_unfilter <- function(filedf){
+  pheno_all <- unique(filedf$phenotype)
+  numlist <- list()
+  
+  for (p in pheno_all){
+    p_txtfiles <- filedf[filedf$phenotype == p, ]
+    numlist[[p]] <- list()
+    
+    for (t in seq_len(nrow(p_txtfiles))){
+      txtf  <- p_txtfiles[t, "filetxt"]
+      rdf   <- p_txtfiles[t, "file"] 
+      tumor <- p_txtfiles[t, "tumor"] 
+      mode  <- p_txtfiles[t, "mode"]     # reg / sig
+      
+      env <- new.env()
+      load(rdf, envir = env)
+      res_rdata <- env$res
+      
+      res <- read.table(txtf, header = TRUE)
+      res$gene <- row.names(res)
+      res$mode <- mode
+      
+      res$alpha <- sapply(res$gene, function(gene){
+          res_rdata[[gene]][["dd"]][["res.alt"]]$alpha[2]
+      })
+      
+      ## No dd.fdr < 0.1 Filtering, Full Results Without dd.fdr Cutoff
+      numlist[[p]][[ paste0(tumor, "_", mode) ]] <- res
+      
+    }
+    
+    if (length(numlist[[p]]) == 0){
+      numlist[[p]] <- NULL
+    }
+  }
+  
+  combined_df <- do.call(
+    rbind,
+    lapply(names(numlist), function(pheno) {
+      numlist.pheno <- numlist[[pheno]]
+      df.pheno <- do.call(rbind, lapply(names(numlist.pheno), function(tname) {
+        df <- numlist.pheno[[tname]]
+
+        df$tumor <- sub("_.*", "", tname) 
+        df$mode  <- sub(".*_", "", tname) 
+        return(df)
+      }))
+      df.pheno$pheno <- pheno
+      return(df.pheno)
+    })
+  )
+  return(combined_df)
+}
+```
+
+## Tables of Results by Run (Sig Mode; No dd.fdr < 0.1 Filtering)
+### 1. A YaleSerous_vs_YaleUCS
+Phenotype: a phenotype file for Yale serous and Yale UCS. Pull samples from both categories, if the sample is Yale serous, then give the phenotype value 1, otherwise give 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCS/UCSgenes.txt
+```{r}
+filedf_1 <- get_files(
+  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/serous/YaleSerous_vs_YaleUCS/"
+)
+head(filedf_1)
+diff_table_1 <- get_diff_table_unfilter(filedf_1)
+diff_table_sig_1 <- subset(diff_table_1, mode == "sig")
+datatable(
+  diff_table_sig_1,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+### 2.B Serous_vs_Endometrioid
+Phenotype: a phenotype file for TCGA UCEC endometrioid, TCGA UCEC serous and Yale serous. Pull samples from these three categories, if the sample is TCGA UCEC serous or Yale serous, give phenotype value 1, otherwise 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCEC/UCECgenes.txt
+```{r}
+filedf_2 <- get_files(
+  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/serous/Serous_vs_Endometrioid/"
+)
+head(filedf_2)
+diff_table_2 <- get_diff_table_unfilter(filedf_2)
+diff_table_sig_2 <- subset(diff_table_2, mode == "sig")
+datatable(
+  diff_table_sig_2,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+### 3.C Serous_vs_UCS
+Phenotype: a phenotype file for  TCGA UCEC serous, Yale serous, TCGA UCS and Yale UCS. Pull samples from these four categories, if the sample is TCGA UCEC serous or Yale serous, give phenotype value 1, otherwise 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCS/UCSgenes.txt
+```{r}
+filedf_3 <- get_files(
+  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/serous/Serous_vs_UCS/"
+)
+head(filedf_3)
+diff_table_3 <- get_diff_table_unfilter(filedf_3)
+diff_table_sig_3 <- subset(diff_table_3, mode == "sig")
+datatable(
+  diff_table_sig_3,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+## Tables of Results by Run (Reg Mode; No dd.fdr < 0.1 Filtering)
+### 1. A YaleSerous_vs_YaleUCS
+Phenotype: a phenotype file for Yale serous and Yale UCS. Pull samples from both categories, if the sample is Yale serous, then give the phenotype value 1, otherwise give 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCS/UCSgenes.txt
+```{r}
+diff_table_reg_1 <- subset(diff_table_1, mode == "reg")
+datatable(
+  diff_table_reg_1,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+### 2.B Serous_vs_Endometrioid
+Phenotype: a phenotype file for TCGA UCEC endometrioid, TCGA UCEC serous and Yale serous. Pull samples from these three categories, if the sample is TCGA UCEC serous or Yale serous, give phenotype value 1, otherwise 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCEC/UCECgenes.txt
+```{r}
+diff_table_reg_2 <- subset(diff_table_2, mode == "reg")
+datatable(
+  diff_table_reg_2,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+### 3.C Serous_vs_UCS
+Phenotype: a phenotype file for  TCGA UCEC serous, Yale serous, TCGA UCS and Yale UCS. Pull samples from these four categories, if the sample is TCGA UCEC serous or Yale serous, give phenotype value 1, otherwise 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCS/UCSgenes.txt
+```{r}
+diff_table_reg_3 <- subset(diff_table_3, mode == "reg")
+datatable(
+  diff_table_reg_3,
   extensions = 'Buttons',
   options = list(
     dom        = 'Bfrtip', 

@@ -14,6 +14,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Phenotype: pull samples from both categories, if the sample is TCGA LUAD, then give the phenotype value 1, otherwise give 0.  
+Mutation: get the mutations for all samples in the phenotype file, to form a corresponding mutation file. Mutations for TCGA LUAD: diffDriver/tumor_specific_input/LUAD/LUAD_mutations.txt. Mutations for LUSC: /diffDriver/tumor_specific_input/LUSC/LUSC_mutations.txt.   
+Gene: the union of /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/LUAD/LUADgenes.txt and /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/LUSC/LUSCgenes.txt.
+
 # Extracting and Summarizing Analysis Results
 This code segment scans through analysis output directories, identifies relevant result files (*_resdd.Rd), extracts corresponding tumor types, immune phenotypes, and analysis modes(sig/reg).
 ```{r}
