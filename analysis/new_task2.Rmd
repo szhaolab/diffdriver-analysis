@@ -1,0 +1,225 @@
+---
+title: "new_task2"
+author: "Qirui Zhang"
+date: "2025-12-29"
+output: 
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Extracting and Summarizing Analysis Results
+This code segment scans through analysis output directories, identifies relevant result files (*_resdd.Rd), extracts corresponding tumor types, immune phenotypes, and analysis modes(sig/reg).
+```{r}
+get_files <- function(outputdir, tumors = NULL, phenotypes = NULL) {
+  files <- list.files(
+    path = outputdir,
+    pattern = "_resdd\\.Rd$",
+    recursive = TRUE,
+    full.names = TRUE
+  )
+  
+  matching_files_txt <- sub("\\.Rd$", ".txt", files)
+  
+  analysis_mode <- ifelse(grepl("_sig_", basename(files)), "sig", "reg")
+
+  inner_folder_names      <- basename(dirname(files))            
+  phenotype_folder_names  <- basename(dirname(dirname(files)))
+  
+  tumor_names <- mapply(function(inner_name, phen) {
+    pattern_front <- paste0("^", phen, "_")
+    tmp <- sub(pattern_front, "", inner_name)
+    tmp <- sub("_mutations$", "", tmp)
+    return(tmp)
+  }, inner_folder_names, phenotype_folder_names)
+  
+  phenos_all <- phenotype_folder_names
+  
+  filedf <- data.frame(
+    tumor      = tumor_names,
+    phenotype  = phenos_all,
+    mode       = analysis_mode,   
+    file       = files,
+    filetxt    = matching_files_txt,
+    stringsAsFactors = FALSE
+  )
+  
+  if (!is.null(tumors)) {
+    filedf <- filedf[filedf$tumor %in% tumors, ]
+  }
+  if (!is.null(phenotypes)) {
+    filedf <- filedf[filedf$phenotype %in% phenotypes, ]
+  }
+
+  rownames(filedf) <- NULL
+  return(filedf)
+}
+
+filedf <- get_files(
+  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/LUAD_vs_LUSC/"
+)
+
+head(filedf)
+```
+
+# Summary Table of Significant Differential Genes
+The provided function extracts and compiles results from analyses, filtering specifically for significant differential genes based on a threshold (**`dd.fdr < 0.1`**).  
+```{r}
+get_diff_table <- function(filedf){
+  pheno_all <- unique(filedf$phenotype)
+  numlist <- list()
+  
+  for (p in pheno_all){
+    p_txtfiles <- filedf[filedf$phenotype == p, ]
+    numlist[[p]] <- list()
+    
+    for (t in seq_len(nrow(p_txtfiles))){
+      txtf  <- p_txtfiles[t, "filetxt"]
+      rdf   <- p_txtfiles[t, "file"] 
+      tumor <- p_txtfiles[t, "tumor"] 
+      mode  <- p_txtfiles[t, "mode"]     # reg / sig
+      
+      env <- new.env()
+      load(rdf, envir = env)
+      res_rdata <- env$res
+      
+      res <- read.table(txtf, header = TRUE)
+      res$gene <- row.names(res)
+      res$mode <- mode
+      
+      res$alpha <- sapply(res$gene, function(gene){
+          res_rdata[[gene]][["dd"]][["res.alt"]]$alpha[2]
+      })
+      
+      sig_res <- res[res$dd.fdr < 0.1, ]
+      if (nrow(sig_res) > 0){
+        numlist[[p]][[ paste0(tumor, "_", mode) ]] <- sig_res
+      }
+    }
+    
+    if (length(numlist[[p]]) == 0){
+      numlist[[p]] <- NULL
+    }
+  }
+  
+  combined_df <- do.call(
+    rbind,
+    lapply(names(numlist), function(pheno) {
+      numlist.pheno <- numlist[[pheno]]
+      df.pheno <- do.call(rbind, lapply(names(numlist.pheno), function(tname) {
+        df <- numlist.pheno[[tname]]
+
+        df$tumor <- sub("_.*", "", tname) 
+        df$mode  <- sub(".*_", "", tname) 
+        return(df)
+      }))
+      df.pheno$pheno <- pheno
+      return(df.pheno)
+    })
+  )
+  return(combined_df)
+}
+
+diff_table <- get_diff_table(filedf)
+```
+
+## Table under "Sig" Mode
+```{r}
+library(DT)
+diff_table_sig <- subset(diff_table, mode == "sig")
+datatable(
+  diff_table_sig,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+## Table under "Reg" Mode
+```{r}
+diff_table_reg <- subset(diff_table, mode == "reg")
+datatable(
+  diff_table_reg,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+# Plotting the Number of Significant Differential Genes
+The provided function generates bar plots illustrating the number of significantly differentially expressed genes (**`dd.fdr < 0.1`**) for each tumor type across different phenotype contexts.
+```{r}
+plot_diff_number <- function(filedf, mode = c("all", "reg", "sig")){
+  mode <- match.arg(mode)
+  
+  if (mode != "all"){
+    filedf <- filedf[filedf$mode == mode, ]
+  }
+  
+  pheno_all <- unique(filedf$phenotype)
+  numlist <- list()
+  
+  for (p in pheno_all){
+    p_txtfiles <- filedf[filedf$phenotype == p, ]
+    numlist[[p]] <- list()
+    for (t in 1:nrow(p_txtfiles)){
+      txtf <- p_txtfiles[t, "filetxt"]
+      tumor <- p_txtfiles[t, "tumor"]
+      res <- read.table(txtf, header = TRUE)
+      numlist[[p]][[tumor]] <- c(
+        nrow(res[res$dd.fdr < 0.1,]),
+        nrow(res) - nrow(res[res$dd.fdr < 0.1,])
+      )
+    }
+  }
+  
+  par(mfrow = c(length(numlist),1), mar = c(3,5,2,0))
+  for (phenotype in names(numlist)) {
+    colors <- rainbow(length(numlist[[phenotype]]))
+    plot(
+      NULL,
+      xlim = c(0.5, length(numlist[[phenotype]]) + 0.5),
+      ylim = c(0, max(unlist(sapply(numlist[[phenotype]], `[`, 1)))),
+      xlab = "Tumor Type",
+      ylab = "No. Genes",
+      main = paste("Context:", phenotype),
+      xaxt = "n", bty = 'n'
+    )
+    grid()
+    
+    axis(
+      1,
+      at = 1:length(numlist[[phenotype]]),
+      labels = names(numlist[[phenotype]]),
+      las = 2
+    )
+    
+    for (i in seq_along(numlist[[phenotype]])) {
+      bar_height <- numlist[[phenotype]][[i]][1]
+      rect(i - 0.4, 0, i + 0.4, bar_height, col = colors[i], border = NA)
+    }
+  }
+}
+```
+
+## Visualization under "Sig" Mode
+```{r}
+plot_diff_number(filedf, mode = "sig")
+```
+
+## Visualization under "Reg" Mode
+```{r}
+plot_diff_number(filedf, mode = "reg")
+```
