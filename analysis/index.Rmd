@@ -15,3 +15,6 @@ Welcome to my research website.
 - [Immunertaits](immunetraits.html)
 - [PRS](PRS.html)
 - [Diversity](diversity.html)
+- [Individual Gene](individualgene.html)
+- [new_task1](new_task1.html)
+- [new_task2](new_task2.html)
