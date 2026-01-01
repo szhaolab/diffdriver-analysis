@@ -212,7 +212,7 @@ get_diff_table_unfilter <- function(filedf){
 ```
 
 ## Tables of Results by Run (Sig Mode; No dd.fdr < 0.1 Filtering)
-### 1. A YaleSerous_vs_YaleUCS
+### 1.A.1 YaleSerous_vs_YaleUCS
 Phenotype: a phenotype file for Yale serous and Yale UCS. Pull samples from both categories, if the sample is Yale serous, then give the phenotype value 1, otherwise give 0.  
 Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCS/UCSgenes.txt
 ```{r}
@@ -224,6 +224,27 @@ diff_table_1 <- get_diff_table_unfilter(filedf_1)
 diff_table_sig_1 <- subset(diff_table_1, mode == "sig")
 datatable(
   diff_table_sig_1,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+### 1.A.2 YaleSerous_vs_YaleUCS_newGene
+Phenotype: a phenotype file for Yale serous and Yale UCS. Pull samples from both categories, if the sample is Yale serous, then give the phenotype value 1, otherwise give 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/diffDriver/data_run_UCS/Yale_USC_SAR_2020-01-23/HIST2A2B_genes.txt
+```{r}
+filedf_1_2 <- get_files(
+  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/serous_newgene/YaleSerous_vs_YaleUCS/"
+)
+head(filedf_1_2)
+diff_table_1_2 <- get_diff_table_unfilter(filedf_1_2)
+diff_table_sig_1_2 <- subset(diff_table_1_2, mode == "sig")
+datatable(
+  diff_table_sig_1_2,
   extensions = 'Buttons',
   options = list(
     dom        = 'Bfrtip', 
@@ -254,7 +275,7 @@ datatable(
 )
 ```
 
-### 3.C Serous_vs_UCS
+### 3.C.1 Serous_vs_UCS
 Phenotype: a phenotype file for  TCGA UCEC serous, Yale serous, TCGA UCS and Yale UCS. Pull samples from these four categories, if the sample is TCGA UCEC serous or Yale serous, give phenotype value 1, otherwise 0.  
 Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCS/UCSgenes.txt
 ```{r}
@@ -275,14 +296,51 @@ datatable(
 )
 ```
 
+### 3.C.2 Serous_vs_UCS_newGene
+Phenotype: a phenotype file for  TCGA UCEC serous, Yale serous, TCGA UCS and Yale UCS. Pull samples from these four categories, if the sample is TCGA UCEC serous or Yale serous, give phenotype value 1, otherwise 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/diffDriver/data_run_UCS/Yale_USC_SAR_2020-01-23/HIST2A2B_genes.txt
+```{r}
+filedf_3_2 <- get_files(
+  outputdir = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/output/serous_newgene/Serous_vs_UCS/"
+)
+head(filedf_3_2)
+diff_table_3_2 <- get_diff_table_unfilter(filedf_3_2)
+diff_table_sig_3_2 <- subset(diff_table_3_2, mode == "sig")
+datatable(
+  diff_table_sig_3_2,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
 ## Tables of Results by Run (Reg Mode; No dd.fdr < 0.1 Filtering)
-### 1. A YaleSerous_vs_YaleUCS
+### 1.A.1 YaleSerous_vs_YaleUCS
 Phenotype: a phenotype file for Yale serous and Yale UCS. Pull samples from both categories, if the sample is Yale serous, then give the phenotype value 1, otherwise give 0.  
 Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCS/UCSgenes.txt
 ```{r}
 diff_table_reg_1 <- subset(diff_table_1, mode == "reg")
 datatable(
   diff_table_reg_1,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+### 1.A.2 YaleSerous_vs_YaleUCS_newGene
+Phenotype: a phenotype file for Yale serous and Yale UCS. Pull samples from both categories, if the sample is Yale serous, then give the phenotype value 1, otherwise give 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/diffDriver/data_run_UCS/Yale_USC_SAR_2020-01-23/HIST2A2B_genes.txt
+```{r}
+diff_table_reg_1_2 <- subset(diff_table_1_2, mode == "reg")
+datatable(
+  diff_table_reg_1_2,
   extensions = 'Buttons',
   options = list(
     dom        = 'Bfrtip', 
@@ -308,13 +366,29 @@ datatable(
 )
 ```
 
-### 3.C Serous_vs_UCS
+### 3.C.1 Serous_vs_UCS
 Phenotype: a phenotype file for  TCGA UCEC serous, Yale serous, TCGA UCS and Yale UCS. Pull samples from these four categories, if the sample is TCGA UCEC serous or Yale serous, give phenotype value 1, otherwise 0.  
 Gene: /dartfs/rc/lab/S/Szhao/diffDriver/tumor_specific_input/UCS/UCSgenes.txt
 ```{r}
 diff_table_reg_3 <- subset(diff_table_3, mode == "reg")
 datatable(
   diff_table_reg_3,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
+```
+
+### 3.C.2 Serous_vs_UCS_newGene
+Phenotype: a phenotype file for  TCGA UCEC serous, Yale serous, TCGA UCS and Yale UCS. Pull samples from these four categories, if the sample is TCGA UCEC serous or Yale serous, give phenotype value 1, otherwise 0.  
+Gene: /dartfs/rc/lab/S/Szhao/diffDriver/diffDriver/data_run_UCS/Yale_USC_SAR_2020-01-23/HIST2A2B_genes.txt
+```{r}
+diff_table_reg_3_2 <- subset(diff_table_3_2, mode == "reg")
+datatable(
+  diff_table_reg_3_2,
   extensions = 'Buttons',
   options = list(
     dom        = 'Bfrtip', 
