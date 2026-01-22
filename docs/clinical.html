@@ -386,7 +386,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -397,8 +397,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -407,13 +407,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-06-04
+<strong>Last updated:</strong> 2026-01-20
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>diffdriver/</code> <span
@@ -436,18 +436,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -538,15 +541,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree44d6823606d262e9d2ce8c714974cbbcf08f4fb1targetblank44d6823a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree0175f7783de05b5c37503957ba8d644e95dd9099targetblank0175f77a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/44d6823606d262e9d2ce8c714974cbbcf08f4fb1" target="_blank">44d6823</a>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/0175f7783de05b5c37503957ba8d644e95dd9099" target="_blank">0175f77</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree44d6823606d262e9d2ce8c714974cbbcf08f4fb1targetblank44d6823a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree0175f7783de05b5c37503957ba8d644e95dd9099targetblank0175f77a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -556,7 +559,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/44d6823606d262e9d2ce8c714974cbbcf08f4fb1" target="_blank">44d6823</a>.
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/0175f7783de05b5c37503957ba8d644e95dd9099" target="_blank">0175f77</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -571,14 +574,24 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .RData
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
 Untracked files:
+    Untracked:  .Rproj.user.bak_2025-12-29_193924/
+    Untracked:  .write_from_rstudio_test
+    Untracked:  analysis/ApoE_e2.Rmd
+    Untracked:  analysis/ApoE_e2_split.Rmd
+    Untracked:  analysis/ApoE_e4.Rmd
+    Untracked:  analysis/ApoE_e4_split.Rmd
     Untracked:  code/run_workflowr.R
 
 Unstaged changes:
-    Modified:   analysis/clinical_newplot.Rmd
+    Modified:   analysis/clinical.Rmd
+    Deleted:    analysis/clinical_newplot.Rmd
     Deleted:    analysis/example.Rmd
+    Deleted:    analysis/immunesubtypes_newplot.Rmd
     Modified:   diffdriver.Rproj
 
 </code></pre>
@@ -624,6 +637,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/clinical.html" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1179,6 +1209,15 @@ significantly differentially expressed genes
 across different phenotype contexts.</p>
 <pre class="r"><code>library(scales)
 
+phenotype_label_map &lt;- c(
+  &quot;Diagnosis.Age&quot;                     = &quot;Patient Age&quot;,
+  &quot;Months.of.disease.specific.survival&quot; = &quot;Disease-Specific Survival&quot;,
+  &quot;Progress.Free.Survival.Months&quot;     = &quot;Progression-Free Survival&quot;,
+  &quot;TMB.nonsynonymous&quot;                 = &quot;Tumor Mutational Burden (TMB)&quot;,
+  &quot;Fraction.Genome.Altered&quot;           = &quot;Fraction of Genome Altered (FGA)&quot;,
+  &quot;Aneuploidy.Score&quot;                  = &quot;Aneuploidy Score&quot;
+)
+
 plot_diff_number &lt;- function(filedf, mode = c(&quot;reg&quot;, &quot;sig&quot;)){
   
   filedf &lt;- filedf[filedf$mode == mode, ]
@@ -1187,7 +1226,7 @@ plot_diff_number &lt;- function(filedf, mode = c(&quot;reg&quot;, &quot;sig&quot
   numlist &lt;- list()
   
   pt &lt;- scales::pseudo_log_trans()
-  
+  mar = c(3,5,2,1)
   for (p in pheno_all){
     p_txtfiles &lt;- filedf[filedf$phenotype == p, ]
     numlist[[p]] &lt;- list()
@@ -1203,7 +1242,17 @@ plot_diff_number &lt;- function(filedf, mode = c(&quot;reg&quot;, &quot;sig&quot
   }
   
   par(mfrow = c(length(numlist),1), mar = c(3,5,2,0))
+  
+  last_pheno &lt;- tail(names(numlist), 1)
+  
   for (phenotype in names(numlist)) {
+    
+    if (phenotype == last_pheno) {
+      par(mar = c(5,5,2,0))
+    } else {
+      par(mar = c(3,5,2,0))
+    }
+    
     colors &lt;- rainbow(length(numlist[[phenotype]]))
     max_height &lt;- max(unlist(lapply(numlist[[phenotype]], function(x) sum(x))))
     
@@ -1215,7 +1264,8 @@ plot_diff_number &lt;- function(filedf, mode = c(&quot;reg&quot;, &quot;sig&quot
       ylim = c(0, max_plot_height * 1.1),
       xlab = &quot;Tumor Type&quot;,
       ylab = &quot;No. Genes&quot;,
-      main = paste(&quot;Context:&quot;, phenotype),
+      main = paste(&quot;Context:&quot;, ifelse(phenotype %in% names(phenotype_label_map),
+                                      phenotype_label_map[phenotype], phenotype)),
       xaxt = &quot;n&quot;, yaxt = &quot;n&quot;, bty = &#39;n&#39;
     )
     
@@ -2445,6 +2495,43 @@ GO:0043405 0.0002476705 0.04847198 0.01449178 CDK12/NF1     2
 GO:0071900 0.0011175999 0.04847198 0.01449178 CDK12/NF1     2
 GO:0033034 0.0021053178 0.04847198 0.01449178       NF1     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
+Past versions of unnamed-chunk-20-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-20-1.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: tmb_neg | Number of enriched GO-BP terms = 2232</code></pre>
 <pre><code>                   ID                                 Description GeneRatio
 GO:0071214 GO:0071214       cellular response to abiotic stimulus     11/33
@@ -2467,6 +2554,43 @@ GO:0071214    11
 GO:0104004    11
 GO:0007265     8</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-20-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-2">
+Past versions of unnamed-chunk-20-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-20-2.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: survival_pos | Number of enriched GO-BP terms = 456</code></pre>
 <pre><code>                   ID                                       Description
 GO:0070661 GO:0070661                           leukocyte proliferation
@@ -2481,6 +2605,43 @@ GO:0070661 5.591508e-05 0.01480390 0.004032458 BAP1/ZBTB7B/MAPK1     3
 GO:0030521 6.492940e-05 0.01480390 0.004032458     SMARCA4/MAPK1     2
 GO:0120162 2.772947e-04 0.02619654 0.007135716    SMARCA4/ZBTB7B     2</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-20-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-3">
+Past versions of unnamed-chunk-20-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-20-3.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: survival_neg | Number of enriched GO-BP terms = 363</code></pre>
 <pre><code>                   ID                             Description GeneRatio
 GO:0051095 GO:0051095         regulation of helicase activity       1/1
@@ -2495,6 +2656,43 @@ GO:0051095     NA   TP53     1
 GO:1903799     NA   TP53     1
 GO:0006983     NA   TP53     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-20-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-4">
+Past versions of unnamed-chunk-20-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-20-4.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: age_pos | Number of enriched GO-BP terms = 889</code></pre>
 <pre><code>                   ID
 GO:0043525 GO:0043525
@@ -2513,6 +2711,43 @@ GO:0043525 0.0008466483 0.0002796932 CASP8/NF1/TP53     3
 GO:2001241 0.0016255168 0.0005369951    NF1/PPP2R1A     2
 GO:0007406 0.0016255168 0.0005369951       NF1/TP53     2</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-20-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-5">
+Past versions of unnamed-chunk-20-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-20-5.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: age_neg | Number of enriched GO-BP terms = 822</code></pre>
 <pre><code>                   ID                           Description GeneRatio   BgRatio
 GO:0097091 GO:0097091           synaptic vesicle clustering       2/4  17/18986
@@ -2527,6 +2762,43 @@ GO:0097091 0.0004312606      PTEN/CTNNB1     2
 GO:0099504 0.0004312606 BRAF/PTEN/CTNNB1     3
 GO:0099003 0.0004514917 BRAF/PTEN/CTNNB1     3</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-20-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-6">
+Past versions of unnamed-chunk-20-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-20-6.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: instability_pos | Number of enriched GO-BP terms = 650</code></pre>
 <pre><code>                   ID                                Description GeneRatio
 GO:0034599 GO:0034599      cellular response to oxidative stress       3/5
@@ -2541,6 +2813,43 @@ GO:0034599 0.004880601 0.001240898 TP53/NFE2L2/KEAP1     3
 GO:1902882 0.004880601 0.001240898      NFE2L2/KEAP1     2
 GO:0060218 0.004880601 0.001240898       TP53/NFE2L2     2</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-20-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-7">
+Past versions of unnamed-chunk-20-7.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-20-7.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: instability_neg | Number of enriched GO-BP terms = 2082</code></pre>
 <pre><code>                   ID                             Description GeneRatio
 GO:0010720 GO:0010720 positive regulation of cell development     10/28
@@ -2559,6 +2868,43 @@ GO:0010720 SMARCA4/CASP8/EP300/TGFBR2/KRAS/BRAF/CBFB/RUNX1/NOTCH1/KIT    10
 GO:1902105       SMARCA4/CASP8/EP300/HLA-B/TGFBR2/BRAF/CBFB/RUNX1/NF1     9
 GO:1903706       SMARCA4/CASP8/EP300/HLA-B/TGFBR2/BRAF/CBFB/RUNX1/NF1     9</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-20-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-8">
+Past versions of unnamed-chunk-20-8.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-20-8.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="go-cc-ora" class="section level2">
 <h2>GO-CC ORA</h2>
@@ -2642,6 +2988,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-21-1.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/8d42e1b928502018c39a5ace7eb30371d1e574eb/docs/figure/clinical.Rmd/unnamed-chunk-21-1.png" target="_blank">8d42e1b</a>
 </td>
 <td>
@@ -2669,6 +3026,43 @@ GO:0016514 0.0008588746      PBRM1/RB1/ARID1A     3
 GO:0070603 0.0008588746 PBRM1/RB1/ARID1A/CHD4     4
 GO:1904949 0.0018107275 PBRM1/RB1/ARID1A/CHD4     4</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-2">
+Past versions of unnamed-chunk-21-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-21-2.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: survival_pos | Number of enriched GO-CC terms = 39</code></pre>
 <pre><code>                   ID   Description GeneRatio  BgRatio RichFactor
 GO:0140092 GO:0140092  bBAF complex       1/5 10/19960 0.10000000
@@ -2683,6 +3077,43 @@ GO:0140092     1
 GO:0071564     1
 GO:0140288     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-3">
+Past versions of unnamed-chunk-21-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-21-3.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: survival_neg | Number of enriched GO-CC terms = 8</code></pre>
 <pre><code>                   ID                     Description GeneRatio  BgRatio
 GO:0043073 GO:0043073               germ cell nucleus       1/1 68/19960
@@ -2697,6 +3128,43 @@ GO:0043073   TP53     1
 GO:0005657   TP53     1
 GO:0017053   TP53     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-21-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-4">
+Past versions of unnamed-chunk-21-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-21-4.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: age_pos | Number of enriched GO-CC terms = 47</code></pre>
 <pre><code>                   ID                         Description GeneRatio   BgRatio
 GO:0030027 GO:0030027                       lamellipodium       2/6 203/19960
@@ -2726,6 +3194,43 @@ GO:0014069 0.005947559 PTEN/CTNNB1     2
 GO:0032279 0.005947559 PTEN/CTNNB1     2
 GO:0099572 0.005947559 PTEN/CTNNB1     2</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-21-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-5">
+Past versions of unnamed-chunk-21-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-21-5.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: instability_pos | Number of enriched GO-CC terms = 29</code></pre>
 <pre><code>                   ID                         Description GeneRatio  BgRatio
 GO:0090443 GO:0090443             FAR/SIN/STRIPAK complex       1/5 17/19960
@@ -2755,6 +3260,43 @@ GO:0030027 0.0007352014 CASP8/RAC1/CDH1/PIK3CA/EPHA2     5
 GO:0009898 0.0032901192           KRAS/PTEN/CDH1/KIT     4
 GO:0098562 0.0058240053           KRAS/PTEN/CDH1/KIT     4</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-21-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-6">
+Past versions of unnamed-chunk-21-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-21-6.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="go-mf-ora" class="section level2">
 <h2>GO-MF ORA</h2>
@@ -2797,6 +3339,43 @@ GO:0061629 0.0166076 0.003137739 NSD1/KEAP1     2
 GO:0008353 0.0166076 0.003137739      CDK12     1
 GO:0046975 0.0166076 0.003137739       NSD1     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
+Past versions of unnamed-chunk-22-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-22-1.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: tmb_neg | Number of enriched GO-MF terms = 213</code></pre>
 <pre><code>                   ID
 GO:0097718 GO:0097718
@@ -2819,6 +3398,43 @@ GO:0097718                           TP53/CDKN2A/KEAP1/RB1/CTNNB1     5
 GO:0061629 CREBBP/NFE2L2/TP53/CDKN2A/KEAP1/RB1/ARID1A/CHD4/CTNNB1     9
 GO:0031625          CDKN1A/FBXW7/NFE2L2/TP53/EGFR/RB1/CTNNB1/SPOP     8</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-2">
+Past versions of unnamed-chunk-22-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-22-2.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: survival_pos | Number of enriched GO-MF terms = 46</code></pre>
 <pre><code>                   ID
 GO:0031490 GO:0031490
@@ -2837,6 +3453,43 @@ GO:0031490 0.02101566 0.008656334 SMARCA4/BAP1     2
 GO:0001164 0.02697658 0.011111634      SMARCA4     1
 GO:0008353 0.02697658 0.011111634        MAPK1     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-22-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-3">
+Past versions of unnamed-chunk-22-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-22-3.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: survival_neg | Number of enriched GO-MF terms = 33</code></pre>
 <pre><code>                   ID                                      Description
 GO:0001094 GO:0001094 TFIID-class transcription factor complex binding
@@ -2851,6 +3504,43 @@ GO:0001094 0.007044884     NA   TP53     1
 GO:0140666 0.007044884     NA   TP53     1
 GO:0097371 0.007044884     NA   TP53     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-22-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-4">
+Past versions of unnamed-chunk-22-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-22-4.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: age_pos | Number of enriched GO-MF terms = 61</code></pre>
 <pre><code>                   ID                                      Description
 GO:0001094 GO:0001094 TFIID-class transcription factor complex binding
@@ -2865,6 +3555,43 @@ GO:0001094 0.03648395 0.0132211   TP53     1
 GO:0031996 0.03648395 0.0132211   RAC1     1
 GO:0140666 0.03648395 0.0132211   TP53     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-22-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-5">
+Past versions of unnamed-chunk-22-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-22-5.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: age_neg | Number of enriched GO-MF terms = 51</code></pre>
 <pre><code>                   ID                                             Description
 GO:0045296 GO:0045296                                        cadherin binding
@@ -2879,6 +3606,43 @@ GO:0045296 0.01739917 0.004668508 IDH1/CTNNB1     2
 GO:0031434 0.01739917 0.004668508        BRAF     1
 GO:0034594 0.01739917 0.004668508        PTEN     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-22-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-6">
+Past versions of unnamed-chunk-22-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-22-6.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: instability_pos | Number of enriched GO-MF terms = 57</code></pre>
 <pre><code>                   ID
 GO:0097718 GO:0097718
@@ -2897,6 +3661,43 @@ GO:0097718 2.147529e-05 0.001183987 0.0001967845        TP53/KEAP1     2
 GO:0140693 6.129021e-05 0.001183987 0.0001967845       TP53/NFE2L2     2
 GO:0061629 6.231510e-05 0.001183987 0.0001967845 TP53/NFE2L2/KEAP1     3</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-22-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-7">
+Past versions of unnamed-chunk-22-7.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-22-7.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>---- Group: instability_neg | Number of enriched GO-MF terms = 164</code></pre>
 <pre><code>                   ID                                    Description GeneRatio
 GO:0001221 GO:0001221              transcription coregulator binding      5/28
@@ -2911,6 +3712,43 @@ GO:0001221 0.0001251773 6.347246e-05 NFE2L2/CTCF/SMARCA4/EP300/RUNX1     5
 GO:0019199 0.0004549878 2.307063e-04          FGFR3/TGFBR2/EPHA2/KIT     4
 GO:0031490 0.0016490277 8.361565e-04       CTCF/SMARCA4/EP300/NOTCH1     4</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-22-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-8">
+Past versions of unnamed-chunk-22-8.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-22-8.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="kegg-ora" class="section level2">
 <h2>KEGG ORA</h2>
@@ -2959,38 +3797,38 @@ GO:0031490 0.0016490277 8.361565e-04       CTCF/SMARCA4/EP300/NOTCH1     4</code
 <pre><code>Reading KEGG annotation online: &quot;https://rest.kegg.jp/link/hsa/pathway&quot;...</code></pre>
 <pre><code>Reading KEGG annotation online: &quot;https://rest.kegg.jp/list/pathway/hsa&quot;...</code></pre>
 <pre><code>---- Group: tmb_pos | Number of enriched KEGG pathways = 9</code></pre>
-<pre><code>               category                     subcategory       ID
-hsa00310     Metabolism           Amino acid metabolism hsa00310
-hsa01521 Human Diseases Drug resistance: antineoplastic hsa01521
-hsa05418 Human Diseases          Cardiovascular disease hsa05418
-                                       Description GeneRatio  BgRatio
-hsa00310                        Lysine degradation       1/3  63/8964
-hsa01521 EGFR tyrosine kinase inhibitor resistance       1/3  80/8964
-hsa05418    Fluid shear stress and atherosclerosis       1/3 141/8964
-          RichFactor FoldEnrichment   zScore     pvalue  p.adjust     qvalue
-hsa00310 0.015873016       47.42857 6.766207 0.02093882 0.0970894 0.05677742
-hsa01521 0.012500000       37.35000 5.975224 0.02653846 0.0970894 0.05677742
-hsa05418 0.007092199       21.19149 4.421594 0.04645549 0.0970894 0.05677742
+<pre><code>                               category                      subcategory
+hsa00310                     Metabolism            Amino acid metabolism
+hsa01521                 Human Diseases  Drug resistance: antineoplastic
+hsa04120 Genetic Information Processing Folding, sorting and degradation
+               ID                               Description GeneRatio  BgRatio
+hsa00310 hsa00310                        Lysine degradation       1/3  63/9522
+hsa01521 hsa01521 EGFR tyrosine kinase inhibitor resistance       1/3  80/9522
+hsa04120 hsa04120            Ubiquitin mediated proteolysis       1/3 142/9522
+          RichFactor FoldEnrichment   zScore     pvalue   p.adjust     qvalue
+hsa00310 0.015873016       50.38095 6.980931 0.01971979 0.09158066 0.05355594
+hsa01521 0.012500000       39.67500 6.166654 0.02499622 0.09158066 0.05355594
+hsa04120 0.007042254       22.35211 4.550822 0.04407920 0.09158066 0.05355594
          geneID Count
 hsa00310  64324     1
 hsa01521   4763     1
-hsa05418   9817     1</code></pre>
+hsa04120   9817     1</code></pre>
 <pre><code>Warning in rep(yes, length.out = len): &#39;x&#39; is NULL so the result will be NULL</code></pre>
 <pre><code>   -&gt; Plotting failed for tmb_pos (KEGG).</code></pre>
 <pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
-<pre><code>---- Group: tmb_neg | Number of enriched KEGG pathways = 167</code></pre>
+<pre><code>---- Group: tmb_neg | Number of enriched KEGG pathways = 169</code></pre>
 <pre><code>               category            subcategory       ID
 hsa05225 Human Diseases Cancer: specific types hsa05225
 hsa05215 Human Diseases Cancer: specific types hsa05215
 hsa05219 Human Diseases Cancer: specific types hsa05219
                       Description GeneRatio  BgRatio RichFactor FoldEnrichment
-hsa05225 Hepatocellular carcinoma     17/31 170/8964  0.1000000       28.91613
-hsa05215          Prostate cancer     13/31  98/8964  0.1326531       38.35813
-hsa05219           Bladder cancer     10/31  41/8964  0.2439024       70.52714
+hsa05225 Hepatocellular carcinoma     17/31 170/9522  0.1000000       30.71613
+hsa05215          Prostate cancer     13/31 106/9522  0.1226415       37.67072
+hsa05219           Bladder cancer     10/31  41/9522  0.2439024       74.91739
            zScore       pvalue     p.adjust       qvalue
-hsa05225 21.64688 4.976776e-22 8.311216e-20 2.828904e-20
-hsa05215 21.90500 2.460089e-18 2.054174e-16 6.991831e-17
-hsa05219 26.28450 5.066551e-17 2.820380e-15 9.599781e-16
+hsa05225 22.34244 1.805405e-22 3.051134e-20 9.882215e-21
+hsa05215 21.69728 3.305120e-18 2.792826e-16 9.045590e-17
+hsa05219 27.10676 2.779796e-17 1.565952e-15 5.071908e-16
                                                                                        geneID
 hsa05225 1026/3265/3845/4780/7157/1029/7048/5290/55193/673/1956/9817/5925/4893/5728/8289/1499
 hsa05215                      1026/1387/3265/3845/7157/5290/673/1956/5925/4893/5728/1499/2263
@@ -3000,20 +3838,57 @@ hsa05225    17
 hsa05215    13
 hsa05219    10</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
+Past versions of unnamed-chunk-23-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-23-1.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
-<pre><code>---- Group: survival_pos | Number of enriched KEGG pathways = 121</code></pre>
+<pre><code>---- Group: survival_pos | Number of enriched KEGG pathways = 122</code></pre>
 <pre><code>                   category            subcategory       ID
 hsa05225     Human Diseases Cancer: specific types hsa05225
 hsa05216     Human Diseases Cancer: specific types hsa05216
 hsa04960 Organismal Systems       Excretory system hsa04960
                                        Description GeneRatio  BgRatio
-hsa05225                  Hepatocellular carcinoma       2/4 170/8964
-hsa05216                            Thyroid cancer       1/4  37/8964
-hsa04960 Aldosterone-regulated sodium reabsorption       1/4  38/8964
+hsa05225                  Hepatocellular carcinoma       2/4 170/9522
+hsa05216                            Thyroid cancer       1/4  37/9522
+hsa04960 Aldosterone-regulated sodium reabsorption       1/4  38/9522
          RichFactor FoldEnrichment   zScore      pvalue   p.adjust     qvalue
-hsa05225 0.01176471       26.36471 7.054460 0.002092264 0.09953144 0.06234244
-hsa05216 0.02702703       60.56757 7.671153 0.016411273 0.09953144 0.06234244
-hsa04960 0.02631579       58.97368 7.566533 0.016851999 0.09953144 0.06234244
+hsa05225 0.01176471       28.00588 7.283314 0.001856967 0.09403986 0.05355161
+hsa05216 0.02702703       64.33784 7.913049 0.015455014 0.09403986 0.05355161
+hsa04960 0.02631579       62.64474 7.805315 0.015870215 0.09403986 0.05355161
             geneID Count
 hsa05225 6597/5594     2
 hsa05216      5594     1
@@ -3027,16 +3902,53 @@ hsa05216     Human Diseases Cancer: specific types hsa05216 Thyroid cancer
 hsa05219     Human Diseases Cancer: specific types hsa05219 Bladder cancer
 hsa04216 Cellular Processes  Cell growth and death hsa04216    Ferroptosis
          GeneRatio BgRatio RichFactor FoldEnrichment   zScore      pvalue
-hsa05216       1/1 37/8964 0.02702703       242.2703 15.53288 0.004127622
-hsa05219       1/1 41/8964 0.02439024       218.6341 14.75243 0.004573851
-hsa04216       1/1 42/8964 0.02380952       213.4286 14.57493 0.004685408
-           p.adjust qvalue geneID Count
-hsa05216 0.02931956     NA   7157     1
-hsa05219 0.02931956     NA   7157     1
-hsa04216 0.02931956     NA   7157     1</code></pre>
+hsa05216       1/1 37/9522 0.02702703       257.3514 16.01098 0.003885738
+hsa05219       1/1 41/9522 0.02439024       232.2439 15.20671 0.004305818
+hsa04216       1/1 42/9522 0.02380952       226.7143 15.02379 0.004410838
+          p.adjust qvalue geneID Count
+hsa05216 0.0276014     NA   7157     1
+hsa05219 0.0276014     NA   7157     1
+hsa04216 0.0276014     NA   7157     1</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-2">
+Past versions of unnamed-chunk-23-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-23-2.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
-<pre><code>---- Group: age_pos | Number of enriched KEGG pathways = 112</code></pre>
+<pre><code>---- Group: age_pos | Number of enriched KEGG pathways = 114</code></pre>
 <pre><code>                                     category               subcategory
 hsa04071 Environmental Information Processing       Signal transduction
 hsa05160                       Human Diseases Infectious disease: viral
@@ -3046,71 +3958,219 @@ hsa04071 hsa04071                  Sphingolipid signaling pathway       3/5
 hsa05160 hsa05160                                     Hepatitis C       3/5
 hsa05167 hsa05167 Kaposi sarcoma-associated herpesvirus infection       3/5
           BgRatio RichFactor FoldEnrichment    zScore       pvalue    p.adjust
-hsa04071 122/8964 0.02459016       44.08525 11.319185 2.411429e-05 0.002437495
-hsa05160 159/8964 0.01886792       33.82642  9.865958 5.335594e-05 0.002437495
-hsa05167 196/8964 0.01530612       27.44082  8.841675 9.967683e-05 0.002437495
+hsa04071 125/9522 0.02400000       45.70560 11.531839 2.166716e-05 0.002101929
+hsa05160 156/9522 0.01923077       36.62308 10.282362 4.211132e-05 0.002101929
+hsa05167 196/9522 0.01530612       29.14898  9.126815 8.331851e-05 0.002101929
               qvalue         geneID Count
-hsa04071 0.001214166 5879/5518/7157     3
-hsa05160 0.001214166  841/5518/7157     3
-hsa05167 0.001214166  841/5879/7157     3</code></pre>
+hsa04071 0.001009237 5879/5518/7157     3
+hsa05160 0.001009237  841/5518/7157     3
+hsa05167 0.001009237  841/5879/7157     3</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-3">
+Past versions of unnamed-chunk-23-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-23-3.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
-<pre><code>---- Group: age_neg | Number of enriched KEGG pathways = 79</code></pre>
+<pre><code>---- Group: age_neg | Number of enriched KEGG pathways = 81</code></pre>
 <pre><code>               category            subcategory       ID        Description
 hsa05213 Human Diseases Cancer: specific types hsa05213 Endometrial cancer
 hsa05215 Human Diseases Cancer: specific types hsa05215    Prostate cancer
 hsa05224 Human Diseases Cancer: specific types hsa05224      Breast cancer
          GeneRatio  BgRatio RichFactor FoldEnrichment   zScore       pvalue
-hsa05213       3/4  59/8964 0.05084746      113.94915 18.39055 1.078486e-06
-hsa05215       3/4  98/8964 0.03061224       68.60204 14.21712 5.029235e-06
-hsa05224       3/4 148/8964 0.02027027       45.42568 11.51415 1.743127e-05
+hsa05213       3/4  59/9522 0.05084746      121.04237 18.96027 9.000087e-07
+hsa05215       3/4 106/9522 0.02830189       67.37264 14.08663 5.321107e-06
+hsa05224       3/4 148/9522 0.02027027       48.25338 11.87681 1.455305e-05
              p.adjust       qvalue        geneID Count
-hsa05213 8.520036e-05 3.405744e-05 673/5728/1499     3
-hsa05215 1.986548e-04 7.940897e-05 673/5728/1499     3
-hsa05224 4.590233e-04 1.834870e-04 673/5728/1499     3</code></pre>
+hsa05213 7.290071e-05 2.557920e-05 673/5728/1499     3
+hsa05215 2.155048e-04 7.561573e-05 673/5728/1499     3
+hsa05224 3.929324e-04 1.378710e-04 673/5728/1499     3</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-23-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-4">
+Past versions of unnamed-chunk-23-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-23-4.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
-<pre><code>---- Group: instability_pos | Number of enriched KEGG pathways = 120</code></pre>
+<pre><code>---- Group: instability_pos | Number of enriched KEGG pathways = 121</code></pre>
 <pre><code>                                     category            subcategory       ID
 hsa05225                       Human Diseases Cancer: specific types hsa05225
 hsa04071 Environmental Information Processing    Signal transduction hsa04071
 hsa05418                       Human Diseases Cardiovascular disease hsa05418
                                     Description GeneRatio  BgRatio RichFactor
-hsa05225               Hepatocellular carcinoma       4/5 170/8964 0.02352941
-hsa04071         Sphingolipid signaling pathway       3/5 122/8964 0.02459016
-hsa05418 Fluid shear stress and atherosclerosis       3/5 141/8964 0.02127660
+hsa05225               Hepatocellular carcinoma       4/5 170/9522 0.02352941
+hsa04071         Sphingolipid signaling pathway       3/5 125/9522 0.02400000
+hsa05418 Fluid shear stress and atherosclerosis       3/5 142/9522 0.02112676
          FoldEnrichment   zScore       pvalue     p.adjust       qvalue
-hsa05225       42.18353 12.80668 6.153606e-07 7.384327e-05 4.275137e-05
-hsa04071       44.08525 11.31919 2.411429e-05 1.446857e-03 8.376542e-04
-hsa05418       38.14468 10.50219 3.723185e-05 1.489274e-03 8.622113e-04
+hsa05225       44.80941 13.21040 4.837157e-07 0.0000585296 3.258716e-05
+hsa04071       45.70560 11.53184 2.166716e-05 0.0012738675 7.092433e-04
+hsa05418       40.23380 10.79641 3.177063e-05 0.0012738675 7.092433e-04
                       geneID Count
 hsa05225 7157/5604/4780/9817     4
 hsa04071      7157/5604/5518     3
 hsa05418      7157/4780/9817     3</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-23-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-5">
+Past versions of unnamed-chunk-23-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-23-5.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre><code>&#39;select()&#39; returned 1:1 mapping between keys and columns</code></pre>
-<pre><code>---- Group: instability_neg | Number of enriched KEGG pathways = 178</code></pre>
+<pre><code>---- Group: instability_neg | Number of enriched KEGG pathways = 180</code></pre>
 <pre><code>                                     category               subcategory
 hsa04010 Environmental Information Processing       Signal transduction
 hsa05166                       Human Diseases Infectious disease: viral
 hsa05161                       Human Diseases Infectious disease: viral
                ID                             Description GeneRatio  BgRatio
-hsa04010 hsa04010                  MAPK signaling pathway     11/26 300/8964
-hsa05166 hsa05166 Human T-cell leukemia virus 1 infection     10/26 224/8964
-hsa05161 hsa05161                             Hepatitis B      9/26 163/8964
+hsa04010 hsa04010                  MAPK signaling pathway     11/26 300/9522
+hsa05166 hsa05166 Human T-cell leukemia virus 1 infection     10/26 224/9522
+hsa05161 hsa05161                             Hepatitis B      9/26 163/9522
          RichFactor FoldEnrichment   zScore       pvalue     p.adjust
-hsa04010 0.03666667       12.64154 11.06127 2.428661e-10 2.478935e-08
-hsa05166 0.04464286       15.39148 11.76433 2.909587e-10 2.478935e-08
-hsa05161 0.05521472       19.03634 12.53341 4.177981e-10 2.478935e-08
+hsa04010 0.03666667       13.42846 11.44519 1.283351e-10 1.461229e-08
+hsa05166 0.04464286       16.34959 12.16420 1.623588e-10 1.461229e-08
+hsa05161 0.05521472       20.22133 12.95150 2.463914e-10 1.478348e-08
                qvalue                                                geneID
-hsa04010 8.062769e-09 2261/3265/4214/5879/7048/3845/673/6416/4763/1969/3815
-hsa05166 8.062769e-09     3265/4214/2033/3105/3106/7048/3845/5728/6416/5290
-hsa05161 8.062769e-09            3265/4214/841/2033/7048/3845/673/6416/5290
+hsa04010 4.699860e-09 2261/3265/4214/5879/7048/3845/673/6416/4763/1969/3815
+hsa05166 4.699860e-09     3265/4214/2033/3105/3106/7048/3845/5728/6416/5290
+hsa05161 4.754921e-09            3265/4214/841/2033/7048/3845/673/6416/5290
          Count
 hsa04010    11
 hsa05166    10
 hsa05161     9</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-23-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-6">
+Past versions of unnamed-chunk-23-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-23-6.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="plot-specific-genes" class="section level1">
@@ -3148,6 +4208,43 @@ head(pheno)</code></pre>
 [1] &quot;phenotype name is Aneuploidy.Score&quot;
 [1] &quot;number of samples shared in phenotype and mutation file: 482&quot;</code></pre>
 <p><img src="figure/clinical.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-26-1">
+Past versions of unnamed-chunk-26-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-26-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/afa8998a3282877f7479bf27d2d83935df9f3ac3/docs/figure/clinical.Rmd/unnamed-chunk-26-1.png" target="_blank">afa8998</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-06-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -3184,11 +4281,11 @@ other attached packages:
  [4] AnnotationDbi_1.68.0   IRanges_2.40.1         S4Vectors_0.44.0      
  [7] Biobase_2.66.0         BiocGenerics_0.52.0    clusterProfiler_4.14.6
 [10] msigdbr_24.1.0         ggplot2_3.5.2          dplyr_1.1.4           
-[13] scales_1.4.0           DT_0.33                workflowr_1.7.1       
+[13] scales_1.4.0           DT_0.33               
 
 loaded via a namespace (and not attached):
-  [1] RColorBrewer_1.1-3      shape_1.4.6.1           rstudioapi_0.17.1      
-  [4] jsonlite_2.0.0          magrittr_2.0.3          ggtangle_0.0.6         
+  [1] RColorBrewer_1.1-3      rstudioapi_0.17.1       jsonlite_2.0.0         
+  [4] shape_1.4.6.1           magrittr_2.0.3          ggtangle_0.0.6         
   [7] farver_2.1.2            rmarkdown_2.29          GlobalOptions_0.1.2    
  [10] fs_1.6.6                zlibbioc_1.52.0         vctrs_0.6.5            
  [13] memoise_2.0.1           ggtree_3.14.0           polynom_1.4-1          
@@ -3197,37 +4294,36 @@ loaded via a namespace (and not attached):
  [22] plyr_1.8.9              cachem_1.1.0            whisker_0.4.1          
  [25] igraph_2.1.4            lifecycle_1.0.4         pkgconfig_2.0.3        
  [28] cols4all_0.8            Matrix_1.7-3            R6_2.6.1               
- [31] fastmap_1.2.0           gson_0.1.0              ggsankey_0.0.99999     
- [34] GenomeInfoDbData_1.2.13 digest_0.6.37           aplot_0.2.5            
- [37] colorspace_2.1-1        patchwork_1.3.0         ps_1.9.1               
- [40] rprojroot_2.0.4         crosstalk_1.2.1         RSQLite_2.3.11         
- [43] labeling_0.4.3          spacesXYZ_1.5-1         abind_1.4-8            
- [46] httr_1.4.7              compiler_4.4.2          bit64_4.6.0-1          
- [49] withr_3.0.2             BiocParallel_1.40.2     DBI_1.2.3              
- [52] logger_0.4.0            R.utils_2.13.0          MASS_7.3-65            
- [55] ggpp_0.5.8-1            tools_4.4.2             ape_5.8-1              
- [58] httpuv_1.6.16           R.oo_1.27.1             glue_1.8.0             
- [61] callr_3.7.6             nlme_3.1-168            GOSemSim_2.32.0        
- [64] promises_1.3.3          grid_4.4.2              getPass_0.2-4          
- [67] reshape2_1.4.4          fgsea_1.32.4            generics_0.1.4         
- [70] gtable_0.3.6            R.methodsS3_1.8.2       tidyr_1.3.1            
- [73] data.table_1.17.4       XVector_0.46.0          ggrepel_0.9.6          
- [76] pillar_1.10.2           stringr_1.5.1           yulab.utils_0.2.0      
- [79] babelgene_22.9          later_1.4.2             circlize_0.4.16        
- [82] splines_4.4.2           treeio_1.30.0           lattice_0.22-7         
- [85] bit_4.6.0               tidyselect_1.2.1        GO.db_3.20.0           
- [88] Biostrings_2.74.1       knitr_1.50              git2r_0.36.2           
- [91] gridExtra_2.3           xfun_0.52               stringi_1.8.7          
- [94] UCSC.utils_1.2.0        lazyeval_0.2.2          ggfun_0.1.8            
- [97] yaml_2.3.10             evaluate_1.0.3          codetools_0.2-20       
-[100] tibble_3.2.1            qvalue_2.38.0           ggplotify_0.1.2        
-[103] cli_3.6.5               processx_3.8.6          jquerylib_0.1.4        
-[106] Rcpp_1.0.14             GenomeInfoDb_1.42.3     png_0.1-8              
-[109] parallel_4.4.2          assertthat_0.2.1        blob_1.2.4             
-[112] DOSE_4.0.1              diffdriver_0.1.6        tidytree_0.4.6         
-[115] ggridges_0.5.6          purrr_1.0.4             crayon_1.5.3           
-[118] rlang_1.1.6             cowplot_1.1.3           fastmatch_1.1-6        
-[121] KEGGREST_1.46.0        </code></pre>
+ [31] fastmap_1.2.0           gson_0.1.0              GenomeInfoDbData_1.2.13
+ [34] ggsankey_0.0.99999      digest_0.6.37           aplot_0.2.5            
+ [37] colorspace_2.1-1        patchwork_1.3.0         rprojroot_2.0.4        
+ [40] crosstalk_1.2.1         RSQLite_2.3.11          labeling_0.4.3         
+ [43] spacesXYZ_1.5-1         abind_1.4-8             httr_1.4.7             
+ [46] compiler_4.4.2          bit64_4.6.0-1           withr_3.0.2            
+ [49] BiocParallel_1.40.2     DBI_1.2.3               logger_0.4.0           
+ [52] R.utils_2.13.0          MASS_7.3-65             ggpp_0.5.8-1           
+ [55] tools_4.4.2             ape_5.8-1               httpuv_1.6.16          
+ [58] R.oo_1.27.1             glue_1.8.0              nlme_3.1-168           
+ [61] GOSemSim_2.32.0         promises_1.3.3          grid_4.4.2             
+ [64] reshape2_1.4.4          fgsea_1.32.4            generics_0.1.4         
+ [67] gtable_0.3.6            R.methodsS3_1.8.2       tidyr_1.3.1            
+ [70] data.table_1.17.4       XVector_0.46.0          ggrepel_0.9.6          
+ [73] pillar_1.10.2           stringr_1.5.1           yulab.utils_0.2.0      
+ [76] babelgene_22.9          later_1.4.2             circlize_0.4.16        
+ [79] splines_4.4.2           treeio_1.30.0           lattice_0.22-7         
+ [82] bit_4.6.0               tidyselect_1.2.1        GO.db_3.20.0           
+ [85] Biostrings_2.74.1       knitr_1.50              git2r_0.36.2           
+ [88] gridExtra_2.3           xfun_0.52               stringi_1.8.7          
+ [91] UCSC.utils_1.2.0        workflowr_1.7.1         lazyeval_0.2.2         
+ [94] ggfun_0.1.8             yaml_2.3.10             evaluate_1.0.3         
+ [97] codetools_0.2-20        tibble_3.2.1            qvalue_2.38.0          
+[100] ggplotify_0.1.2         cli_3.6.5               jquerylib_0.1.4        
+[103] Rcpp_1.0.14             GenomeInfoDb_1.42.3     png_0.1-8              
+[106] parallel_4.4.2          assertthat_0.2.1        blob_1.2.4             
+[109] DOSE_4.0.1              diffdriver_0.1.6        tidytree_0.4.6         
+[112] ggridges_0.5.6          purrr_1.0.4             crayon_1.5.3           
+[115] rlang_1.1.6             cowplot_1.1.3           fastmatch_1.1-6        
+[118] KEGGREST_1.46.0        </code></pre>
 </div>
 </div>
 </div>

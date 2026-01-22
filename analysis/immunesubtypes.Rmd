@@ -1,7 +1,7 @@
 ---
 title: "Immune Subtypes"
 author: "Qirui Zhang"
-date: "2025-06-04"
+date: "2026-01-22"
 output: 
   html_document:
     theme: flatly
@@ -168,13 +168,29 @@ diff_table <-  get_diff_table(filedf, include_nonsig = FALSE)
 ```{r}
 library(DT)
 diff_table_sig <- subset(diff_table, mode == "sig")
-datatable(diff_table_sig, options = list(pageLength = 10))
+datatable(
+  diff_table_sig,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
 ```
 
 ## Table under "Reg" Mode
 ```{r}
 diff_table_reg <- subset(diff_table, mode == "reg")
-datatable(diff_table_reg, options = list(pageLength = 10))
+datatable(
+  diff_table_reg,
+  extensions = 'Buttons',
+  options = list(
+    dom        = 'Bfrtip', 
+    buttons    = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    pageLength = 10
+  )
+)
 ```
 
 # Plotting the Number of Significant Differential Genes
