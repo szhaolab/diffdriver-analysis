@@ -409,7 +409,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-01-22
+<strong>Last updated:</strong> 2026-01-23
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -543,15 +543,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree0175f7783de05b5c37503957ba8d644e95dd9099targetblank0175f77a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree79262997111b6b9ecf7a325f29de3d3643af6fb1targetblank7926299a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/0175f7783de05b5c37503957ba8d644e95dd9099" target="_blank">0175f77</a>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/79262997111b6b9ecf7a325f29de3d3643af6fb1" target="_blank">7926299</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree0175f7783de05b5c37503957ba8d644e95dd9099targetblank0175f77a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree79262997111b6b9ecf7a325f29de3d3643af6fb1targetblank7926299a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -561,7 +561,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/0175f7783de05b5c37503957ba8d644e95dd9099" target="_blank">0175f77</a>.
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/79262997111b6b9ecf7a325f29de3d3643af6fb1" target="_blank">7926299</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -640,6 +640,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/79262997111b6b9ecf7a325f29de3d3643af6fb1/analysis/immunesubtypes.Rmd" target="_blank">7926299</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2026-01-22
+</td>
+<td>
+Update immunesubtypes workflowr report
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/79262997111b6b9ecf7a325f29de3d3643af6fb1/docs/immunesubtypes.html" target="_blank">7926299</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2026-01-22
+</td>
+<td>
+Update immunesubtypes workflowr report
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1709,6 +1743,218 @@ Qirui Zhang
 </table>
 </div>
 </div>
+</div>
+<div id="plot-immune-subtypes" class="section level1">
+<h1>Plot Immune Subtypes</h1>
+<pre class="r"><code>prep_pheno_mut_data_full &lt;- function(mut, pheno) {
+  library(data.table)
+
+  mut   &lt;- as.data.table(mut)
+  pheno &lt;- as.data.table(pheno)
+
+  if (!grepl(&quot;chr&quot;, mut$Chromosome[1], fixed = TRUE)) {
+    mut[ , Chromosome := paste0(&quot;chr&quot;, Chromosome)]
+  }
+
+  shared &lt;- intersect(mut$SampleID, pheno$SampleID)
+  if (length(shared) &lt; 10)
+    stop(&quot;too few samples with both phenotype and mutation data.&quot;)
+
+  mut   &lt;- mut  [SampleID %in% shared]
+  pheno &lt;- pheno[SampleID %in% shared]
+
+  if (anyDuplicated(pheno$SampleID)) {
+    pheno &lt;- pheno[ , lapply(.SD, mean, na.rm = TRUE), by = SampleID]
+  }
+
+  ci &lt;- pheno[ , .(SampleID, cidx = .I)]
+
+  list(mut = mut, pheno = pheno, ci = ci)
+}
+
+
+prep_mut_matrix &lt;- function(gene_name, mut, pheno,
+                            totalnttype = 96,
+                            anno_dir    = &quot;.&quot;,
+                            output_prefix = &quot;plot&quot;,
+                            output_dir    = &quot;.&quot;) {
+
+  library(data.table)
+  library(Matrix)
+
+  mut        &lt;- as.data.table(mut)
+  pheno_full &lt;- as.data.table(pheno)
+
+  afileinfo &lt;- list(
+    file        = file.path(anno_dir,
+                            paste0(&quot;anno&quot;, totalnttype,
+                                   &quot;_nttypeXXX_annodata.txt&quot;)),
+    header      = diffdriver:::aheader,
+    coltype     = diffdriver:::acoltype,
+    totalntype  = totalnttype)
+
+  rdata &lt;- diffdriver:::prep_positional_data(
+              gene_name, afileinfo, BMRreg = NULL,
+              output_prefix = output_prefix,
+              output_dir    = output_dir)
+
+  fanno  &lt;- rdata$fanno
+  ri     &lt;- rdata$ri
+  ri[ , ridx := .I]
+
+  cdata &lt;- prep_pheno_mut_data_full(mut, pheno_full)
+  mut   &lt;- cdata$mut
+  pheno &lt;- cdata$pheno    
+  ci    &lt;- cdata$ci
+
+  nmutdt &lt;- data.table(table(mut$SampleID))
+  setnames(nmutdt, c(&quot;SampleID&quot;, &quot;Nmut&quot;))
+  pheno &lt;- merge(pheno, nmutdt, by = &quot;SampleID&quot;, all.x = TRUE, sort = FALSE)
+
+  muti &lt;- na.omit(
+            ci[ ri[mut,
+                    on = c(chrom = &quot;Chromosome&quot;,
+                           start = &quot;Position&quot;,
+                           ref   = &quot;Ref&quot;,
+                           alt   = &quot;Alt&quot;)],
+                on = &quot;SampleID&quot;])
+
+  mutmtx &lt;- sparseMatrix(
+              i = muti$ridx,
+              j = muti$cidx,
+              dims = c(max(ri$ridx), max(ci$cidx)))
+
+  list(fanno = fanno, pheno = pheno, mutmtx = mutmtx)
+}
+
+
+plot_mut_multi &lt;- function(gene_name,
+                           mut, pheno,
+                           pheno_cols = colnames(pheno)[-1], 
+                           totalnttype = 96,
+                           anno_dir    = &quot;.&quot;,
+                           output_prefix = &quot;plot&quot;,
+                           output_dir    = &quot;.&quot;,
+                           mycolors = c(&quot;#FF3D2E&quot;, &quot;#2b8cbe&quot;, &quot;#fdae61&quot;,
+                                        &quot;#41ab5d&quot;, &quot;pink&quot;, &quot;#8C2DA6&quot;, &quot;#a65628&quot;)) {
+
+  pdata  &lt;- prep_mut_matrix(gene_name, mut, pheno,
+                            totalnttype, anno_dir,
+                            output_prefix, output_dir)
+  fanno  &lt;- pdata$fanno
+  pheno  &lt;- pdata$pheno
+  mutmtx &lt;- pdata$mutmtx
+
+  metr_mat &lt;- rbind(
+    Nonsyn = Matrix::colSums(mutmtx),
+    LoF    = Matrix::colSums(mutmtx[fanno$functypecode8 &gt; 0, ]),
+    Cons.  = Matrix::colSums(mutmtx[fanno$mycons        &gt; 0, ]),
+    `#Mut` = pheno$Nmut
+  )
+
+  pheno_mat &lt;- t(as.matrix(pheno[, pheno_cols, with = FALSE]))
+  rownames(pheno_mat) &lt;- pheno_cols
+
+  df  &lt;- rbind(pheno_mat, metr_mat)
+  # ord &lt;- order(df[1, ])
+  # df  &lt;- df[, ord]
+  
+  fac_C1 &lt;- df[&quot;C1&quot;, ]            
+  fac_C2 &lt;- df[&quot;C2&quot;, ]
+  val_FGA &lt;- df[&quot;FGA&quot;, ]
+  
+  ord &lt;- order(fac_C1, fac_C2, val_FGA, na.last = TRUE)
+  df  &lt;- df[, ord] 
+
+  n_row &lt;- nrow(df)
+  par(mfrow = c(n_row, 1), mar = c(0.5, 5, 0.5, 1))
+
+  for (i in seq_len(n_row)) {
+    vec &lt;- df[i, ]
+
+    unique_vals &lt;- unique(vec[!is.na(vec)])
+    
+    if (length(unique_vals) &lt;= 2 &amp;&amp; i &lt;= nrow(pheno_mat)) {
+      barplot(rep(1, length(vec)),
+              col = c(&quot;white&quot;, &quot;salmon&quot;)[as.factor(vec)],
+              xaxt = &quot;n&quot;, yaxt = &quot;n&quot;,
+              ylab = rownames(df)[i], border = NA)
+    } else {
+      ylim_i &lt;- if (rownames(df)[i] == &quot;#Mut&quot;) {
+                  c(0, quantile(vec, 0.99, na.rm = TRUE)[[1]])
+                } else NULL
+
+      barplot(vec,
+              col = if (i &lt;= nrow(pheno_mat))
+                      &quot;grey70&quot;  
+                    else
+                      mycolors[i - nrow(pheno_mat) + 1],
+              xaxt = &quot;n&quot;, yaxt = &quot;n&quot;,
+              ylab = rownames(df)[i],
+              border = NA,
+              ylim = ylim_i)
+    }
+  }
+}</code></pre>
+<pre class="r"><code>mut_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/HNSC/HNSC_mutations.txt&quot;
+mut &lt;- read.table(mut_path, header = TRUE, sep = &quot;\t&quot;)
+head(mut)</code></pre>
+<pre><code>  Chromosome Position Ref Alt     SampleID
+1          4 44700691   C   G TCGA-CR-7386
+2          9 35074164   C   T TCGA-CR-7395
+3         22 37914082   T   A TCGA-CQ-5325
+4          6 30571952   C   T TCGA-CR-6467
+5         19 38127001   C   G TCGA-CV-5434
+6          8 23290623   C   T TCGA-HD-7754</code></pre>
+<pre class="r"><code>library(data.table)</code></pre>
+<pre><code>
+Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:dplyr&#39;:
+
+    between, first, last</code></pre>
+<pre class="r"><code>pheno_files &lt;- list(
+  C1  = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/HNSC/HNSC_C1.txt&quot;,
+  C2 = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/HNSC/HNSC_C2.txt&quot;,
+  FGA = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Fraction.Genome.Altered.txt&quot;,
+  Abun_IGK = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_IGK.txt&quot;,
+  Abun_TRA = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRA.txt&quot;,
+  Abun_TRB = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRB.txt&quot;,
+  Clon_IGH = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGH.txt&quot;,
+  # Clon_IGK = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGK.txt&quot;
+  # Clon_IGL = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGL.txt&quot;,
+  # Ent_IGH = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGH.txt&quot;,
+  # Ent_IGK = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGK.txt&quot;,
+  # Ent_IGL = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGL.txt&quot;,
+  # Ent_TRA = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRA.txt&quot;,
+  # Ent_TRB = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRB.txt&quot;,
+  NK_cells = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/HNSC/HNSC_NK_cells.txt&quot;,
+  OSTIOP = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch5/tumor_specific_input/HNSC/46/HNSC_ukbEUR_OSTIOP.txt&quot;
+)
+
+pheno_list &lt;- lapply(names(pheno_files), function(nm) {
+  dt &lt;- fread(pheno_files[[nm]], header = TRUE, sep = &quot;\t&quot;)
+  setnames(dt, old = colnames(dt)[2], new = nm) 
+  dt
+})
+
+pheno_wide &lt;- Reduce(function(x, y) merge(x, y, by = &quot;SampleID&quot;, all = TRUE),
+                     pheno_list)
+
+pheno_cols &lt;- names(pheno_files)</code></pre>
+<pre class="r"><code>plot_mut_multi(
+  gene_name  = &quot;HLA-B&quot;,                      
+  mut        = mut,                        
+  pheno      = pheno_wide,                  
+  pheno_cols = pheno_cols,    
+  anno_dir   = &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;
+)</code></pre>
+<pre><code>Warning: package &#39;Matrix&#39; was built under R version 4.4.3</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;</code></pre>
+<p><img src="figure/immunesubtypes.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1740,25 +1986,26 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] ggplot2_3.5.2    dplyr_1.1.4      scales_1.4.0     DT_0.33         
-[5] kableExtra_1.4.0 knitr_1.50       workflowr_1.7.1 
+[1] Matrix_1.7-3      data.table_1.17.4 ggplot2_3.5.2     dplyr_1.1.4      
+[5] scales_1.4.0      DT_0.33           kableExtra_1.4.0  knitr_1.50       
+[9] workflowr_1.7.1  
 
 loaded via a namespace (and not attached):
  [1] generics_0.1.4     sass_0.4.10        xml2_1.3.8         stringi_1.8.7     
  [5] diffdriver_0.1.6   lattice_0.22-7     digest_0.6.37      magrittr_2.0.3    
  [9] evaluate_1.0.3     grid_4.4.2         RColorBrewer_1.1-3 fastmap_1.2.0     
-[13] rprojroot_2.0.4    jsonlite_2.0.0     Matrix_1.7-3       processx_3.8.6    
-[17] whisker_0.4.1      ps_1.9.1           promises_1.3.3     httr_1.4.7        
-[21] crosstalk_1.2.1    viridisLite_0.4.2  textshaping_1.0.1  jquerylib_0.1.4   
-[25] cli_3.6.5          rlang_1.1.6        withr_3.0.2        cachem_1.1.0      
-[29] yaml_2.3.10        tools_4.4.2        httpuv_1.6.16      vctrs_0.6.5       
-[33] R6_2.6.1           lifecycle_1.0.4    git2r_0.36.2       stringr_1.5.1     
-[37] fs_1.6.6           htmlwidgets_1.6.4  pkgconfig_2.0.3    callr_3.7.6       
-[41] gtable_0.3.6       pillar_1.10.2      bslib_0.9.0        later_1.4.2       
-[45] glue_1.8.0         data.table_1.17.4  Rcpp_1.0.14        systemfonts_1.2.3 
-[49] tidyselect_1.2.1   xfun_0.52          tibble_3.2.1       rstudioapi_0.17.1 
-[53] farver_2.1.2       htmltools_0.5.8.1  labeling_0.4.3     rmarkdown_2.29    
-[57] svglite_2.2.1      compiler_4.4.2     getPass_0.2-4     </code></pre>
+[13] rprojroot_2.0.4    jsonlite_2.0.0     processx_3.8.6     whisker_0.4.1     
+[17] ps_1.9.1           promises_1.3.3     httr_1.4.7         crosstalk_1.2.1   
+[21] viridisLite_0.4.2  textshaping_1.0.1  jquerylib_0.1.4    cli_3.6.5         
+[25] rlang_1.1.6        withr_3.0.2        cachem_1.1.0       yaml_2.3.10       
+[29] tools_4.4.2        httpuv_1.6.16      vctrs_0.6.5        R6_2.6.1          
+[33] lifecycle_1.0.4    git2r_0.36.2       stringr_1.5.1      fs_1.6.6          
+[37] htmlwidgets_1.6.4  pkgconfig_2.0.3    callr_3.7.6        gtable_0.3.6      
+[41] pillar_1.10.2      bslib_0.9.0        later_1.4.2        glue_1.8.0        
+[45] Rcpp_1.0.14        systemfonts_1.2.3  tidyselect_1.2.1   xfun_0.52         
+[49] tibble_3.2.1       rstudioapi_0.17.1  farver_2.1.2       htmltools_0.5.8.1 
+[53] labeling_0.4.3     rmarkdown_2.29     svglite_2.2.1      compiler_4.4.2    
+[57] getPass_0.2-4     </code></pre>
 </div>
 </div>
 </div>

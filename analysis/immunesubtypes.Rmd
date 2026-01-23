@@ -447,3 +447,206 @@ diffdriver::plot_mut(gene_name = "KIT", mut= mut, pheno = pheno, totalnttype = 9
                      anno_dir =  "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96")
 ```
 
+# Plot Immune Subtypes
+```{r}
+prep_pheno_mut_data_full <- function(mut, pheno) {
+  library(data.table)
+
+  mut   <- as.data.table(mut)
+  pheno <- as.data.table(pheno)
+
+  if (!grepl("chr", mut$Chromosome[1], fixed = TRUE)) {
+    mut[ , Chromosome := paste0("chr", Chromosome)]
+  }
+
+  shared <- intersect(mut$SampleID, pheno$SampleID)
+  if (length(shared) < 10)
+    stop("too few samples with both phenotype and mutation data.")
+
+  mut   <- mut  [SampleID %in% shared]
+  pheno <- pheno[SampleID %in% shared]
+
+  if (anyDuplicated(pheno$SampleID)) {
+    pheno <- pheno[ , lapply(.SD, mean, na.rm = TRUE), by = SampleID]
+  }
+
+  ci <- pheno[ , .(SampleID, cidx = .I)]
+
+  list(mut = mut, pheno = pheno, ci = ci)
+}
+
+
+prep_mut_matrix <- function(gene_name, mut, pheno,
+                            totalnttype = 96,
+                            anno_dir    = ".",
+                            output_prefix = "plot",
+                            output_dir    = ".") {
+
+  library(data.table)
+  library(Matrix)
+
+  mut        <- as.data.table(mut)
+  pheno_full <- as.data.table(pheno)
+
+  afileinfo <- list(
+    file        = file.path(anno_dir,
+                            paste0("anno", totalnttype,
+                                   "_nttypeXXX_annodata.txt")),
+    header      = diffdriver:::aheader,
+    coltype     = diffdriver:::acoltype,
+    totalntype  = totalnttype)
+
+  rdata <- diffdriver:::prep_positional_data(
+              gene_name, afileinfo, BMRreg = NULL,
+              output_prefix = output_prefix,
+              output_dir    = output_dir)
+
+  fanno  <- rdata$fanno
+  ri     <- rdata$ri
+  ri[ , ridx := .I]
+
+  cdata <- prep_pheno_mut_data_full(mut, pheno_full)
+  mut   <- cdata$mut
+  pheno <- cdata$pheno    
+  ci    <- cdata$ci
+
+  nmutdt <- data.table(table(mut$SampleID))
+  setnames(nmutdt, c("SampleID", "Nmut"))
+  pheno <- merge(pheno, nmutdt, by = "SampleID", all.x = TRUE, sort = FALSE)
+
+  muti <- na.omit(
+            ci[ ri[mut,
+                    on = c(chrom = "Chromosome",
+                           start = "Position",
+                           ref   = "Ref",
+                           alt   = "Alt")],
+                on = "SampleID"])
+
+  mutmtx <- sparseMatrix(
+              i = muti$ridx,
+              j = muti$cidx,
+              dims = c(max(ri$ridx), max(ci$cidx)))
+
+  list(fanno = fanno, pheno = pheno, mutmtx = mutmtx)
+}
+
+
+plot_mut_multi <- function(gene_name,
+                           mut, pheno,
+                           pheno_cols = colnames(pheno)[-1], 
+                           totalnttype = 96,
+                           anno_dir    = ".",
+                           output_prefix = "plot",
+                           output_dir    = ".",
+                           mycolors = c("#FF3D2E", "#2b8cbe", "#fdae61",
+                                        "#41ab5d", "pink", "#8C2DA6", "#a65628")) {
+
+  pdata  <- prep_mut_matrix(gene_name, mut, pheno,
+                            totalnttype, anno_dir,
+                            output_prefix, output_dir)
+  fanno  <- pdata$fanno
+  pheno  <- pdata$pheno
+  mutmtx <- pdata$mutmtx
+
+  metr_mat <- rbind(
+    Nonsyn = Matrix::colSums(mutmtx),
+    LoF    = Matrix::colSums(mutmtx[fanno$functypecode8 > 0, ]),
+    Cons.  = Matrix::colSums(mutmtx[fanno$mycons        > 0, ]),
+    `#Mut` = pheno$Nmut
+  )
+
+  pheno_mat <- t(as.matrix(pheno[, pheno_cols, with = FALSE]))
+  rownames(pheno_mat) <- pheno_cols
+
+  df  <- rbind(pheno_mat, metr_mat)
+  # ord <- order(df[1, ])
+  # df  <- df[, ord]
+  
+  fac_C1 <- df["C1", ]            
+  fac_C2 <- df["C2", ]
+  val_FGA <- df["FGA", ]
+  
+  ord <- order(fac_C1, fac_C2, val_FGA, na.last = TRUE)
+  df  <- df[, ord] 
+
+  n_row <- nrow(df)
+  par(mfrow = c(n_row, 1), mar = c(0.5, 5, 0.5, 1))
+
+  for (i in seq_len(n_row)) {
+    vec <- df[i, ]
+
+    unique_vals <- unique(vec[!is.na(vec)])
+    
+    if (length(unique_vals) <= 2 && i <= nrow(pheno_mat)) {
+      barplot(rep(1, length(vec)),
+              col = c("white", "salmon")[as.factor(vec)],
+              xaxt = "n", yaxt = "n",
+              ylab = rownames(df)[i], border = NA)
+    } else {
+      ylim_i <- if (rownames(df)[i] == "#Mut") {
+                  c(0, quantile(vec, 0.99, na.rm = TRUE)[[1]])
+                } else NULL
+
+      barplot(vec,
+              col = if (i <= nrow(pheno_mat))
+                      "grey70"  
+                    else
+                      mycolors[i - nrow(pheno_mat) + 1],
+              xaxt = "n", yaxt = "n",
+              ylab = rownames(df)[i],
+              border = NA,
+              ylim = ylim_i)
+    }
+  }
+}
+```
+
+
+```{r}
+mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/HNSC/HNSC_mutations.txt"
+mut <- read.table(mut_path, header = TRUE, sep = "\t")
+head(mut)
+```
+
+```{r}
+library(data.table)
+pheno_files <- list(
+  C1  = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/HNSC/HNSC_C1.txt",
+  C2 = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/HNSC/HNSC_C2.txt",
+  FGA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Fraction.Genome.Altered.txt",
+  Abun_IGK = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_IGK.txt",
+  Abun_TRA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRA.txt",
+  Abun_TRB = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRB.txt",
+  Clon_IGH = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGH.txt",
+  # Clon_IGK = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGK.txt"
+  # Clon_IGL = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGL.txt",
+  # Ent_IGH = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGH.txt",
+  # Ent_IGK = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGK.txt",
+  # Ent_IGL = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGL.txt",
+  # Ent_TRA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRA.txt",
+  # Ent_TRB = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRB.txt",
+  NK_cells = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/HNSC/HNSC_NK_cells.txt",
+  OSTIOP = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch5/tumor_specific_input/HNSC/46/HNSC_ukbEUR_OSTIOP.txt"
+)
+
+pheno_list <- lapply(names(pheno_files), function(nm) {
+  dt <- fread(pheno_files[[nm]], header = TRUE, sep = "\t")
+  setnames(dt, old = colnames(dt)[2], new = nm) 
+  dt
+})
+
+pheno_wide <- Reduce(function(x, y) merge(x, y, by = "SampleID", all = TRUE),
+                     pheno_list)
+
+pheno_cols <- names(pheno_files)
+```
+
+```{r}
+plot_mut_multi(
+  gene_name  = "HLA-B",                      
+  mut        = mut,                        
+  pheno      = pheno_wide,                  
+  pheno_cols = pheno_cols,    
+  anno_dir   = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96"
+)
+```
