@@ -1,7 +1,7 @@
 ---
 title: "Immune Subtypes"
 author: "Qirui Zhang"
-date: "2026-01-22"
+date: "2026-01-24"
 output: 
   html_document:
     theme: flatly
@@ -617,7 +617,7 @@ pheno_files <- list(
   Abun_IGK = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_IGK.txt",
   Abun_TRA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRA.txt",
   Abun_TRB = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRB.txt",
-  Clon_IGH = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGH.txt",
+  Clon_IGH = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGH.txt"
   # Clon_IGK = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGK.txt"
   # Clon_IGL = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGL.txt",
   # Ent_IGH = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGH.txt",
@@ -625,8 +625,8 @@ pheno_files <- list(
   # Ent_IGL = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGL.txt",
   # Ent_TRA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRA.txt",
   # Ent_TRB = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRB.txt",
-  NK_cells = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/HNSC/HNSC_NK_cells.txt",
-  OSTIOP = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch5/tumor_specific_input/HNSC/46/HNSC_ukbEUR_OSTIOP.txt"
+  # NK_cells = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/HNSC/HNSC_NK_cells.txt",
+  # OSTIOP = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch5/tumor_specific_input/HNSC/46/HNSC_ukbEUR_OSTIOP.txt"
 )
 
 pheno_list <- lapply(names(pheno_files), function(nm) {
