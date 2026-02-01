@@ -524,15 +524,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree330acf4a0127ee886854ae6eab617b171e382b72targetblank330acf4a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreef2f45cabf8bfd77e79c1d580f9be21d08359dbfftargetblankf2f45caa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/330acf4a0127ee886854ae6eab617b171e382b72" target="_blank">330acf4</a>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/f2f45cabf8bfd77e79c1d580f9be21d08359dbff" target="_blank">f2f45ca</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree330acf4a0127ee886854ae6eab617b171e382b72targetblank330acf4a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistreef2f45cabf8bfd77e79c1d580f9be21d08359dbfftargetblankf2f45caa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -542,7 +542,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/330acf4a0127ee886854ae6eab617b171e382b72" target="_blank">330acf4</a>.
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/f2f45cabf8bfd77e79c1d580f9be21d08359dbff" target="_blank">f2f45ca</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -630,6 +630,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/f2f45cabf8bfd77e79c1d580f9be21d08359dbff/analysis/individualgene.Rmd" target="_blank">f2f45ca</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2026-02-01
+</td>
+<td>
+Update of individual gene analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/f2f45cabf8bfd77e79c1d580f9be21d08359dbff/docs/individualgene.html" target="_blank">f2f45ca</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2026-02-01
+</td>
+<td>
+Update of individual gene analysis
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1196,6 +1230,27 @@ Qirui Zhang
 </table>
 </div>
 </div>
+<pre class="r"><code>pheno_path &lt;- &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Fraction.Genome.Altered.txt&quot;
+pheno &lt;- read.table(pheno_path, header = TRUE, sep = &quot;\t&quot;)
+head(pheno)</code></pre>
+<pre><code>      SampleID Fraction.Genome.Altered
+1 TCGA-02-0001                  0.2459
+2 TCGA-02-0003                  0.1480
+3 TCGA-02-0006                  0.2391
+4 TCGA-02-0007                  0.1930
+5 TCGA-02-0009                  0.1594
+6 TCGA-02-0010                  0.1665</code></pre>
+<pre class="r"><code>diffdriver::plot_mut(gene_name = &quot;KIT&quot;, mut= mut, pheno = pheno, totalnttype = 96, 
+                     anno_dir =  &quot;/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96&quot;)</code></pre>
+<pre><code>[1] &quot;coding...&quot;
+[1] &quot;processing ...&quot;
+[1] &quot;for qnvars, filling in missing values ...&quot;
+[1] &quot;for cvars (0/1 categories), filling in missing values ...&quot;
+[1] &quot;normalizing categorical variables in annotation matrix ...&quot;
+[1] &quot;Only keeping the first two columns of the phenotype data frame.&quot;
+[1] &quot;phenotype name is Fraction.Genome.Altered&quot;
+[1] &quot;number of samples shared in phenotype and mutation file: 147&quot;</code></pre>
+<p><img src="figure/individualgene.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(data.table)
 
 pheno_files &lt;- list(
