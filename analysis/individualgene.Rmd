@@ -1,7 +1,7 @@
 ---
 title: "Individual gene"
 author: "Qirui Zhang"
-date: "2025-06-16"
+date: "2026-01-25"
 output: 
   html_document:
     theme: flatly
@@ -149,6 +149,8 @@ all_res <- do.call(rbind, res_list)
 subset_res <- all_res[c("pheno", "source")]
 subset_res
 ```
+
+# Figure 5c
 ```{r}
 prep_pheno_mut_data_full <- function(mut, pheno) {
   library(data.table)
@@ -260,8 +262,6 @@ plot_mut_multi <- function(gene_name,
   rownames(pheno_mat) <- pheno_cols
 
   df  <- rbind(pheno_mat, metr_mat)
-  # ord <- order(df[1, ])
-  # df  <- df[, ord]
   
   fac_C1 <- df["C1", ]            
   fac_C2 <- df["C2", ]
@@ -269,21 +269,24 @@ plot_mut_multi <- function(gene_name,
   
   ord <- order(fac_C1, fac_C2, val_FGA, na.last = TRUE)
   df  <- df[, ord] 
-
+  
   n_row <- nrow(df)
-  par(mfrow = c(n_row, 1), mar = c(0.5, 5, 0.5, 1))
+  par(mfrow = c(n_row, 1), mar = c(0.5, 12, 0.5, 1))
 
   for (i in seq_len(n_row)) {
     vec <- df[i, ]
 
-    if (length(unique(vec)) == 2 && i <= nrow(pheno_mat)) {
+    unique_vals <- unique(vec[!is.na(vec)])
+    current_label <- rownames(df)[i]
+    
+    if (length(unique_vals) <= 2 && i <= nrow(pheno_mat)) {
       barplot(rep(1, length(vec)),
               col = c("white", "salmon")[as.factor(vec)],
               xaxt = "n", yaxt = "n",
-              ylab = rownames(df)[i], border = NA)
+              ylab = "", border = NA)
     } else {
       ylim_i <- if (rownames(df)[i] == "#Mut") {
-                  c(0, quantile(vec, 0.99)[[1]])
+                  c(0, quantile(vec, 0.99, na.rm = TRUE)[[1]])
                 } else NULL
 
       barplot(vec,
@@ -292,10 +295,17 @@ plot_mut_multi <- function(gene_name,
                     else
                       mycolors[i - nrow(pheno_mat) + 1],
               xaxt = "n", yaxt = "n",
-              ylab = rownames(df)[i],
+              ylab = "",
               border = NA,
               ylim = ylim_i)
     }
+    
+    mtext(text = current_label, side = 2, line = 2.5, las = 1, cex = 1.2)
+    
+    if (current_label %in% c("Nonsyn", "LoF", "Cons.")) {
+        max_val <- max(vec, na.rm = TRUE)
+        axis(side = 2, at = 0:max_val, las = 1, cex.axis = 1.2, lwd = 1, lwd.ticks = 1)
+      }
   }
 }
 ```
@@ -305,16 +315,17 @@ mut_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/tumor_specific_input/TGCT/
 mut <- read.table(mut_path, header = TRUE, sep = "\t")
 head(mut)
 ```
+
 ```{r}
 library(data.table)
 pheno_files <- list(
   C1  = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C1.txt",
   C2 = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_input/TGCT/TGCT_C2.txt",
-  FGA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Fraction.Genome.Altered.txt",
-  Abun_IGK = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_IGK.txt",
-  Abun_TRA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRA.txt",
-  Abun_TRB = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRB.txt",
-  Clon_IGH = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGH.txt",
+  FGA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/cbioportal_download/Fraction.Genome.Altered.txt"
+  # Abun_IGK = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_IGK.txt",
+  # Abun_TRA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRA.txt",
+  # Abun_TRB = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Abundance_TRB.txt",
+  # Clon_IGH = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGH.txt"
   # Clon_IGK = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGK.txt"
   # Clon_IGL = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Clonality_IGL.txt",
   # Ent_IGH = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGH.txt",
@@ -322,8 +333,8 @@ pheno_files <- list(
   # Ent_IGL = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_IGL.txt",
   # Ent_TRA = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRA.txt",
   # Ent_TRB = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch4/Entropy_TRB.txt",
-  NK_cells = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/TGCT/TGCT_NK_cells.txt",
-  OSTIOP = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch5/tumor_specific_input/TGCT/46/TGCT_ukbEUR_OSTIOP.txt"
+  # NK_cells = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch3/tumor_specific_input/TGCT/TGCT_NK_cells.txt",
+  # OSTIOP = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch5/tumor_specific_input/TGCT/46/TGCT_ukbEUR_OSTIOP.txt"
 )
 
 pheno_list <- lapply(names(pheno_files), function(nm) {
@@ -340,6 +351,7 @@ pheno_cols <- names(pheno_files)
 
 
 ```{r}
+# pdf(file = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/figures/KIT_mutation_plot_new.pdf", width = 8, height = 6)
 plot_mut_multi(
   gene_name  = "KIT",                      
   mut        = mut,                        
@@ -347,6 +359,7 @@ plot_mut_multi(
   pheno_cols = pheno_cols,    
   anno_dir   = "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96"
 )
+# dev.off()
 ```
 
 ```{r}
@@ -360,6 +373,7 @@ pheno_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_in
 pheno <- read.table(pheno_path, header = TRUE, sep = "\t")
 head(pheno)
 ```
+
 ```{r}
 diffdriver::plot_mut(gene_name = "KIT", mut= mut, pheno = pheno, totalnttype = 96, 
                      anno_dir =  "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96")
@@ -370,6 +384,7 @@ pheno_path <- "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/batch2/tumor_specific_in
 pheno <- read.table(pheno_path, header = TRUE, sep = "\t")
 head(pheno)
 ```
+
 ```{r}
 diffdriver::plot_mut(gene_name = "KIT", mut= mut, pheno = pheno, totalnttype = 96, 
                      anno_dir =  "/dartfs/rc/lab/S/Szhao/qiruiz/diffdriver/temp/annodir96")
