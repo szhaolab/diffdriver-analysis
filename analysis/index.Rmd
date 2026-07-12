@@ -16,5 +16,6 @@ Welcome to my research website.
 - [PRS](PRS.html)
 - [Diversity](diversity.html)
 - [Individual Gene](individualgene.html)
-- [new_task1](new_task1.html)
-- [new_task2](new_task2.html)
+- [Uterine cancer subtype analysis](new_task1.html)
+- [Lung cancer subtype analysis](new_task2.html)
+- [LUAD smoking-differential driver analysis](LUAD_smoking.html)

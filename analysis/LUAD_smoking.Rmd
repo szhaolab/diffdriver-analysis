@@ -1,0 +1,156 @@
+---
+title: "LUAD smoking-differential driver analysis"
+date: "2026-07-12"
+output:
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Overview
+
+This analysis runs **diffdriver** on TCGA lung adenocarcinoma (**LUAD**) to test, for a
+panel of known LUAD driver genes, whether the strength of positive selection differs by
+**smoking status**, adjusting for **age** and **sex** as covariates.
+
+- **Phenotype:** smoking status, binary — ever-smoker (`tobacco_smoking_history_indicator` 2–5) = 1, never-smoker (= 1) = 0.
+- **Covariates:** age (`age_at_initial_pathologic_diagnosis`), sex (`gender`).
+- **Mutations:** TCGA LUAD MAF, SNVs only, keyed by 12-character patient barcode.
+- **Model:** signature mode (`BMRmode = "signature"`, `k = 6`, 96 nucleotide types).
+- **Samples analyzed (mutation ∩ phenotype ∩ covariates):** 461 (393 ever-smokers, 68 never-smokers).
+
+# Source files
+
+All inputs are on the Dartmouth Discovery cluster under
+`/dartfs-hpc/rc/home/m/f0052zm/szhao_lab_share/`:
+
+| Input | Path |
+|---|---|
+| Mutations (MAF) | `TCGA_data/Project_TCGA/SSM_data/analyses__2016_01_28/gdac.broadinstitute.org_LUAD-TP.MutSigNozzleReport2.0.Level_4.2016012800.0.0/LUAD-TP.final_analysis_set.maf` |
+| Clinical | `diffDriver/data_clinical/GDC_download/LUAD/GDCdata/TCGA-LUAD/harmonized/Clinical/Clinical_Supplement/42bf5eb2-bc49-45be-b18a-290f712b006c/nationwidechildrens.org_clinical_patient_luad.txt` |
+| Genes | `diffDriver/tumor_specific_input/LUAD/LUADgenes.txt` (19 genes) |
+
+Outputs are written to `diffDriver/data_run_LUAD_known/`.
+
+# Data preparation
+
+The MAF is converted to the diffdriver mutation format (`Chromosome`, `Position`, `Ref`,
+`Alt`, `SampleID`), keeping SNVs and using the patient barcode as `SampleID`. The clinical
+file (3 header rows, data from row 4) is parsed into the phenotype (smoking) and covariate
+(age, gender) tables. `prep_LUAD.R`:
+
+```r
+suppressMessages(library(data.table))
+outdir <- ".../diffDriver/data_run_LUAD_known"
+maf  <- ".../gdac.broadinstitute.org_LUAD-TP.MutSigNozzleReport2.0.Level_4.2016012800.0.0/LUAD-TP.final_analysis_set.maf"
+clin <- ".../nationwidechildrens.org_clinical_patient_luad.txt"
+
+## mutations: MAF -> diffdriver format (SNVs only)
+m <- fread(maf, sep = "\t", header = TRUE,
+           select = c("Chromosome", "Start_position", "Reference_Allele",
+                      "Tumor_Seq_Allele1", "Tumor_Seq_Allele2",
+                      "Tumor_Sample_Barcode", "Variant_Type"))
+m <- m[Variant_Type == "SNP"]
+m[, Alt := fifelse(Tumor_Seq_Allele2 != Reference_Allele, Tumor_Seq_Allele2, Tumor_Seq_Allele1)]
+mut <- unique(data.table(Chromosome = m$Chromosome, Position = m$Start_position,
+                         Ref = m$Reference_Allele, Alt = m$Alt,
+                         SampleID = substr(m$Tumor_Sample_Barcode, 1, 12)))
+fwrite(mut, file.path(outdir, "LUAD_mut.txt"), sep = "\t")
+
+## clinical: phenotype (smoking, binary ever/never) + covariates (age, gender)
+hdr <- as.character(unlist(fread(clin, sep = "\t", header = FALSE, nrows = 1)))
+cl  <- fread(clin, sep = "\t", header = FALSE, skip = 3)
+setnames(cl, hdr)
+cl <- cl[, .(SampleID = bcr_patient_barcode, gender,
+             smoke = as.character(tobacco_smoking_history_indicator),
+             age = age_at_initial_pathologic_diagnosis)]
+cl[, Smoking := NA_real_]
+cl[smoke == "1", Smoking := 0]
+cl[smoke %in% c("2", "3", "4", "5"), Smoking := 1]
+pheno <- cl[!is.na(Smoking), .(SampleID, Smoking)]
+fwrite(pheno, file.path(outdir, "LUAD_pheno.txt"), sep = "\t")
+cov <- cl[, .(SampleID, Age = suppressWarnings(as.numeric(age)), Gender = gender)]
+cov <- cov[!is.na(Age) & Gender %in% c("MALE", "FEMALE")]
+fwrite(cov, file.path(outdir, "LUAD_covariates.txt"), sep = "\t")
+```
+
+This yields 174,053 SNVs across 545 samples; smoking known for 508 patients (433 ever /
+75 never); complete age+gender for 503; **461 samples** shared across all three.
+
+# Running diffdriver
+
+diffdriver was run as a SLURM batch job on Discovery. `run_LUAD.R`:
+
+```r
+suppressMessages(library(diffdriver)); suppressMessages(library(data.table))
+outdir <- ".../diffDriver/data_run_LUAD_known"
+gene  <- read.table(".../tumor_specific_input/LUAD/LUADgenes.txt",
+                    header = FALSE, stringsAsFactors = FALSE)[, 1]
+mut   <- as.data.frame(fread(file.path(outdir, "LUAD_mut.txt")))
+pheno <- as.data.frame(fread(file.path(outdir, "LUAD_pheno.txt")))
+cov   <- as.data.frame(fread(file.path(outdir, "LUAD_covariates.txt")))
+set.seed(0)
+res <- diffdriver(gene = gene, mut = mut, pheno = pheno, covariates = cov,
+                  anno_dir = "/dartfs/rc/lab/S/Szhao/library/diffdriver_anno/annodir96",
+                  k = 6, totalnttype = 96, BMRmode = "signature",
+                  output_dir = outdir, output_prefix = "LUAD_known")
+```
+
+`job_LUAD.sh` (submitted with `sbatch`):
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=diffdriver_LUAD
+#SBATCH --output=.../data_run_LUAD_known/diffdriver_LUAD.out
+#SBATCH --error=.../data_run_LUAD_known/diffdriver_LUAD.err
+#SBATCH --time=24:00:00
+#SBATCH --mem=64G
+#SBATCH --cpus-per-task=8
+set -euo pipefail
+module load R
+cd .../data_run_LUAD_known
+Rscript run_LUAD.R
+```
+
+The job completed in ~1h44m and wrote `LUAD_known_Smoking_resdd.txt` (results table),
+`LUAD_known_Smoking_resdd.Rd` (full objects), and `LUAD_known_BMRres.Rdata` (background
+model).
+
+# Results
+
+`dd.p` / `dd.fdr` are the diffdriver covariate-adjusted p-value and FDR for
+smoking-differential selection; `mut.E1`/`mut.E0` are the number of mutated samples among
+ever- (`E1 = 393`) and never-smokers (`E0 = 68`).
+
+```{r results}
+library(DT)
+res <- read.table("data/LUAD_known_Smoking_resdd.txt", header = TRUE)
+res$gene <- rownames(res)
+res <- res[order(res$dd.p),
+           c("gene", "dd.p", "dd.fdr", "mut.E1", "mut.E0", "E1", "E0",
+             "mlr.p", "fisher.p", "binom.p", "lr.p")]
+datatable(res, rownames = FALSE,
+          extensions = "Buttons",
+          options = list(dom = "Bfrtip",
+                         buttons = c("copy", "csv", "excel"),
+                         pageLength = 20)) |>
+  formatSignif(columns = c("dd.p", "dd.fdr", "mlr.p", "fisher.p", "binom.p", "lr.p"), digits = 3)
+```
+
+**EGFR** is the only gene significant after multiple-testing correction
+(`dd.p = 0.0019`, `dd.fdr = 0.037`). This is consistent with the well-established biology
+that EGFR-mutant lung adenocarcinoma is enriched in never-smokers. Notably, the simple
+frequency-comparison methods do **not** flag EGFR (`fisher.p = 0.42`, `mlr.p = 0.20`),
+because raw mutation frequencies are similar between groups (10.9% in ever- vs 14.7% in
+never-smokers); diffdriver detects it because it accounts for the lower background mutation
+rate in never-smokers, revealing stronger *selection* on EGFR there.
+
+No other gene passes FDR 0.05 (CDKN2A is nominal at `dd.p = 0.036`), consistent with the
+limited power from the small never-smoker group (68 of 461) given the ~85/15 smoking
+imbalance in LUAD.

@@ -289,7 +289,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -300,8 +300,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -310,16 +310,16 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2025-12-30
+<strong>Last updated:</strong> 2026-07-12
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
-<strong>Knit directory:</strong> <code>diffdriver/</code> <span
+<strong>Knit directory:</strong> <code>diffdriver-analysis/</code> <span
 class="glyphicon glyphicon-question-sign" aria-hidden="true"
 title="This is the local directory in which the code in this file was executed.">
 </span>
@@ -339,33 +339,36 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree9773f4961593385eb272f83c487f7c45ee36fe55targetblank9773f49a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomszhaolabdiffdriveranalysistree71f8a78ddb0e660aad94d5de00836f0f3c00207atargetblank71f8a78a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/9773f4961593385eb272f83c487f7c45ee36fe55" target="_blank">9773f49</a>
+<a href="https://github.com/szhaolab/diffdriver-analysis/tree/71f8a78ddb0e660aad94d5de00836f0f3c00207a" target="_blank">71f8a78</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomLDZhangQRdiffdriveranalysistree9773f4961593385eb272f83c487f7c45ee36fe55targetblank9773f49a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomszhaolabdiffdriveranalysistree71f8a78ddb0e660aad94d5de00836f0f3c00207atargetblank71f8a78a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -375,7 +378,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/tree/9773f4961593385eb272f83c487f7c45ee36fe55" target="_blank">9773f49</a>.
+<a href="https://github.com/szhaolab/diffdriver-analysis/tree/71f8a78ddb0e660aad94d5de00836f0f3c00207a" target="_blank">71f8a78</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -389,26 +392,12 @@ depends on. Below is the status of the Git repository when the results
 were generated:
 </p>
 <pre><code>
-Ignored files:
-    Ignored:    .RData
-    Ignored:    .Rhistory
-    Ignored:    .Rproj.user/
-
 Untracked files:
-    Untracked:  .Rproj.user.bak_2025-12-29_193924/
-    Untracked:  .write_from_rstudio_test
-    Untracked:  analysis/ApoE_e2.Rmd
-    Untracked:  analysis/ApoE_e2_split.Rmd
-    Untracked:  analysis/ApoE_e4.Rmd
-    Untracked:  analysis/ApoE_e4_split.Rmd
-    Untracked:  code/run_workflowr.R
+    Untracked:  analysis/LUAD_smoking.Rmd
+    Untracked:  data/LUAD_known_Smoking_resdd.txt
 
 Unstaged changes:
-    Deleted:    analysis/clinical_newplot.Rmd
-    Deleted:    analysis/example.Rmd
-    Modified:   analysis/immunesubtypes.Rmd
-    Deleted:    analysis/immunesubtypes_newplot.Rmd
-    Modified:   diffdriver.Rproj
+    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -454,16 +443,33 @@ Message
 <tbody>
 <tr>
 <td>
-Rmd
+html
 </td>
 <td>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/9773f4961593385eb272f83c487f7c45ee36fe55/analysis/index.Rmd" target="_blank">9773f49</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/d100406c63c1e40e497bc8e005d6af08015ad379/docs/index.html" target="_blank">d100406</a>
 </td>
 <td>
 Qirui Zhang
 </td>
 <td>
-2025-12-31
+2025-12-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/szhaolab/diffdriver-analysis/blob/9773f4961593385eb272f83c487f7c45ee36fe55/analysis/index.Rmd" target="_blank">9773f49</a>
+</td>
+<td>
+Qirui Zhang
+</td>
+<td>
+2025-12-30
 </td>
 <td>
 Update index
@@ -474,7 +480,7 @@ Update index
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/dbab83c5fc16b8388477544fc86bb672f8d0e48d/docs/index.html" target="_blank">dbab83c</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/dbab83c5fc16b8388477544fc86bb672f8d0e48d/docs/index.html" target="_blank">dbab83c</a>
 </td>
 <td>
 Qirui Zhang
@@ -491,7 +497,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/c3998afd3d04456c4a91927d3b4cc02bb77d7011/analysis/index.Rmd" target="_blank">c3998af</a>
+<a href="https://github.com/szhaolab/diffdriver-analysis/blob/c3998afd3d04456c4a91927d3b4cc02bb77d7011/analysis/index.Rmd" target="_blank">c3998af</a>
 </td>
 <td>
 Qirui Zhang
@@ -508,7 +514,7 @@ Update analysis results
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/5937609740eea4c38d452972b72832f78f1496fb/docs/index.html" target="_blank">5937609</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/5937609740eea4c38d452972b72832f78f1496fb/docs/index.html" target="_blank">5937609</a>
 </td>
 <td>
 Qirui Zhang
@@ -525,7 +531,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/bdc3448f7c1cc4a18c9a787b7d824380c320c61b/docs/index.html" target="_blank">bdc3448</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/bdc3448f7c1cc4a18c9a787b7d824380c320c61b/docs/index.html" target="_blank">bdc3448</a>
 </td>
 <td>
 Qirui Zhang
@@ -542,7 +548,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/14d055dbeeee6e5c795f0c0d278991d4418a140f/analysis/index.Rmd" target="_blank">14d055d</a>
+<a href="https://github.com/szhaolab/diffdriver-analysis/blob/14d055dbeeee6e5c795f0c0d278991d4418a140f/analysis/index.Rmd" target="_blank">14d055d</a>
 </td>
 <td>
 Qirui Zhang
@@ -559,7 +565,7 @@ Update Index
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/8a43390b5c4a49a7bbcb0f8922b76b7325e48a10/docs/index.html" target="_blank">8a43390</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/8a43390b5c4a49a7bbcb0f8922b76b7325e48a10/docs/index.html" target="_blank">8a43390</a>
 </td>
 <td>
 Qirui Zhang
@@ -576,7 +582,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/6f20adb4fccac3105b0c49ebc27c338a5e752c73/analysis/index.Rmd" target="_blank">6f20adb</a>
+<a href="https://github.com/szhaolab/diffdriver-analysis/blob/6f20adb4fccac3105b0c49ebc27c338a5e752c73/analysis/index.Rmd" target="_blank">6f20adb</a>
 </td>
 <td>
 Qirui Zhang
@@ -593,7 +599,7 @@ Update Index
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/65df6097c11c1e62f4317b077bffa94e99c1f7c6/docs/index.html" target="_blank">65df609</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/65df6097c11c1e62f4317b077bffa94e99c1f7c6/docs/index.html" target="_blank">65df609</a>
 </td>
 <td>
 Qirui Zhang
@@ -610,7 +616,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/442ada3a1d1396c8cee8409c5d93f3aa6b2314c1/analysis/index.Rmd" target="_blank">442ada3</a>
+<a href="https://github.com/szhaolab/diffdriver-analysis/blob/442ada3a1d1396c8cee8409c5d93f3aa6b2314c1/analysis/index.Rmd" target="_blank">442ada3</a>
 </td>
 <td>
 Qirui Zhang
@@ -627,7 +633,7 @@ Update all analysis
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/6164d39519e79e1d68b19989237bab71b123fff0/docs/index.html" target="_blank">6164d39</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/6164d39519e79e1d68b19989237bab71b123fff0/docs/index.html" target="_blank">6164d39</a>
 </td>
 <td>
 Qirui Zhang
@@ -644,7 +650,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/033aaf5d1853be9215e64467cf811468c6e7813d/docs/index.html" target="_blank">033aaf5</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/033aaf5d1853be9215e64467cf811468c6e7813d/docs/index.html" target="_blank">033aaf5</a>
 </td>
 <td>
 Qirui Zhang
@@ -661,7 +667,7 @@ Build site.
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/LD-ZhangQR/diffdriver-analysis/bcc96b7c4e4a52bf44e2116e1513794f7749797b/docs/index.html" target="_blank">bcc96b7</a>
+<a href="https://rawcdn.githack.com/szhaolab/diffdriver-analysis/bcc96b7c4e4a52bf44e2116e1513794f7749797b/docs/index.html" target="_blank">bcc96b7</a>
 </td>
 <td>
 Qirui Zhang
@@ -678,7 +684,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://github.com/LD-ZhangQR/diffdriver-analysis/blob/a71371fa9d623525d12e1fc695660855f36c88ba/analysis/index.Rmd" target="_blank">a71371f</a>
+<a href="https://github.com/szhaolab/diffdriver-analysis/blob/a71371fa9d623525d12e1fc695660855f36c88ba/analysis/index.Rmd" target="_blank">a71371f</a>
 </td>
 <td>
 Qirui Zhang
@@ -705,8 +711,10 @@ Start workflowr project.
 <li><a href="PRS.html">PRS</a></li>
 <li><a href="diversity.html">Diversity</a></li>
 <li><a href="individualgene.html">Individual Gene</a></li>
-<li><a href="new_task1.html">new_task1</a></li>
-<li><a href="new_task2.html">new_task2</a></li>
+<li><a href="new_task1.html">Uterine cancer subtype analysis</a></li>
+<li><a href="new_task2.html">Lung cancer subtype analysis</a></li>
+<li><a href="LUAD_smoking.html">LUAD smoking-differential driver
+analysis</a></li>
 </ul>
 </div>
 </div>
