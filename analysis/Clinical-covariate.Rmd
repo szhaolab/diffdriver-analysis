@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Overview
 
-In total, **160 analyses** were attempted across **20 tumor types**, involving the following **8 distinct phenotypes**:
+In total, **160 analyses** were conducted across **20 tumor types**, involving the following **8 distinct phenotypes**:
 
 - EUR
 - AFR
@@ -30,9 +30,11 @@ In total, **160 analyses** were attempted across **20 tumor types**, involving t
 - Tumor Mutation Burden (TMB)
 - Diagnosis Age
 
-For all phenotypes **except Diagnosis Age**, both **age** and **gender** were included as covariates. When **Diagnosis Age** itself was used as the phenotype, only **gender** was included as a covariate.
+For all phenotypes **except Diagnosis Age**, both **age** and **gender** were initially included as covariates. When **Diagnosis Age** itself was used as the phenotype, only **gender** was initially included as a covariate.
 
-For each phenotype, the analyses for **CESC, PRAD, TGCT, UCEC, and UCS** failed because the gender covariate had no variation within these tumor types: **CESC = all female, PRAD = all male, TGCT = all male, UCEC = all female, and UCS = all female**. Therefore, **120 analyses were successfully completed**, while **40 analyses failed due to the single-level gender covariate**.
+The initial analyses for **CESC, PRAD, TGCT, UCEC, and UCS** failed because the gender covariate had no variation within these tumor types: **CESC = all female, PRAD = all male, TGCT = all male, UCEC = all female, and UCS = all female**.
+
+These failed analyses were subsequently rerun after excluding gender as a covariate. For the seven phenotypes other than Diagnosis Age, only **age** was included as a covariate. For **Diagnosis Age**, no covariates were included because age was the phenotype itself and gender had no variation within these tumor types.
 
 # Extracting and Summarizing Analysis Results
 This code segment scans through analysis output directories, identifies relevant result files (*_resdd.Rd), extracts corresponding tumor types, immune phenotypes, and analysis modes(sig/reg).
