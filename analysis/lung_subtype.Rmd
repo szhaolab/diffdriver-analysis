@@ -1,5 +1,5 @@
 ---
-title: "new_task2"
+title: "Lung cancer subtype analysis"
 author: "Qirui Zhang"
 date: "2025-12-29"
 output: 
