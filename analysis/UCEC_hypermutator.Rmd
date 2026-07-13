@@ -1,0 +1,131 @@
+---
+title: "UCEC hypermutator-differential driver analysis"
+date: "2026-07-13"
+output:
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Overview
+
+This analysis runs **diffdriver** on TCGA uterine corpus endometrial carcinoma (**UCEC**)
+to test, for a panel of UCEC driver genes, whether the strength of positive selection
+differs between **hypermutated** and **low-mutation-burden** tumors, adjusting for **age**.
+
+- **Phenotype:** hypermutator status — mutation burden **> 1,000** = 1 (hypermutator),
+  ≤ 1,000 = 0 (low-burden).
+- **Covariate:** age.
+- **Genes:** the 40-gene UCEC panel **plus POLE and POLD1** (the polymerase-proofreading
+  genes whose mutations cause the ultramutator phenotype) — 42 genes.
+- **Model:** signature mode (`BMRmode = "signature"`, `k = 6`, 96 nucleotide types).
+- **Samples analyzed:** 512 (74 hypermutators, 438 low-burden).
+
+# Source files
+
+Data were pulled from the [cBioPortal](https://www.cbioportal.org/) REST API, study
+**`ucec_tcga_pan_can_atlas_2018`** (TCGA UCEC, PanCancer Atlas), restricted to
+**whole-exome-sequenced (WES)**, **GRCh37/hg19** samples (517 WES samples; WES filtering via
+each sample's gene panel).
+
+- **Mutations:** `POST /molecular-profiles/ucec_tcga_pan_can_atlas_2018_mutations/mutations/fetch`
+  (batched over samples because POLE ultramutators carry tens of thousands of mutations),
+  restricted to SNVs and de-duplicated → 512,971 SNVs across 515 samples.
+- **Phenotype:** per-sample mutation count (`MUTATION_COUNT` clinical attribute), thresholded
+  at 1,000.
+- **Covariate:** age (`AGE`).
+- **Gene list:** `UCECgenes.txt` (40 genes) with `POLE` and `POLD1` appended.
+
+Outputs are on Discovery in `data_run_UCEC_known/` (`UCEC_cbio_*`).
+
+# Sample characteristics
+
+The UCEC mutation-burden distribution is strongly multimodal — the classic UCEC structure of
+a microsatellite-stable (MSS) low-burden majority, an MSI hypermutator hump, and a
+POLE-ultramutator tail:
+
+```{r burden, fig.width=10, fig.height=4.5, fig.alt="UCEC mutations per sample, linear and log10"}
+mc <- read.table("data/ucec_mut_counts.tsv", header = TRUE, sep = "\t")
+par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3, 1))
+hist(mc$mutationCount, breaks = 60, col = "#8C2DA6", border = "white",
+     main = "Mutations per sample (linear)", xlab = "mutation count", ylab = "# samples")
+hist(log10(pmax(mc$mutationCount, 1)), breaks = 40, col = "#2b8cbe", border = "white",
+     main = "Mutations per sample (log10)", xlab = "log10(mutation count)", ylab = "# samples")
+abline(v = log10(1000), col = "orange", lwd = 2, lty = 2)
+legend("topright", legend = "threshold = 1000", col = "orange", lty = 2, lwd = 2, bty = "n")
+```
+
+The **1,000-mutation threshold** (orange line) sits past the valley between the low-burden
+peak and the hypermutator/ultramutator modes, giving **77 hypermutators vs 440 low-burden**
+(512 retained after intersecting with age and mutation data: 74 vs 438).
+
+# Data preparation and run
+
+Mutations were converted to diffdriver format (`Chromosome`, `Position`, `Ref`, `Alt`,
+`SampleID`), the phenotype set to hypermutator status, and age used as the sole covariate.
+diffdriver was run as a SLURM batch job:
+
+```r
+suppressMessages(library(diffdriver)); suppressMessages(library(data.table))
+gene  <- read.table("UCECgenes_plusPOL.txt", header = FALSE)[, 1]   # 40 UCEC genes + POLE + POLD1
+mut   <- as.data.frame(fread("UCEC_cbio_mut.txt"))
+pheno <- as.data.frame(fread("UCEC_cbio_pheno.txt"))                 # SampleID, Hypermutator (0/1)
+cov   <- as.data.frame(fread("UCEC_cbio_cov.txt"))                   # SampleID, Age
+res <- diffdriver(gene = gene, mut = mut, pheno = pheno, covariates = cov,
+                  anno_dir = "/dartfs/rc/lab/S/Szhao/library/diffdriver_anno/annodir96",
+                  k = 6, totalnttype = 96, BMRmode = "signature",
+                  output_dir = ".", output_prefix = "UCEC_cbio")
+```
+
+# Results
+
+`dd.p` / `dd.fdr` are the diffdriver covariate-adjusted p-value and FDR for
+hypermutator-differential selection (FDR computed over all 42 genes). `alpha_e` is the
+phenotype coefficient — **positive = selected up in hypermutators, negative = up in
+low-burden**. `mut.E1`/`mut.E0` are mutation counts in hypermutators (`E1 = 74`) and
+low-burden (`E0 = 438`).
+
+```{r results}
+library(DT)
+res <- read.table("data/UCEC_cbio_Hypermutator_withdir.txt", header = TRUE, sep = "\t")
+res <- res[order(res$dd.p), c("gene", "dd.p", "dd.fdr", "alpha_e", "direction",
+                              "mut.E1", "mut.E0", "E1", "E0")]
+datatable(res, rownames = FALSE, extensions = "Buttons",
+          options = list(dom = "Bfrtip", buttons = c("copy", "csv", "excel"), pageLength = 42)) |>
+  formatSignif(columns = c("dd.p", "dd.fdr", "alpha_e"), digits = 3)
+```
+
+**27 of 42 genes** show significant hypermutator-differential selection (`dd.fdr < 0.05`).
+
+- **POLE** is the second-strongest hit overall (`dd.fdr = 4e-17`, `alpha_e = +6.0`), and
+  **POLD1** is also significant (`dd.fdr = 7e-5`, `alpha_e = +2.1`) — both strongly up in
+  hypermutators. This is exactly as expected: POLE exonuclease-domain mutations are the
+  mechanistic *cause* of the ultramutator phenotype, so the analysis recovers them as the
+  clearest positive control.
+- **Up in hypermutators (21+ genes):** FAT1, POLE, ZFHX3, ATM, DICER1, RB1, MGA, EP300, CHD4,
+  … — a broad set preferentially selected once the elevated background is accounted for.
+- **Up in low-burden (4 genes):** **TP53, KRAS, CTNNB1, PIK3CA** — the canonical drivers of
+  the *non-hypermutated* UCEC subtypes (TP53 → copy-number-high/serous-like; KRAS/CTNNB1/
+  PIK3CA → copy-number-low endometrioid).
+
+# Interpretation
+
+The result shows a genuine **rewiring of positive selection** between the two mutational
+regimes, not merely that hypermutators carry more mutations everywhere. Two points make this
+concrete:
+
+1. **diffdriver separates selection from background.** Several genes with enormous *naive*
+   frequency differences are **not** called differentially selected — e.g. **ARID1A**
+   (`fisher.p = 2e-25` but `dd.fdr ≈ 0.6`) and **PTEN** (`fisher.p = 4e-13` but
+   `dd.fdr ≈ 0.6`). These endometrioid workhorse genes are heavily mutated in both groups,
+   and their frequency gap is explained by the higher background rate in hypermutators — so
+   diffdriver correctly does not flag them.
+2. **The mechanistic driver validates the method.** POLE (and POLD1) — the genes that
+   *produce* the hypermutator state — are among the strongest hypermutator-up signals,
+   confirming the test is capturing biologically meaningful selection.

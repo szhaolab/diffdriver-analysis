@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2026-07-13" />
+
+<title>UCEC hypermutator-differential driver analysis</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="site_libs/jszip-1.13.6/jszip.min.js"></script>
+<link href="site_libs/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="site_libs/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script>
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">diffdriver_run</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/LD-ZhangQR/diffdriver">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">UCEC hypermutator-differential driver
+analysis</h1>
+<h4 class="date">2026-07-13</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2026-07-13
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>diffdriver-analysis/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250319code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250319)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250319code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250319)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomszhaolabdiffdriveranalysistree276ec2a0d494e98ee3eed25e1c4da924fdc5f807targetblank276ec2aa">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/szhaolab/diffdriver-analysis/tree/276ec2a0d494e98ee3eed25e1c4da924fdc5f807" target="_blank">276ec2a</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomszhaolabdiffdriveranalysistree276ec2a0d494e98ee3eed25e1c4da924fdc5f807targetblank276ec2aa"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/szhaolab/diffdriver-analysis/tree/276ec2a0d494e98ee3eed25e1c4da924fdc5f807" target="_blank">276ec2a</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Untracked files:
+    Untracked:  analysis/UCEC_hypermutator.Rmd
+    Untracked:  analysis/img/
+    Untracked:  data/UCEC_cbio_Hypermutator_withdir.txt
+    Untracked:  data/ucec_mut_counts.tsv
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>This analysis runs <strong>diffdriver</strong> on TCGA uterine corpus
+endometrial carcinoma (<strong>UCEC</strong>) to test, for a panel of
+UCEC driver genes, whether the strength of positive selection differs
+between <strong>hypermutated</strong> and
+<strong>low-mutation-burden</strong> tumors, adjusting for
+<strong>age</strong>.</p>
+<ul>
+<li><strong>Phenotype:</strong> hypermutator status — mutation burden
+<strong>&gt; 1,000</strong> = 1 (hypermutator), ≤ 1,000 = 0
+(low-burden).</li>
+<li><strong>Covariate:</strong> age.</li>
+<li><strong>Genes:</strong> the 40-gene UCEC panel <strong>plus POLE and
+POLD1</strong> (the polymerase-proofreading genes whose mutations cause
+the ultramutator phenotype) — 42 genes.</li>
+<li><strong>Model:</strong> signature mode
+(<code>BMRmode = "signature"</code>, <code>k = 6</code>, 96 nucleotide
+types).</li>
+<li><strong>Samples analyzed:</strong> 512 (74 hypermutators, 438
+low-burden).</li>
+</ul>
+</div>
+<div id="source-files" class="section level1">
+<h1>Source files</h1>
+<p>Data were pulled from the <a
+href="https://www.cbioportal.org/">cBioPortal</a> REST API, study
+<strong><code>ucec_tcga_pan_can_atlas_2018</code></strong> (TCGA UCEC,
+PanCancer Atlas), restricted to <strong>whole-exome-sequenced
+(WES)</strong>, <strong>GRCh37/hg19</strong> samples (517 WES samples;
+WES filtering via each sample’s gene panel).</p>
+<ul>
+<li><strong>Mutations:</strong>
+<code>POST /molecular-profiles/ucec_tcga_pan_can_atlas_2018_mutations/mutations/fetch</code>
+(batched over samples because POLE ultramutators carry tens of thousands
+of mutations), restricted to SNVs and de-duplicated → 512,971 SNVs
+across 515 samples.</li>
+<li><strong>Phenotype:</strong> per-sample mutation count
+(<code>MUTATION_COUNT</code> clinical attribute), thresholded at
+1,000.</li>
+<li><strong>Covariate:</strong> age (<code>AGE</code>).</li>
+<li><strong>Gene list:</strong> <code>UCECgenes.txt</code> (40 genes)
+with <code>POLE</code> and <code>POLD1</code> appended.</li>
+</ul>
+<p>Outputs are on Discovery in <code>data_run_UCEC_known/</code>
+(<code>UCEC_cbio_*</code>).</p>
+</div>
+<div id="sample-characteristics" class="section level1">
+<h1>Sample characteristics</h1>
+<p>The UCEC mutation-burden distribution is strongly multimodal — the
+classic UCEC structure of a microsatellite-stable (MSS) low-burden
+majority, an MSI hypermutator hump, and a POLE-ultramutator tail:</p>
+<pre class="r"><code>mc &lt;- read.table(&quot;data/ucec_mut_counts.tsv&quot;, header = TRUE, sep = &quot;\t&quot;)
+par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3, 1))
+hist(mc$mutationCount, breaks = 60, col = &quot;#8C2DA6&quot;, border = &quot;white&quot;,
+     main = &quot;Mutations per sample (linear)&quot;, xlab = &quot;mutation count&quot;, ylab = &quot;# samples&quot;)
+hist(log10(pmax(mc$mutationCount, 1)), breaks = 40, col = &quot;#2b8cbe&quot;, border = &quot;white&quot;,
+     main = &quot;Mutations per sample (log10)&quot;, xlab = &quot;log10(mutation count)&quot;, ylab = &quot;# samples&quot;)
+abline(v = log10(1000), col = &quot;orange&quot;, lwd = 2, lty = 2)
+legend(&quot;topright&quot;, legend = &quot;threshold = 1000&quot;, col = &quot;orange&quot;, lty = 2, lwd = 2, bty = &quot;n&quot;)</code></pre>
+<p><img src="figure/UCEC_hypermutator.Rmd/burden-1.png" alt="UCEC mutations per sample, linear and log10" width="960" style="display: block; margin: auto;" /></p>
+<p>The <strong>1,000-mutation threshold</strong> (orange line) sits past
+the valley between the low-burden peak and the hypermutator/ultramutator
+modes, giving <strong>77 hypermutators vs 440 low-burden</strong> (512
+retained after intersecting with age and mutation data: 74 vs 438).</p>
+</div>
+<div id="data-preparation-and-run" class="section level1">
+<h1>Data preparation and run</h1>
+<p>Mutations were converted to diffdriver format
+(<code>Chromosome</code>, <code>Position</code>, <code>Ref</code>,
+<code>Alt</code>, <code>SampleID</code>), the phenotype set to
+hypermutator status, and age used as the sole covariate. diffdriver was
+run as a SLURM batch job:</p>
+<pre class="r"><code>suppressMessages(library(diffdriver)); suppressMessages(library(data.table))
+gene  &lt;- read.table(&quot;UCECgenes_plusPOL.txt&quot;, header = FALSE)[, 1]   # 40 UCEC genes + POLE + POLD1
+mut   &lt;- as.data.frame(fread(&quot;UCEC_cbio_mut.txt&quot;))
+pheno &lt;- as.data.frame(fread(&quot;UCEC_cbio_pheno.txt&quot;))                 # SampleID, Hypermutator (0/1)
+cov   &lt;- as.data.frame(fread(&quot;UCEC_cbio_cov.txt&quot;))                   # SampleID, Age
+res &lt;- diffdriver(gene = gene, mut = mut, pheno = pheno, covariates = cov,
+                  anno_dir = &quot;/dartfs/rc/lab/S/Szhao/library/diffdriver_anno/annodir96&quot;,
+                  k = 6, totalnttype = 96, BMRmode = &quot;signature&quot;,
+                  output_dir = &quot;.&quot;, output_prefix = &quot;UCEC_cbio&quot;)</code></pre>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<p><code>dd.p</code> / <code>dd.fdr</code> are the diffdriver
+covariate-adjusted p-value and FDR for hypermutator-differential
+selection (FDR computed over all 42 genes). <code>alpha_e</code> is the
+phenotype coefficient — <strong>positive = selected up in hypermutators,
+negative = up in low-burden</strong>.
+<code>mut.E1</code>/<code>mut.E0</code> are mutation counts in
+hypermutators (<code>E1 = 74</code>) and low-burden
+(<code>E0 = 438</code>).</p>
+<pre class="r"><code>library(DT)
+res &lt;- read.table(&quot;data/UCEC_cbio_Hypermutator_withdir.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
+res &lt;- res[order(res$dd.p), c(&quot;gene&quot;, &quot;dd.p&quot;, &quot;dd.fdr&quot;, &quot;alpha_e&quot;, &quot;direction&quot;,
+                              &quot;mut.E1&quot;, &quot;mut.E0&quot;, &quot;E1&quot;, &quot;E0&quot;)]
+datatable(res, rownames = FALSE, extensions = &quot;Buttons&quot;,
+          options = list(dom = &quot;Bfrtip&quot;, buttons = c(&quot;copy&quot;, &quot;csv&quot;, &quot;excel&quot;), pageLength = 42)) |&gt;
+  formatSignif(columns = c(&quot;dd.p&quot;, &quot;dd.fdr&quot;, &quot;alpha_e&quot;), digits = 3)</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-321f8cf22c7d3f9f6363" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-321f8cf22c7d3f9f6363">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"data":[["FAT1","POLE","ZFHX3","ATM","DICER1","RB1","MGA","EP300","RAB3GAP1","DEPDC1B","NFASC","TP53","KRAS","CTNNB1","CSDE1","ATF7IP","SIN3A","ST5","POLD1","INPPL1","TFDP1","NAA30","LZTR1","SLC30A9","MME","CHD4","PIK3CA","PIK3R1","CTCF","CDK17","PPP2R1A","CCND1","FERD3L","SPOP","FBXW7","MAX","NFE2L2","LYPLA2","ARID1A","PTEN","FGFR2","NRAS"],[2.13520797060458e-21,1.9675471184127e-18,1.91237055338842e-15,1.16780638665404e-12,3.97649863292996e-11,1.38605441422446e-10,1.65002326131397e-10,1.04536656383424e-07,2.39162292163271e-07,2.45884591561185e-07,2.94565740699057e-06,5.28027011450034e-06,5.96069531216543e-06,6.8718887976362e-06,7.82752389540356e-06,1.1815232771062e-05,2.24365659195469e-05,2.86578982852144e-05,3.0093743525031e-05,0.000788759624394271,0.00102921535353702,0.00105063713306879,0.00107693816588019,0.00195579405142954,0.00440978093232687,0.00858537650092011,0.0259741859101443,0.0693220826810305,0.084261017935346,0.09558695820988081,0.122524217620235,0.167532210755034,0.303732269503439,0.304123696479051,0.310976099807525,0.361477999842832,0.433751659604729,0.454937875617004,0.565847097949567,0.565911857106121,0.676921600501766,0.880265163710795],[8.96787347653925e-20,4.13184894866668e-17,2.67731877474379e-14,1.22619670598674e-11,3.34025885166116e-10,9.70238089957124e-10,9.90013956788383e-10,5.48817446012974e-07,1.03271528455698e-06,1.03271528455698e-06,1.1247055553964e-05,1.84809454007512e-05,1.92576310085345e-05,2.06156663929086e-05,2.191706690713e-05,3.10149860240377e-05,5.54315158012335e-05,6.65230120027001e-05,6.65230120027001e-05,0.00165639521122797,0.00196658273769425,0.00196658273769425,0.00196658273769425,0.00342263959000169,0.00740843196630914,0.0138686851168709,0.0404042891935578,0.103983124021546,0.122033198389122,0.133821741493833,0.166000552904835,0.219886026615983,0.37317131976903,0.37317131976903,0.37317131976903,0.421724333149971,0.492366748740503,0.502826073050373,0.594207449961427,0.594207449961427,0.693431883440833,0.880265163710795],[5.10262832228847,6.02047950316375,5.08387480918422,3.72050113427062,5.30988965753446,4.32964529113139,3.47008953426106,4.20546709838183,3.35931279488394,4.9874698553488,4.4971195701125,-3.9684313860287,-3.40966455209597,-2.67370070289544,2.84643478470022,2.78320284780034,2.75426770618475,2.60784718643732,2.07080277376575,1.97282483269914,2.84924363347455,3.53732639886022,3.30406638822548,2.6924650759884,2.0154719913251,2.65672098488777,-2.32284823056675,1.12722878202017,1.54791937574352,1.26200855095359,-1.18645982623593,-1.08146194343443,1.18945063961334,-0.706318611358363,1.49209567749344,1.30868763698357,-0.466830378172387,0.682618712563494,1.34663112591783,-1.25350337430784,-0.242852129454924,-0.192133557304515],["hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","low-burden","low-burden","low-burden","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","hypermutator","low-burden","hypermutator","hypermutator","hypermutator","low-burden","low-burden","hypermutator","low-burden","hypermutator","hypermutator","low-burden","hypermutator","hypermutator","low-burden","low-burden","low-burden"],[212,125,167,141,84,66,109,84,52,25,58,36,21,46,47,49,53,56,39,48,33,18,34,25,32,95,121,57,51,20,32,11,10,23,55,13,19,9,102,137,45,11],[40,20,39,31,21,13,27,19,11,2,20,149,78,105,12,8,16,12,12,20,11,4,14,6,8,62,235,45,51,9,66,22,6,34,51,9,26,5,84,251,46,10],[74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74],[438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438,438]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>gene<\/th>\n      <th>dd.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>alpha_e<\/th>\n      <th>direction<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>E1<\/th>\n      <th>E0<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["copy","csv","excel"],"pageLength":42,"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatSignif(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatSignif(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatSignif(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3,5,6,7,8]},{"name":"gene","targets":0},{"name":"dd.p","targets":1},{"name":"dd.fdr","targets":2},{"name":"alpha_e","targets":3},{"name":"direction","targets":4},{"name":"mut.E1","targets":5},{"name":"mut.E0","targets":6},{"name":"E1","targets":7},{"name":"E0","targets":8}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,25,42,50,100]}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render"],"jsHooks":[]}</script>
+<p><strong>27 of 42 genes</strong> show significant
+hypermutator-differential selection (<code>dd.fdr &lt; 0.05</code>).</p>
+<ul>
+<li><strong>POLE</strong> is the second-strongest hit overall
+(<code>dd.fdr = 4e-17</code>, <code>alpha_e = +6.0</code>), and
+<strong>POLD1</strong> is also significant (<code>dd.fdr = 7e-5</code>,
+<code>alpha_e = +2.1</code>) — both strongly up in hypermutators. This
+is exactly as expected: POLE exonuclease-domain mutations are the
+mechanistic <em>cause</em> of the ultramutator phenotype, so the
+analysis recovers them as the clearest positive control.</li>
+<li><strong>Up in hypermutators (21+ genes):</strong> FAT1, POLE, ZFHX3,
+ATM, DICER1, RB1, MGA, EP300, CHD4, … — a broad set preferentially
+selected once the elevated background is accounted for.</li>
+<li><strong>Up in low-burden (4 genes):</strong> <strong>TP53, KRAS,
+CTNNB1, PIK3CA</strong> — the canonical drivers of the
+<em>non-hypermutated</em> UCEC subtypes (TP53 →
+copy-number-high/serous-like; KRAS/CTNNB1/ PIK3CA → copy-number-low
+endometrioid).</li>
+</ul>
+</div>
+<div id="interpretation" class="section level1">
+<h1>Interpretation</h1>
+<p>The result shows a genuine <strong>rewiring of positive
+selection</strong> between the two mutational regimes, not merely that
+hypermutators carry more mutations everywhere. Two points make this
+concrete:</p>
+<ol style="list-style-type: decimal">
+<li><strong>diffdriver separates selection from background.</strong>
+Several genes with enormous <em>naive</em> frequency differences are
+<strong>not</strong> called differentially selected —
+e.g. <strong>ARID1A</strong> (<code>fisher.p = 2e-25</code> but
+<code>dd.fdr ≈ 0.6</code>) and <strong>PTEN</strong>
+(<code>fisher.p = 4e-13</code> but <code>dd.fdr ≈ 0.6</code>). These
+endometrioid workhorse genes are heavily mutated in both groups, and
+their frequency gap is explained by the higher background rate in
+hypermutators — so diffdriver correctly does not flag them.</li>
+<li><strong>The mechanistic driver validates the method.</strong> POLE
+(and POLD1) — the genes that <em>produce</em> the hypermutator state —
+are among the strongest hypermutator-up signals, confirming the test is
+capturing biologically meaningful selection.</li>
+</ol>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Sonoma 14.6.1
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] DT_0.33         workflowr_1.7.1
+
+loaded via a namespace (and not attached):
+ [1] jsonlite_2.0.0    compiler_4.3.2    promises_1.5.0    Rcpp_1.1.0       
+ [5] stringr_1.6.0     git2r_0.36.2      callr_3.7.6       later_1.4.8      
+ [9] jquerylib_0.1.4   yaml_2.3.12       fastmap_1.2.0     R6_2.6.1         
+[13] knitr_1.51        htmlwidgets_1.6.4 tibble_3.3.1      rprojroot_2.0.4  
+[17] bslib_0.10.0      pillar_1.11.1     rlang_1.1.6       cachem_1.1.0     
+[21] stringi_1.8.7     httpuv_1.6.15     xfun_0.52         getPass_0.2-4    
+[25] fs_1.6.6          sass_0.4.10       otel_0.2.0        cli_3.6.5        
+[29] magrittr_2.0.3    crosstalk_1.2.2   ps_1.8.1          digest_0.6.39    
+[33] processx_3.8.5    rstudioapi_0.17.1 lifecycle_1.0.5   vctrs_0.6.5      
+[37] evaluate_1.0.5    glue_1.8.0        whisker_0.4.1     rmarkdown_2.29   
+[41] httr_1.4.8        tools_4.3.2       pkgconfig_2.0.3   htmltools_0.5.9  </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
