@@ -154,3 +154,116 @@ rate in never-smokers, revealing stronger *selection* on EGFR there.
 No other gene passes FDR 0.05 (CDKN2A is nominal at `dd.p = 0.036`), consistent with the
 limited power from the small never-smoker group (68 of 461) given the ~85/15 smoking
 imbalance in LUAD.
+
+# Combined TCGA + OncoSG cohort (cBioPortal)
+
+## Motivation
+
+The TCGA-only analysis above had only **68 never-smokers** (an ~85/15 ever/never split),
+which limits power to detect smoking-differential selection. To improve balance and power we
+assembled a larger whole-exome LUAD cohort from [cBioPortal](https://www.cbioportal.org/),
+adding the **OncoSG** Singapore/Asian cohort, which is strongly enriched for never-smokers.
+
+## Source files
+
+Data were pulled from the cBioPortal REST API (`https://www.cbioportal.org/api`). Two
+**whole-exome-sequenced (WES)**, **GRCh37/hg19** lung adenocarcinoma studies were used
+(WES filtering via each sample's gene panel; targeted-panel studies such as MSK-IMPACT were
+excluded):
+
+| Study id | Cohort | WES samples | Population |
+|---|---|---|---|
+| `luad_tcga_pan_can_atlas_2018` | TCGA | 566 | mostly White smokers |
+| `luad_oncosg_2020` | OncoSG | 302 | Asian, never-smoker-enriched |
+
+- **Mutations:** `POST /molecular-profiles/{study}_mutations/mutations/fetch`, restricted to
+  single-nucleotide variants and de-duplicated.
+- **Clinical:** age, sex, and ethnicity from the patient clinical data; smoking from
+  `TOBACCO_SMOKING_HISTORY_INDICATOR` (TCGA; 1 = never, 2–5 = ever) and `SMOKING_STATUS`
+  (OncoSG; Yes/No). Ethnicity harmonized to White / Black / Asian.
+- Samples were de-duplicated to one per patient; the two studies share no patients.
+
+The assembled inputs live on Discovery in `data_run_LUAD_known/`: `LUAD_cbio_mut.txt`
+(183,619 SNVs, 863 samples), `LUAD_cbio_pheno.txt` (smoking), `LUAD_cbio_cov.txt`
+(age, sex, cohort), and `LUAD_cbio_anc_pheno.txt` / `LUAD_cbio_anc_cov.txt` (ancestry run).
+The same 19-gene LUAD panel and 96-nucleotide signature model were used.
+
+## Sample characteristics
+
+- **868 WES samples** total (863 with mutation data; 183,619 SNVs).
+- **Smoking** (analysis 1): 774 samples with known status — **521 ever / 253 never**
+  (67% smokers). By cohort: TCGA 427 ever / 73 never; OncoSG 111 ever / 187 never. This is
+  ~4× more never-smokers than the TCGA-only run (68), and a far more balanced split.
+- **Ethnicity:** TCGA is 388 White / 52 Black / 9 Asian; OncoSG is 302 Asian. So ancestry is
+  almost perfectly confounded with cohort (Asian ⟺ OncoSG).
+- **Ancestry** (analysis 2): 694 samples — **311 Asian / 388 White** (Black and
+  unknown-ancestry samples excluded).
+
+Two analyses were run on this cohort:
+
+1. **Smoking** (ever = 1 / never = 0), covariates **age, sex, cohort** — cohort is included
+   to absorb the TCGA-vs-OncoSG study/batch difference.
+2. **Ancestry** (Asian = 1 / White = 0), covariates **age, sex** — cohort *cannot* be
+   included here because it is collinear with the phenotype.
+
+## Smoking results (combined cohort)
+
+`mut.E1`/`mut.E0` are mutated-sample counts among ever- (`E1 = 521`) and never-smokers
+(`E0 = 253`).
+
+```{r cbio_smoking}
+res <- read.table("data/LUAD_cbio_Smoking_resdd.txt", header = TRUE)
+res$gene <- rownames(res)
+res <- res[order(res$dd.p),
+           c("gene", "dd.p", "dd.fdr", "mut.E1", "mut.E0", "E1", "E0",
+             "mlr.p", "fisher.p", "binom.p", "lr.p")]
+datatable(res, rownames = FALSE, extensions = "Buttons",
+          options = list(dom = "Bfrtip", buttons = c("copy", "csv", "excel"), pageLength = 20)) |>
+  formatSignif(columns = c("dd.p", "dd.fdr", "mlr.p", "fisher.p", "binom.p", "lr.p"), digits = 3)
+```
+
+With the larger, balanced cohort the analysis recovers the canonical LUAD smoking biology and
+detects many more differential drivers than the TCGA-only run (which found only EGFR):
+
+- **Smoking-associated (more selected in ever-smokers):** **KRAS** (`dd.fdr = 2e-4`), **NF1**
+  (`4e-3`), **KEAP1** (`0.025`), **STK11** (`0.034`), and DZIP1L / LCE1F / ARID2
+  (`~0.03–0.05`). TP53 is borderline (`dd.fdr = 0.059`).
+- **Never-smoker-associated:** **EGFR** (`dd.fdr = 0.032`; 69/521 ever vs 79/253 never) —
+  again enriched in never-smokers, consistent with the TCGA-only result and known biology.
+
+This matches the well-established pattern that KRAS/STK11/KEAP1/NF1 mark smoking-driven LUAD
+whereas EGFR marks never-smoker LUAD.
+
+## Ancestry results (Asian vs White)
+
+`mut.E1`/`mut.E0` are mutated-sample counts among Asian (`E1`) and White (`E0`).
+
+```{r cbio_ancestry}
+resA <- read.table("data/LUAD_cbio_anc_Asian_resdd.txt", header = TRUE)
+resA$gene <- rownames(resA)
+resA <- resA[order(resA$dd.p),
+             c("gene", "dd.p", "dd.fdr", "mut.E1", "mut.E0", "E1", "E0",
+               "mlr.p", "fisher.p", "binom.p", "lr.p")]
+datatable(resA, rownames = FALSE, extensions = "Buttons",
+          options = list(dom = "Bfrtip", buttons = c("copy", "csv", "excel"), pageLength = 20)) |>
+  formatSignif(columns = c("dd.p", "dd.fdr", "mlr.p", "fisher.p", "binom.p", "lr.p"), digits = 3)
+```
+
+Many genes reach high significance: **EGFR** (`dd.p = 5e-11`, strongly enriched in Asian
+LUAD), **KEAP1** (`3e-11`), **KRAS** (`4e-10`), NF1, SMARCA4, TP53, MGA, SETD2, STK11,
+ARID1A, PTPRU, BRAF. EGFR is enriched in Asian; KRAS/KEAP1/STK11/NF1 in White.
+
+## Interpretation and caveats
+
+In this cohort **smoking, ancestry, and cohort are all entangled**: Asian ≈ never-smoker ≈
+OncoSG, and White ≈ smoker ≈ TCGA. Consequently the two analyses largely trace the *same*
+biological axis (EGFR at one end, KRAS/STK11/KEAP1 at the other).
+
+- The **smoking** analysis is the more reliable of the two because it explicitly adjusts for
+  **cohort**, removing the bulk of the TCGA-vs-OncoSG study/batch difference; its findings are
+  consistent with the independent TCGA-only run and with established biology.
+- The **ancestry** analysis **cannot** adjust for cohort (cohort is collinear with the
+  Asian/White phenotype), so its results conflate genuine ancestry biology — the EGFR
+  enrichment in Asian LUAD is real and well documented — with residual batch effects from the
+  two studies' different sequencing/mutation-calling pipelines. Its p-values should therefore
+  be read as an upper bound on ancestry-specific selection, not as batch-free estimates.
