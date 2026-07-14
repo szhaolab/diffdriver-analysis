@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2026-07-14" />
+
+<title>Pan-cancer immune-subtype driver analysis</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="site_libs/jszip-1.13.6/jszip.min.js"></script>
+<link href="site_libs/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="site_libs/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script>
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="site_libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">diffdriver_run</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/LD-ZhangQR/diffdriver">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Pan-cancer immune-subtype driver
+analysis</h1>
+<h4 class="date">2026-07-14</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2026-07-14
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>diffdriver-analysis/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250319code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250319)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250319code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250319)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomszhaolabdiffdriveranalysistree52ea74a3828d2034196932b9eaf8574f21dde0fdtargetblank52ea74aa">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/szhaolab/diffdriver-analysis/tree/52ea74a3828d2034196932b9eaf8574f21dde0fd" target="_blank">52ea74a</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomszhaolabdiffdriveranalysistree52ea74a3828d2034196932b9eaf8574f21dde0fdtargetblank52ea74aa"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/szhaolab/diffdriver-analysis/tree/52ea74a3828d2034196932b9eaf8574f21dde0fd" target="_blank">52ea74a</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Untracked files:
+    Untracked:  analysis/pancancer_immune.Rmd
+    Untracked:  data/pancancer_gene_cohorts.txt
+    Untracked:  data/pancancer_immune_aggregated.txt
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>The per-tumor-type immune-subtype analyses (see <a
+href="immunesubtypes.html">Immune Subtypes</a>) run diffdriver
+separately within each tumor type. This analysis instead performs a
+<strong>pan-cancer</strong> test: for each driver gene, it pools samples
+across the tumor types where the gene is recurrently mutated, and asks
+whether the gene’s selection differs by immune subtype across the whole
+pan-cancer cohort — adjusting for the tumor type of origin.</p>
+<ul>
+<li><strong>Phenotype:</strong> immune subtype, each tested one-vs-rest
+— C1 vs rest, C2 vs rest, C3 vs rest, C4 vs rest.</li>
+<li><strong>Covariates:</strong> age, sex, and <strong>cohort (tumor
+type)</strong> — the cohort term absorbs tumor-type-specific
+mutation-rate and composition differences.</li>
+<li><strong>Model:</strong> signature mode
+(<code>BMRmode = "signature"</code>, <code>k = 6</code>, 96 nucleotide
+types).</li>
+</ul>
+</div>
+<div id="gene-selection-and-cohort-construction" class="section level1">
+<h1>Gene selection and cohort construction</h1>
+<p>Starting from the per-tumor-type diffdriver outputs across <strong>19
+tumor types</strong> (BLCA, BRCA, CESC, CHOL, ESCA, GBM, HNSC, KICH,
+KIRC, KIRP, LIHC, LUAD, LUSC, PAAD, PRAD, SARC, TGCT, UCEC, UCS — SKCM
+excluded, its runs had insufficient data), we counted, per gene, the
+number of mutated samples in each tumor type. For each gene we then
+formed a <strong>pan-cancer cohort = the union of all tumor types in
+which the gene has at least 5 mutations</strong>.</p>
+<p>We analyzed the genes whose cohort spans <strong>at least two tumor
+types</strong> — <strong>43 genes</strong>. Genes sharing the same
+tumor-type set were grouped into a common cohort so the background
+mutation rate is estimated once per cohort (36 distinct cohorts). Each
+cohort × subtype combination is one diffdriver run (36 × 4 = 144 runs),
+submitted as a SLURM array on Discovery.</p>
+<pre class="r"><code>library(DT)
+pc &lt;- read.table(&quot;data/pancancer_gene_cohorts.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
+pc &lt;- pc[pc$n_tumor_types &gt;= 2, ]
+pc &lt;- pc[order(-pc$samples_with_mut), c(&quot;gene&quot;, &quot;n_tumor_types&quot;, &quot;total_samples&quot;,
+                                        &quot;samples_with_mut&quot;, &quot;tumor_types&quot;)]
+datatable(pc, rownames = FALSE, extensions = &quot;Buttons&quot;,
+          options = list(dom = &quot;Bfrtip&quot;, buttons = c(&quot;copy&quot;, &quot;csv&quot;, &quot;excel&quot;), pageLength = 10),
+          colnames = c(&quot;gene&quot;, &quot;n tumor types&quot;, &quot;total samples&quot;, &quot;samples w/ mut&quot;,
+                       &quot;tumor types (mutation count)&quot;))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-321f8cf22c7d3f9f6363" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-321f8cf22c7d3f9f6363">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"data":[["TP53","PIK3CA","KRAS","PTEN","ARID1A","CDKN2A","CTNNB1","RB1","NFE2L2","FBXW7","EP300","KEAP1","FAT1","EGFR","SMARCA4","CTCF","ERBB2","CASP8","SPOP","ARID2","SETD2","HRAS","STK11","ATM","NF1","BAP1","MGA","TGFBR2","PPP2R1A","SMAD4","SF3B1","CHD4","PIK3R1","ZNF750","COL11A1","RARG","RHOA","CUL3","FOXA1","HIST1H3B","NRAS","ZBTB7B","MAPK1"],[16,10,10,10,7,7,3,9,8,6,4,4,2,2,4,4,3,3,3,3,2,2,2,3,2,3,2,3,2,3,2,2,2,2,2,2,2,2,2,2,3,2,2],[4670,3121,3045,3361,2646,2062,967,3295,2366,2246,1262,1416,706,559,1343,2012,1486,1039,674,1142,830,859,599,1031,559,1134,642,753,277,753,1306,277,363,859,744,859,859,753,1327,1306,746,430,663],[1619,754,315,243,195,169,166,135,132,125,122,117,107,97,69,68,67,63,62,58,54,47,43,41,40,39,37,36,35,35,34,33,30,29,27,27,27,24,23,19,19,16,15],["HNSC(331); BRCA(227); BLCA(191); LUAD(187); ESCA(141); LUSC(124); LIHC(86); PAAD(55); SARC(54); UCEC(53); GBM(47); UCS(46); PRAD(40); KICH(25); CESC(6); KIRC(6)","BRCA(318); UCEC(135); BLCA(88); HNSC(85); CESC(51); LUSC(24); UCS(20); ESCA(17); GBM(9); PRAD(7)","LUAD(131); PAAD(76); UCEC(44); TGCT(17); BLCA(13); CESC(11); UCS(7); LIHC(6); BRCA(5); KIRP(5)","UCEC(127); GBM(33); BLCA(13); BRCA(13); LUSC(13); CESC(12); HNSC(10); UCS(10); KIRC(7); PRAD(5)","BLCA(87); UCEC(44); LUAD(23); BRCA(15); LIHC(14); CESC(6); ESCA(6)","HNSC(80); BLCA(23); LUSC(21); LUAD(14); PAAD(14); ESCA(9); LIHC(8)","LIHC(91); UCEC(68); PRAD(7)","BLCA(52); BRCA(14); HNSC(13); LUAD(11); SARC(11); LIHC(10); LUSC(9); UCEC(9); GBM(6)","LUSC(27); HNSC(24); BLCA(22); ESCA(16); UCEC(13); LIHC(11); LUAD(11); CESC(8)","BLCA(30); UCEC(25); HNSC(23); UCS(21); CESC(17); BRCA(9)","BLCA(62); HNSC(33); CESC(18); UCEC(9)","LUAD(63); HNSC(22); LUSC(18); LIHC(14)","HNSC(80); UCEC(27)","GBM(54); LUAD(43)","LUAD(32); HNSC(19); ESCA(9); KIRP(9)","UCEC(28); BLCA(14); BRCA(14); HNSC(12)","BLCA(44); BRCA(15); CESC(8)","HNSC(45); BLCA(11); CESC(7)","PRAD(41); UCEC(16); UCS(5)","BLCA(25); LUAD(18); LIHC(15)","KIRC(30); LUAD(24)","HNSC(32); BLCA(15)","LUAD(37); CESC(6)","UCEC(16); PRAD(13); KIRC(12)","LUAD(32); GBM(8)","BLCA(16); KIRC(13); LIHC(10)","LUAD(24); UCEC(13)","HNSC(22); ESCA(8); PAAD(6)","UCEC(20); UCS(15)","PAAD(13); HNSC(12); ESCA(10)","BLCA(20); BRCA(14)","UCEC(24); UCS(9)","UCEC(24); GBM(6)","BLCA(17); HNSC(12)","LIHC(18); PRAD(9)","BLCA(16); HNSC(11)","BLCA(19); HNSC(8)","HNSC(15); KIRP(9)","BRCA(15); PRAD(8)","BLCA(12); BRCA(7)","BLCA(7); TGCT(6); UCEC(6)","BLCA(11); UCS(5)","CESC(9); HNSC(6)"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>gene<\/th>\n      <th>n tumor types<\/th>\n      <th>total samples<\/th>\n      <th>samples w/ mut<\/th>\n      <th>tumor types (mutation count)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["copy","csv","excel"],"pageLength":10,"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"name":"gene","targets":0},{"name":"n_tumor_types","targets":1},{"name":"total_samples","targets":2},{"name":"samples_with_mut","targets":3},{"name":"tumor_types","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Covariates are assembled from three sources on Discovery, keyed on
+the 12-character TCGA patient barcode: mutations from each
+<code>&lt;TUMOR&gt;_mutations.txt</code>; immune subtype (C1–C6,
+one-hot) and tumor label from
+<code>&lt;TUMOR&gt;_6immunesubtype.txt</code>; age and sex from the
+cBioPortal <code>combined_study_clinical_data.tsv</code>. Across the 18
+contributing tumor types this gives 4,972 samples with complete age and
+sex.</p>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<p>For each gene we take <code>dd.p</code> from its pan-cancer cohort
+run, then <strong>recompute FDR across the gene set within each
+subtype</strong> (FDR depends on the number of genes tested).
+<code>alpha_e</code> is the subtype coefficient: <strong>positive =
+selected up in the subtype, negative = up in the rest</strong>.
+<code>mut.E1</code>/<code>mut.E0</code> are mutation counts in the
+subtype vs the rest.</p>
+<pre class="r"><code>res &lt;- read.table(&quot;data/pancancer_immune_aggregated.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
+res &lt;- res[order(res$phenotype, res$dd.p),
+           c(&quot;gene&quot;, &quot;phenotype&quot;, &quot;dd.p&quot;, &quot;dd.fdr&quot;, &quot;alpha_e&quot;, &quot;direction&quot;,
+             &quot;mut.E1&quot;, &quot;mut.E0&quot;, &quot;E1&quot;, &quot;E0&quot;, &quot;tumors&quot;)]
+datatable(res, rownames = FALSE, extensions = &quot;Buttons&quot;, filter = &quot;top&quot;,
+          options = list(dom = &quot;Bfrtip&quot;, buttons = c(&quot;copy&quot;, &quot;csv&quot;, &quot;excel&quot;), pageLength = 15)) |&gt;
+  formatSignif(columns = c(&quot;dd.p&quot;, &quot;dd.fdr&quot;, &quot;alpha_e&quot;), digits = 3)</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1662b273260d1abeaa23" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1662b273260d1abeaa23">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"1.6243572e-08\" data-max=\"1\" data-scale=\"15\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"6.82230037e-07\" data-max=\"1\" data-scale=\"15\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"-3.66395153099867\" data-max=\"2.97316000324852\" data-scale=\"15\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"0\" data-max=\"749\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"6\" data-max=\"1434\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"2\" data-max=\"1477\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"122\" data-max=\"4044\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","extensions":["Buttons"],"data":[["CASP8","HRAS","KEAP1","BAP1","CDKN2A","CTNNB1","TGFBR2","FAT1","SETD2","SMARCA4","NFE2L2","PPP2R1A","PTEN","CUL3","FBXW7","PIK3R1","ZNF750","CTCF","ERBB2","TP53","ARID1A","EP300","MAPK1","RB1","HIST1H3B","PIK3CA","SF3B1","KRAS","EGFR","ATM","RARG","RHOA","ARID2","NRAS","ZBTB7B","FOXA1","STK11","SMAD4","NF1","COL11A1","MGA","CHD4","KRAS","TP53","CTNNB1","FOXA1","CASP8","HRAS","KEAP1","CUL3","TGFBR2","ARID1A","CTCF","COL11A1","PTEN","NFE2L2","EP300","FAT1","CDKN2A","MGA","ZNF750","PPP2R1A","RB1","STK11","FBXW7","NF1","PIK3CA","ERBB2","ATM","SF3B1","PIK3R1","ARID2","EGFR","CHD4","MAPK1","SMAD4","SETD2","BAP1","HIST1H3B","RARG","RHOA","NRAS","ZBTB7B","SMARCA4","TP53","KRAS","SMARCA4","ARID2","HRAS","ARID1A","SF3B1","PTEN","CTCF","EP300","CUL3","PIK3CA","NFE2L2","CTNNB1","COL11A1","ZBTB7B","NRAS","RHOA","ZNF750","CHD4","NF1","CDKN2A","TGFBR2","ERBB2","FAT1","STK11","HIST1H3B","EGFR","ATM","PIK3R1","PPP2R1A","FBXW7","FOXA1","RB1","CASP8","RARG","BAP1","MAPK1","SMAD4","KEAP1","SETD2","MGA","FOXA1","CTNNB1","ARID1A","KRAS","SF3B1","BAP1","SETD2","MGA","NFE2L2","ATM","CUL3","PIK3R1","CDKN2A","HIST1H3B","TGFBR2","HRAS","KEAP1","PTEN","NRAS","ZNF750","ERBB2","EP300","MAPK1","RB1","CHD4","PIK3CA","EGFR","CTCF","COL11A1","PPP2R1A","TP53","FBXW7","CASP8","RARG","RHOA","ARID2","ZBTB7B","STK11","SMARCA4","SMAD4","NF1","FAT1"],["C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4"],[0.00352872217588053,0.00372196652872192,0.00639257478544114,0.0179097422808261,0.0186594521721151,0.0323085345202965,0.0335839950867233,0.0643468970240615,0.0655181856446193,0.0723704326915383,0.08466532283954011,0.09202015277221701,0.117222868145955,0.122680730110104,0.19086593706995,0.229171739702325,0.272512836136461,0.287458253316572,0.361787170128675,0.392057450938434,0.405346739992456,0.411009526093268,0.495003104716983,0.549600489615978,0.57065502533034,0.664090163002732,0.740850796531215,0.869141290001279,0.892633852260025,0.898700458670612,1,1,1,1,1,1,1,1,1,1,1,1,1.83939930666762e-06,0.000101208333432097,0.000970701582580436,0.00192010370429193,0.00549570345805024,0.00637540736792,0.00928680447888495,0.0337305857490867,0.0456677653822127,0.0590404959413188,0.0606019419469743,0.0654163796714069,0.0758476187066619,0.08367627289592849,0.0957693377739174,0.09809091996957769,0.110693575182529,0.125341304430033,0.170814781938259,0.183351336305167,0.195213678359021,0.344631476040504,0.345583895918195,0.367254649714604,0.469681639476197,0.487552755726109,0.5179018253440431,0.540780301755133,0.553169459765945,0.560838069702422,0.594287441982694,0.610843045278694,0.615164412473832,0.797437035594055,0.883032835581674,0.9594474284921291,1,1,1,1,1,1,1.62435723135046e-08,0.000539135951281742,0.00455719707953719,0.048892252079755,0.0713088662692889,0.081788306804064,0.116812422620489,0.117345263827526,0.155983591464162,0.172961598487005,0.176126363916964,0.215081143616261,0.273654911253106,0.284673489077089,0.30292095925267,0.349387476500981,0.352214176255078,0.401516848482245,0.434869198957362,0.435297252928941,0.46011929169489,0.51470045688597,0.520873384786124,0.531786251742858,0.594394951908349,0.631326823437748,0.633070227497964,0.739914122679539,0.788050862637597,0.807463634367647,0.813579769607729,0.83993278027033,0.890165890928287,0.908123915953741,1,1,1,1,1,1,1,1,0.00346019941177009,0.0141565094713671,0.0181726385218813,0.0202979467113023,0.124187268289386,0.142140899994741,0.157255207327907,0.176456063965583,0.190086680242591,0.192425860066709,0.196146234182936,0.234759641081839,0.254415232792633,0.261812853265615,0.30839338354276,0.336281660880966,0.355665272367453,0.365408749154114,0.367802118060118,0.497828753866652,0.539871411178349,0.5446551598500869,0.5867066568455011,0.66873258308285,0.705022526957521,0.775179171694198,0.776444693436276,0.8816810689023959,0.899522947764724,0.903738573598614,0.906706603302049,1,1,1,1,1,1,1,1,1,1,1],[0.0781612971031603,0.0781612971031603,0.089496046996176,0.156739398245767,0.156739398245767,0.20150397052034,0.20150397052034,0.303955817304461,0.303955817304461,0.303955817304461,0.32207053470276,0.32207053470276,0.368042190330312,0.368042190330312,0.53442462379586,0.6015758167186031,0.670735924405335,0.670735924405335,0.784654549814421,0.784654549814421,0.784654549814421,0.784654549814421,0.903918712961447,0.958700442554971,0.958700442554971,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7.72547708800401e-05,0.00212537500207404,0.0135898221561261,0.0201610888950653,0.04462785157544,0.04462785157544,0.0557208268733097,0.177085575182705,0.213116238450326,0.228957328849924,0.228957328849924,0.228957328849924,0.2450461527446,0.251028818687785,0.257488664920141,0.257488664920141,0.273478244568601,0.292463043670077,0.377590570600362,0.385037806240851,0.390427356718042,0.631066244720182,0.631066244720182,0.642695637000557,0.782936524966695,0.782936524966695,0.782936524966695,0.782936524966695,0.782936524966695,0.782936524966695,0.782936524966695,0.782936524966695,0.782936524966695,0.9850692792632439,1,1,1,1,1,1,1,1,6.82230037167193e-07,0.0113218549769166,0.06380075911352071,0.513368646837427,0.572518147628448,0.572518147628448,0.616062635094512,0.616062635094512,0.672482480410226,0.672482480410226,0.672482480410226,0.752784002656914,0.848178685907476,0.848178685907476,0.848178685907476,0.870176200159605,0.870176200159605,0.914124231150776,0.914124231150776,0.914124231150776,0.92023858338978,0.930625940550001,0.930625940550001,0.930625940550001,0.984775909441277,0.984775909441277,0.984775909441277,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.145328375294344,0.213128440468674,0.213128440468674,0.213128440468674,0.748921985062119,0.748921985062119,0.748921985062119,0.748921985062119,0.748921985062119,0.748921985062119,0.748921985062119,0.785438559796845,0.785438559796845,0.785438559796845,0.813036260974998,0.813036260974998,0.813036260974998,0.813036260974998,0.813036260974998,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[-1.69324025138243,-1.37746769139252,2.13085183595837,1.58465740965347,-0.921601505113854,0.914057449960044,-1.24980556773079,-1.33643434330208,-1.76942054570792,1.00774173521958,0.543421424203151,-0.974037408882235,0.517958666852363,1.55132250663866,0.448203874623019,1.0895909948207,-0.780803978986395,0.631857579748843,-0.420105026693193,-0.216743762564716,0.341714539186292,-0.385703503818763,0.750598989459262,-0.297499927895259,0.450173108039489,-0.0855192749214182,0.244816880808738,0.06766504686002089,-0.0764274529339298,-0.304167526953929,0.301950482314289,-0.217565347033171,-0.282531193168649,-0.268153723060192,-0.251560773272152,0.273110482567811,0.07516157084652279,-0.118618356735188,-0.114496254332526,-0.0716474490842296,0.481818632335371,-0.106363219476096,-1.12144320297209,0.987702161153695,-1.33947253741347,-3.66395153099867,1.50726913394786,1.19443298138652,-1.52875135600265,-1.99693908887478,1.15494285594446,-0.753497938876681,-1.04551900948316,-2.25810038697162,-0.616745880086107,-0.539269658043625,0.770005624375058,1.23191476120125,0.616830326425805,-1.74904068412348,0.96499821550757,0.787814043346418,0.631746847287235,-0.455730595736858,-0.31531467365673,-1.03325318079134,0.131937244246526,0.319868851679567,-0.5875013069491239,0.500815198838149,-0.671018745073745,-0.48404759227831,0.253711746632114,0.319202658070089,-0.63517699788907,0.250118690051231,0.14157478216824,-0.307192870509663,-0.107928457023262,-0.17930473879802,0.144127994637531,0.383457942518494,0.271016067845726,0.12392657766756,-1.90023736102892,0.9446577562469159,-2.46298374751328,2.222585978419,2.34908594538475,0.906045477432851,-2.18893509490394,0.978338046052289,1.19055744975032,-1.47051435974749,-2.40374426331957,-0.615606340338312,0.663983016493399,-0.400586207641612,0.828888467459214,1.88363906752842,-1.00699673584566,1.34332540303218,1.83817635639797,-0.531916844628076,0.917454008671311,-0.375610782825153,-1.12655899175709,-0.626233925012234,0.89542409809755,0.295787207725076,0.765316703646277,-0.141418442555737,0.247159149762223,-0.49857365122981,0.447563040101227,-0.237195290968027,-0.245952330444335,-0.5068673605451131,0.469501772395834,0.536890911593229,-0.046555298191602,1.79864977778497,0.540382630945799,-0.00686996289527856,0.109485277960674,0.305261547422432,2.97316000324852,1.12070493638379,-1.4288656951941,1.07785754114614,-1.98912896058227,-1.07534022178574,2.28430367493296,2.38642396286532,-0.8221076804576271,1.55588755539438,2.30134710154487,-1.79561812829728,0.733651778207411,-1.200665413088,1.73288689944392,-1.13917192675842,1.03254747756257,-0.500411592812763,1.53316689934323,-0.958240403672833,0.46228068704417,-0.490033610053473,-1.49226505314994,-0.489875008939452,0.683114837048209,-0.13919284294128,0.5823732991171729,0.309752280440839,-0.221917100138129,0.611049365369412,0.241233338281428,-0.0536808717042398,0.5899428320856061,0.636496787106647,-0.23897727299816,-0.492769645869255,-0.6748631244555821,0.20698062709298,-0.105532653658733,-0.208740129169554,-0.0653275711509109,-0.0751771896086339],["up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest"],[9,5,39,13,40,51,7,28,2,24,58,11,96,8,58,17,6,31,27,506,84,41,6,41,5,280,18,103,10,9,14,10,16,5,6,9,11,11,9,2,13,15,84,749,17,1,52,40,38,6,26,64,23,0,56,54,71,75,105,9,22,12,66,14,53,8,301,30,5,12,5,17,17,10,9,18,9,8,12,12,15,12,7,31,144,89,10,15,2,29,0,40,10,1,4,98,13,38,14,1,0,1,1,4,12,9,1,3,3,12,1,14,22,2,3,5,7,10,0,0,15,0,6,26,33,12,6,59,10,19,2,3,3,2,5,5,5,4,12,1,1,0,10,36,2,0,6,9,0,15,3,44,38,4,10,1,149,5,2,1,1,9,0,1,3,0,6,1],[54,42,75,26,129,115,29,79,48,45,74,16,133,16,63,11,23,37,40,1072,110,81,9,92,14,466,16,205,70,32,13,17,42,14,8,14,29,24,28,25,24,17,224,829,149,22,11,7,76,18,10,130,45,27,173,78,51,32,64,28,7,15,67,26,68,29,445,37,36,22,23,41,63,22,6,17,41,31,7,15,12,7,7,38,1434,219,59,43,45,165,34,189,58,121,20,648,119,128,13,13,19,26,28,28,25,160,35,64,104,28,18,66,19,26,24,116,16,123,63,27,24,15,29,88,17,25,17,107,184,289,32,36,47,35,127,36,19,24,157,18,35,47,104,193,17,29,61,113,15,118,29,702,42,64,17,26,1429,116,61,26,26,49,14,39,66,35,31,106],[332,286,299,190,573,161,232,229,77,267,686,128,902,125,778,109,286,711,528,1167,798,439,168,951,482,967,482,821,74,145,286,286,257,300,185,351,118,232,74,54,179,128,997,1477,131,354,644,514,596,358,465,951,921,60,1166,1044,715,425,867,196,514,76,1196,255,1056,125,1236,626,106,496,71,327,125,76,484,465,142,219,496,514,514,331,165,570,1273,726,367,311,20,513,181,875,216,53,196,524,352,463,430,18,52,20,20,33,165,343,32,181,35,165,181,165,692,33,33,216,465,547,20,20,503,2,32,295,522,198,119,206,298,358,108,201,35,29,227,71,64,108,213,108,8,34,175,286,44,34,112,49,6,447,12,274,115,121,195,12,530,126,38,34,34,202,33,22,87,8,115,13],[706,572,1092,941,1463,802,519,476,736,1054,1654,122,2386,624,1440,214,572,1300,958,3407,1827,822,494,2277,824,2080,824,2158,428,885,572,572,865,430,218,975,464,519,428,686,446,122,1982,3097,832,972,394,344,795,391,286,1674,1090,680,2122,1296,546,280,1169,429,344,174,2032,327,1162,377,1811,860,924,810,252,795,377,174,178,286,671,912,810,344,344,399,238,751,3301,2253,954,811,838,2112,1125,2413,1795,1208,553,2523,1988,500,310,385,678,838,838,217,337,1693,719,1305,670,417,1125,337,338,290,217,2002,861,2681,1018,838,628,660,719,1096,291,427,1207,757,2327,2621,1198,930,778,596,2113,959,685,215,1823,1198,743,824,1216,3002,686,824,1374,1212,656,2781,238,2773,387,1890,545,238,4044,2092,1000,824,824,920,370,560,1234,743,387,692],["BLCA,CESC,HNSC","BLCA,HNSC","HNSC,LIHC,LUAD,LUSC","BLCA,KIRC,LIHC","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD","LIHC,PRAD,UCEC","ESCA,HNSC,PAAD","HNSC,UCEC","KIRC,LUAD","ESCA,HNSC,KIRP,LUAD","BLCA,CESC,ESCA,HNSC,LIHC,LUAD,LUSC,UCEC","UCEC,UCS","BLCA,BRCA,CESC,GBM,HNSC,KIRC,LUSC,PRAD,UCEC,UCS","HNSC,KIRP","BLCA,BRCA,CESC,HNSC,UCEC,UCS","GBM,UCEC","BLCA,HNSC","BLCA,BRCA,HNSC,UCEC","BLCA,BRCA,CESC","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KICH,KIRC,LIHC,LUAD,LUSC,PAAD,PRAD,SARC,UCEC,UCS","BLCA,BRCA,CESC,ESCA,LIHC,LUAD,UCEC","BLCA,CESC,HNSC,UCEC","CESC,HNSC","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,LUSC,SARC,UCEC","BLCA,BRCA","BLCA,BRCA,CESC,ESCA,GBM,HNSC,LUSC,PRAD,UCEC,UCS","BLCA,BRCA","BLCA,BRCA,CESC,KIRP,LIHC,LUAD,PAAD,TGCT,UCEC,UCS","GBM,LUAD","KIRC,PRAD,UCEC","BLCA,HNSC","BLCA,HNSC","BLCA,LIHC,LUAD","BLCA,TGCT,UCEC","BLCA,UCS","BRCA,PRAD","CESC,LUAD","ESCA,HNSC,PAAD","GBM,LUAD","LIHC,PRAD","LUAD,UCEC","UCEC,UCS","BLCA,BRCA,CESC,KIRP,LIHC,LUAD,PAAD,TGCT,UCEC,UCS","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KICH,KIRC,LIHC,LUAD,LUSC,PAAD,PRAD,SARC,UCEC,UCS","LIHC,PRAD,UCEC","BRCA,PRAD","BLCA,CESC,HNSC","BLCA,HNSC","HNSC,LIHC,LUAD,LUSC","HNSC,KIRP","ESCA,HNSC,PAAD","BLCA,BRCA,CESC,ESCA,LIHC,LUAD,UCEC","BLCA,BRCA,HNSC,UCEC","LIHC,PRAD","BLCA,BRCA,CESC,GBM,HNSC,KIRC,LUSC,PRAD,UCEC,UCS","BLCA,CESC,ESCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,CESC,HNSC,UCEC","HNSC,UCEC","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD","LUAD,UCEC","BLCA,HNSC","UCEC,UCS","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,LUSC,SARC,UCEC","CESC,LUAD","BLCA,BRCA,CESC,HNSC,UCEC,UCS","GBM,LUAD","BLCA,BRCA,CESC,ESCA,GBM,HNSC,LUSC,PRAD,UCEC,UCS","BLCA,BRCA,CESC","KIRC,PRAD,UCEC","BLCA,BRCA","GBM,UCEC","BLCA,LIHC,LUAD","GBM,LUAD","UCEC,UCS","CESC,HNSC","ESCA,HNSC,PAAD","KIRC,LUAD","BLCA,KIRC,LIHC","BLCA,BRCA","BLCA,HNSC","BLCA,HNSC","BLCA,TGCT,UCEC","BLCA,UCS","ESCA,HNSC,KIRP,LUAD","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KICH,KIRC,LIHC,LUAD,LUSC,PAAD,PRAD,SARC,UCEC,UCS","BLCA,BRCA,CESC,KIRP,LIHC,LUAD,PAAD,TGCT,UCEC,UCS","ESCA,HNSC,KIRP,LUAD","BLCA,LIHC,LUAD","BLCA,HNSC","BLCA,BRCA,CESC,ESCA,LIHC,LUAD,UCEC","BLCA,BRCA","BLCA,BRCA,CESC,GBM,HNSC,KIRC,LUSC,PRAD,UCEC,UCS","BLCA,BRCA,HNSC,UCEC","BLCA,CESC,HNSC,UCEC","HNSC,KIRP","BLCA,BRCA,CESC,ESCA,GBM,HNSC,LUSC,PRAD,UCEC,UCS","BLCA,CESC,ESCA,HNSC,LIHC,LUAD,LUSC,UCEC","LIHC,PRAD,UCEC","LIHC,PRAD","BLCA,UCS","BLCA,TGCT,UCEC","BLCA,HNSC","BLCA,HNSC","UCEC,UCS","GBM,LUAD","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD","ESCA,HNSC,PAAD","BLCA,BRCA,CESC","HNSC,UCEC","CESC,LUAD","BLCA,BRCA","GBM,LUAD","KIRC,PRAD,UCEC","GBM,UCEC","UCEC,UCS","BLCA,BRCA,CESC,HNSC,UCEC,UCS","BRCA,PRAD","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,LUSC,SARC,UCEC","BLCA,CESC,HNSC","BLCA,HNSC","BLCA,KIRC,LIHC","CESC,HNSC","ESCA,HNSC,PAAD","HNSC,LIHC,LUAD,LUSC","KIRC,LUAD","LUAD,UCEC","BRCA,PRAD","LIHC,PRAD,UCEC","BLCA,BRCA,CESC,ESCA,LIHC,LUAD,UCEC","BLCA,BRCA,CESC,KIRP,LIHC,LUAD,PAAD,TGCT,UCEC,UCS","BLCA,BRCA","BLCA,KIRC,LIHC","KIRC,LUAD","LUAD,UCEC","BLCA,CESC,ESCA,HNSC,LIHC,LUAD,LUSC,UCEC","KIRC,PRAD,UCEC","HNSC,KIRP","GBM,UCEC","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD","BLCA,BRCA","ESCA,HNSC,PAAD","BLCA,HNSC","HNSC,LIHC,LUAD,LUSC","BLCA,BRCA,CESC,GBM,HNSC,KIRC,LUSC,PRAD,UCEC,UCS","BLCA,TGCT,UCEC","BLCA,HNSC","BLCA,BRCA,CESC","BLCA,CESC,HNSC,UCEC","CESC,HNSC","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,LUSC,SARC,UCEC","UCEC,UCS","BLCA,BRCA,CESC,ESCA,GBM,HNSC,LUSC,PRAD,UCEC,UCS","GBM,LUAD","BLCA,BRCA,HNSC,UCEC","LIHC,PRAD","UCEC,UCS","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KICH,KIRC,LIHC,LUAD,LUSC,PAAD,PRAD,SARC,UCEC,UCS","BLCA,BRCA,CESC,HNSC,UCEC,UCS","BLCA,CESC,HNSC","BLCA,HNSC","BLCA,HNSC","BLCA,LIHC,LUAD","BLCA,UCS","CESC,LUAD","ESCA,HNSC,KIRP,LUAD","ESCA,HNSC,PAAD","GBM,LUAD","HNSC,UCEC"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>gene<\/th>\n      <th>phenotype<\/th>\n      <th>dd.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>alpha_e<\/th>\n      <th>direction<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>E1<\/th>\n      <th>E0<\/th>\n      <th>tumors<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["copy","csv","excel"],"pageLength":15,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatSignif(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatSignif(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatSignif(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,4,6,7,8,9]},{"name":"gene","targets":0},{"name":"phenotype","targets":1},{"name":"dd.p","targets":2},{"name":"dd.fdr","targets":3},{"name":"alpha_e","targets":4},{"name":"direction","targets":5},{"name":"mut.E1","targets":6},{"name":"mut.E0","targets":7},{"name":"E1","targets":8},{"name":"E0","targets":9},{"name":"tumors","targets":10}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[10,15,25,50,100]}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render"],"jsHooks":[]}</script>
+<div id="significant-genes-dd.fdr-0.05" class="section level2">
+<h2>Significant genes (dd.fdr &lt; 0.05)</h2>
+<ul>
+<li><strong>C2 vs rest (6 genes):</strong> KRAS (up in rest), TP53 (up
+in C2), CTNNB1 (up in rest), FOXA1 (up in rest), CASP8 (up in C2), HRAS
+(up in C2).</li>
+<li><strong>C3 vs rest (2 genes):</strong> TP53 (up in rest), KRAS (up
+in C3).</li>
+<li><strong>C1 and C4:</strong> no genes pass FDR 0.05.</li>
+</ul>
+<p>The dominant, most consistent signals are <strong>TP53 and
+KRAS</strong>, which flip direction between subtypes — TP53 is selected
+<em>up</em> in C2 but <em>down</em> in C3, and KRAS the reverse. This is
+consistent with the immune subtypes (C2 “IFN-γ dominant”, C3
+“inflammatory”) tracking distinct oncogenic-driver backgrounds, since
+TP53 and KRAS status are both known to shape the tumor immune
+microenvironment. FOXA1, CTNNB1, CASP8, and HRAS contribute
+subtype-specific selection within their respective tumor cohorts.</p>
+</div>
+</div>
+<div id="notes" class="section level1">
+<h1>Notes</h1>
+<ul>
+<li><strong>42 of 43 genes</strong> are reported. <strong>SPOP</strong>
+could not be fit — a numerical failure in the EM optimization within its
+PRAD+UCEC+UCS cohort.</li>
+<li>FDR is recomputed within each subtype over the genes tested, so the
+values here differ from the per-tumor-type FDRs on the <a
+href="immunesubtypes.html">Immune Subtypes</a> page.</li>
+<li>The full aggregated table (all 42 genes × 4 subtypes, with mutation
+counts and cohort composition) is downloadable from the results table
+above.</li>
+</ul>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Sonoma 14.6.1
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] DT_0.33         workflowr_1.7.1
+
+loaded via a namespace (and not attached):
+ [1] jsonlite_2.0.0    compiler_4.3.2    promises_1.5.0    Rcpp_1.1.0       
+ [5] stringr_1.6.0     git2r_0.36.2      callr_3.7.6       later_1.4.8      
+ [9] jquerylib_0.1.4   yaml_2.3.12       fastmap_1.2.0     R6_2.6.1         
+[13] knitr_1.51        htmlwidgets_1.6.4 tibble_3.3.1      rprojroot_2.0.4  
+[17] bslib_0.10.0      pillar_1.11.1     rlang_1.1.6       cachem_1.1.0     
+[21] stringi_1.8.7     httpuv_1.6.15     xfun_0.52         getPass_0.2-4    
+[25] fs_1.6.6          sass_0.4.10       otel_0.2.0        cli_3.6.5        
+[29] magrittr_2.0.3    crosstalk_1.2.2   ps_1.8.1          digest_0.6.39    
+[33] processx_3.8.5    rstudioapi_0.17.1 lifecycle_1.0.5   vctrs_0.6.5      
+[37] evaluate_1.0.5    glue_1.8.0        whisker_0.4.1     rmarkdown_2.29   
+[41] httr_1.4.8        tools_4.3.2       pkgconfig_2.0.3   htmltools_0.5.9  </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
