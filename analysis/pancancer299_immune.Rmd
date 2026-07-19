@@ -1,0 +1,109 @@
+---
+title: "Pan-cancer immune-subtype driver analysis (299 driver genes)"
+date: "2026-07-19"
+output:
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# Overview
+
+This is an expanded pan-cancer version of the immune-subtype driver analysis. For each of a
+large set of driver genes, we pool tumor samples across the cancer types in which the gene is
+recurrently point-mutated, and test whether the gene's selection differs by **immune subtype**
+(Thorsson C1–C4, one-vs-rest), adjusting for age, sex, and tumor type of origin.
+
+- **Genes:** the 299 driver genes from Bailey et al. 2018 (Cell), filtered to those with a
+  usable recurrently-mutated cohort (below).
+- **Phenotype:** immune subtype, one-vs-rest — C1 vs rest, C2 vs rest, C3 vs rest, C4 vs rest.
+- **Covariates:** age, sex, and **cohort (tumor type)**. Sex is dropped for single-sex
+  cohorts (e.g. UCEC/OV), and cohort is dropped for single-tumor cohorts.
+- **Model:** signature mode (`BMRmode = "signature"`), with the number of mutational
+  signatures scaled to cohort size: `k = 6` for ≤1000 samples, +1 per 200 samples above
+  1000, capped at 20.
+
+# Data sources
+
+- **Mutations:** TCGA PanCancer Atlas (32 studies) from [cBioPortal](https://www.cbioportal.org/),
+  **point mutations (SNVs) only**, **excluding hypermutators** (>1000 mutations/sample).
+- **Immune subtype (C1–C6):** Thorsson et al. 2018 (Immunity) pan-immune table, matched by
+  TCGA participant barcode.
+- **Age, sex:** cBioPortal clinical data.
+
+**Gene / cohort selection.** Starting from the 299 Bailey drivers, for each gene we counted
+point mutations per tumor type and kept the tumor types with ≥5 point mutations; genes with a
+total of >20 point mutations were retained (254 genes). **SKCM (melanoma) was excluded**
+(its non-hypermutator subset gives a degenerate topic-model matrix). Each gene's **cohort** is
+the union of its qualifying tumor types among the 27 tumor types with immune-subtype labels;
+genes sharing the same tumor set were grouped so the background mutation rate is estimated
+once per cohort. This yields **237 cohorts across 8,253 samples**, run as `237 × 4` = 948
+diffdriver analyses (BMR reused across the 4 subtypes).
+
+Results are available for **220 genes** (6 small low-mutation cohorts — EIF1AX, SOX17, PCBP1,
+IDH2, VHL, ELF3 — could not be fit in signature mode and are omitted).
+
+# Per-gene cohorts and mutation frequency
+
+Each gene's pan-cancer cohort: the tumor types pooled, the total number of samples, the number
+of mutated samples, and the resulting **mutation frequency** (mutated samples / cohort
+samples). Sorted by mutation frequency.
+
+```{r cohorts}
+library(DT)
+gc <- read.table("data/pancancer299_gene_cohorts.txt", header = TRUE, sep = "\t")
+gc <- gc[order(-gc$mut_freq), ]
+gc$mut_freq_pct <- round(100 * gc$mut_freq, 1)
+datatable(gc[, c("gene", "n_tumor_types", "n_samples", "n_mutated", "mut_freq_pct", "tumors")],
+          rownames = FALSE, filter = "top", extensions = "Buttons",
+          colnames = c("gene", "n tumor types", "cohort samples", "mutated samples",
+                       "mut freq (%)", "cohort (tumor types)"),
+          options = list(dom = "Bfrtip", buttons = c("copy", "csv", "excel"), pageLength = 15))
+```
+
+# Results
+
+For each gene we take `dd.p` from its cohort run, then **recompute FDR across all genes within
+each subtype**. `alpha_e` is the subtype coefficient — **positive = selected up in the subtype,
+negative = up in the rest**. `mut_freq` is the cohort-level mutation frequency; `mut.E1`/
+`mut.E0` are mutation counts in the subtype vs the rest.
+
+```{r results}
+res <- read.table("data/pancancer299_immune_aggregated.txt", header = TRUE, sep = "\t")
+res$mut_freq_pct <- round(100 * res$mut_freq, 1)
+res <- res[order(res$phenotype, res$dd.p),
+           c("gene", "phenotype", "dd.p", "dd.fdr", "direction", "mut_freq_pct",
+             "n_tumor_types", "n_samples", "mut.E1", "mut.E0", "tumors")]
+datatable(res, rownames = FALSE, filter = "top", extensions = "Buttons",
+          options = list(dom = "Bfrtip", buttons = c("copy", "csv", "excel"), pageLength = 15)) |>
+  formatSignif(columns = c("dd.p", "dd.fdr"), digits = 3)
+```
+
+## Significant genes (dd.fdr < 0.05)
+
+- **C2 vs rest (5):** TP53 (up in C2), KRAS (up in rest), JAK2 (up in C2), COL5A1 (up in C2),
+  CASP8 (up in C2).
+- **C3 vs rest (6):** TP53 (up in rest), WHSC1/NSD2, FAT1, SMARCA4, BRCA1, LATS2 — all up in
+  the rest.
+- **C4 vs rest (2):** CIC (up in rest), **EGFR (up in C4)**.
+- **C1 vs rest:** none pass FDR 0.05.
+
+The dominant, most consistent signal is **TP53**, which flips direction — enriched in C2
+("IFN-γ dominant") but depleted (up in rest) for C3 ("inflammatory") — consistent with the
+immune subtypes tracking distinct oncogenic-driver backgrounds. **KRAS** is depleted in C2.
+Notably **EGFR** is selected up in **C4** (lymphocyte-depleted), and **CIC** in the rest of C4.
+This cohort-adjusted pan-cancer view (250 genes, 27 tumor types) extends the earlier
+tumor-type-restricted immune-subtype analyses.
+
+# Notes
+
+- FDR is recomputed within each subtype over the genes tested, so values differ from the
+  per-tumor-type immune-subtype pages.
+- The full aggregated table (all 220 genes × 4 subtypes, with mutation frequency and cohort
+  composition) is downloadable from the results table above.

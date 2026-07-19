@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2026-07-19" />
+
+<title>Pan-cancer immune-subtype driver analysis (299 driver genes)</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="site_libs/jszip-1.13.6/jszip.min.js"></script>
+<link href="site_libs/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="site_libs/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script>
+<link href="site_libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="site_libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="site_libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="site_libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">diffdriver_run</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/LD-ZhangQR/diffdriver">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Pan-cancer immune-subtype driver analysis
+(299 driver genes)</h1>
+<h4 class="date">2026-07-19</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2026-07-19
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>diffdriver-analysis/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20250319code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20250319)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20250319code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20250319)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomszhaolabdiffdriveranalysistree65e4f31d26d0d73b4d5b8aeb2eb20c78cb8b007ctargetblank65e4f31a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/szhaolab/diffdriver-analysis/tree/65e4f31d26d0d73b4d5b8aeb2eb20c78cb8b007c" target="_blank">65e4f31</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomszhaolabdiffdriveranalysistree65e4f31d26d0d73b4d5b8aeb2eb20c78cb8b007ctargetblank65e4f31a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/szhaolab/diffdriver-analysis/tree/65e4f31d26d0d73b4d5b8aeb2eb20c78cb8b007c" target="_blank">65e4f31</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Untracked files:
+    Untracked:  analysis/pancancer299_immune.Rmd
+    Untracked:  data/pancancer299_gene_cohorts.txt
+    Untracked:  data/pancancer299_immune_aggregated.txt
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>This is an expanded pan-cancer version of the immune-subtype driver
+analysis. For each of a large set of driver genes, we pool tumor samples
+across the cancer types in which the gene is recurrently point-mutated,
+and test whether the gene’s selection differs by <strong>immune
+subtype</strong> (Thorsson C1–C4, one-vs-rest), adjusting for age, sex,
+and tumor type of origin.</p>
+<ul>
+<li><strong>Genes:</strong> the 299 driver genes from Bailey et al. 2018
+(Cell), filtered to those with a usable recurrently-mutated cohort
+(below).</li>
+<li><strong>Phenotype:</strong> immune subtype, one-vs-rest — C1 vs
+rest, C2 vs rest, C3 vs rest, C4 vs rest.</li>
+<li><strong>Covariates:</strong> age, sex, and <strong>cohort (tumor
+type)</strong>. Sex is dropped for single-sex cohorts (e.g. UCEC/OV),
+and cohort is dropped for single-tumor cohorts.</li>
+<li><strong>Model:</strong> signature mode
+(<code>BMRmode = "signature"</code>), with the number of mutational
+signatures scaled to cohort size: <code>k = 6</code> for ≤1000 samples,
++1 per 200 samples above 1000, capped at 20.</li>
+</ul>
+</div>
+<div id="data-sources" class="section level1">
+<h1>Data sources</h1>
+<ul>
+<li><strong>Mutations:</strong> TCGA PanCancer Atlas (32 studies) from
+<a href="https://www.cbioportal.org/">cBioPortal</a>, <strong>point
+mutations (SNVs) only</strong>, <strong>excluding hypermutators</strong>
+(&gt;1000 mutations/sample).</li>
+<li><strong>Immune subtype (C1–C6):</strong> Thorsson et al. 2018
+(Immunity) pan-immune table, matched by TCGA participant barcode.</li>
+<li><strong>Age, sex:</strong> cBioPortal clinical data.</li>
+</ul>
+<p><strong>Gene / cohort selection.</strong> Starting from the 299
+Bailey drivers, for each gene we counted point mutations per tumor type
+and kept the tumor types with ≥5 point mutations; genes with a total of
+&gt;20 point mutations were retained (254 genes). <strong>SKCM
+(melanoma) was excluded</strong> (its non-hypermutator subset gives a
+degenerate topic-model matrix). Each gene’s <strong>cohort</strong> is
+the union of its qualifying tumor types among the 27 tumor types with
+immune-subtype labels; genes sharing the same tumor set were grouped so
+the background mutation rate is estimated once per cohort. This yields
+<strong>237 cohorts across 8,253 samples</strong>, run as
+<code>237 × 4</code> = 948 diffdriver analyses (BMR reused across the 4
+subtypes).</p>
+<p>Results are available for <strong>220 genes</strong> (6 small
+low-mutation cohorts — EIF1AX, SOX17, PCBP1, IDH2, VHL, ELF3 — could not
+be fit in signature mode and are omitted).</p>
+</div>
+<div id="per-gene-cohorts-and-mutation-frequency"
+class="section level1">
+<h1>Per-gene cohorts and mutation frequency</h1>
+<p>Each gene’s pan-cancer cohort: the tumor types pooled, the total
+number of samples, the number of mutated samples, and the resulting
+<strong>mutation frequency</strong> (mutated samples / cohort samples).
+Sorted by mutation frequency.</p>
+<pre class="r"><code>library(DT)
+gc &lt;- read.table(&quot;data/pancancer299_gene_cohorts.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
+gc &lt;- gc[order(-gc$mut_freq), ]
+gc$mut_freq_pct &lt;- round(100 * gc$mut_freq, 1)
+datatable(gc[, c(&quot;gene&quot;, &quot;n_tumor_types&quot;, &quot;n_samples&quot;, &quot;n_mutated&quot;, &quot;mut_freq_pct&quot;, &quot;tumors&quot;)],
+          rownames = FALSE, filter = &quot;top&quot;, extensions = &quot;Buttons&quot;,
+          colnames = c(&quot;gene&quot;, &quot;n tumor types&quot;, &quot;cohort samples&quot;, &quot;mutated samples&quot;,
+                       &quot;mut freq (%)&quot;, &quot;cohort (tumor types)&quot;),
+          options = list(dom = &quot;Bfrtip&quot;, buttons = c(&quot;copy&quot;, &quot;csv&quot;, &quot;excel&quot;), pageLength = 15))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-321f8cf22c7d3f9f6363" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-321f8cf22c7d3f9f6363">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"2\" data-max=\"23\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"824\" data-max=\"7420\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"15\" data-max=\"2904\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"0.8\" data-max=\"40.6\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","extensions":["Buttons"],"data":[["TP53","PIK3CA","IDH1","KRAS","APC","BRAF","SPTA1","CDKN2A","CTNNB1","KMT2D","PTEN","KMT2C","APOB","KEAP1","NFE2L2","FAT1","PPP2R1A","ARID1A","FBXW7","MACF1","STK11","PTPRD","FGFR3","ATM","HRAS","RB1","NOTCH1","NF1","SPOP","PLXNB2","EP300","CREBBP","ERBB4","KMT2A","CIC","SMAD4","HGF","CHD4","NSD1","TLR4","EGFR","ERBB2","CDH1","BRCA2","SMARCA4","PIK3CG","MGA","CTCF","KMT2B","MYH9","POLQ","NRAS","NCOR1","ERBB3","ZFHX3","CACNA1A","CASP8","EPHA3","CCND1","SPTAN1","NIPBL","PBRM1","MTOR","ERCC2","ARID2","ARHGAP35","COL5A1","BAP1","ATR","SETD2","GABRA6","MAP3K1","POLE","FGFR2","SETBP1","MUC6","NOTCH2","ZNF750","TCF7L2","RXRA","ALK","CHD8","ASXL1","BRCA1","PTPRC","KLF5","FLT3","PIK3R1","ASXL2","CARD11","EPHA2","SF3B1","CHD3","SOS1","KIF1A","FOXA1","WT1","HLA-A","CUL3","SOX9","MET","PDGFRA","PLCB4","MAP3K4","CDK12","AKT1","ZFP36L1","ZBTB7B","KIT","DICER1","U2AF1","MAP2K4","RASA1","FOXA2","ACVR1","RHOA","KEL","RNF111","INPPL1","ATF7IP","MECOM","CUL1","FUBP1","PIK3R2","LATS1","HLA-B","PTCH1","AJUBA","TGFBR2","PSIP1","KANSL1","RET","RUNX1","MYCN","DACH1","RAD21","DNMT3A","TSC1","AXIN2","SCAF4","CYLD","RAC1","SIN3A","TSC2","SF1","ARID5B","RNF43","LATS2","JAK3","IL7R","CREB3L3","PMS1","ACVR1B","GATA3","DHX9","PIK3CB","CNBD1","PDS5B","ZMYM2","NUP93","CTNND1","GNAS","JAK1","NF2","PGR","NUP133","ZBTB20","GRIN2D","IRF6","ALB","SMAD2","PLCG1","HIST1H1C","MYC","MLH1","TNFAIP3","ABL1","POLRMT","EEF1A1","AXIN1","WHSC1","TBX3","TET2","THRAP3","ZNF133","IRF2","BRD7","PAX5","JAK2","EPAS1","ZFP36L2","ESR1","CYSLTR2","MSH3","LZTR1","DAZAP1","GTF2I","PTPN11","XPO1","CHEK2","SMC3","HIST1H1E","MSH6","EZH2","PMS2","TCF12","MSH2","CSDE1","RFC1","B2M","ZC3H12A","TBL1XR1","MAP2K1","ACVR2A","EEF2","IL6ST","TRAF3","FGFR1","PTPDC1","RAF1"],[23,19,8,14,13,10,18,8,10,19,16,19,17,6,9,15,5,15,12,21,3,14,5,17,5,11,14,16,5,8,15,14,13,14,10,11,8,14,13,9,12,10,7,15,15,10,13,5,13,10,14,8,13,13,15,13,8,15,2,12,14,13,14,3,13,12,16,11,12,17,8,7,10,7,12,11,12,4,4,3,12,13,10,10,15,4,7,7,9,11,9,10,9,9,14,3,3,4,8,3,8,13,9,11,12,4,3,5,15,10,3,4,8,2,4,6,9,5,7,10,8,8,4,3,10,7,9,4,10,3,10,11,2,2,5,5,9,6,7,10,4,2,8,12,5,8,8,6,8,7,5,4,7,7,10,8,8,10,6,4,10,8,7,10,9,9,7,6,3,7,4,8,4,2,7,4,6,5,8,11,7,6,10,8,4,4,3,4,6,7,5,7,3,5,9,4,5,4,6,5,6,4,7,4,6,4,3,7,5,3,3,6,5,6,5,3,6,6,4,3],[7153,6666,3249,4835,5261,3961,6919,2741,3522,6786,6006,7239,6492,2519,3224,6084,1595,6030,4611,7420,1173,5353,1932,6294,1983,4259,5730,6165,2251,3169,5948,5296,5512,5674,4096,4524,3054,5540,5281,3855,5023,4413,3370,6054,5987,3650,5193,2770,5034,4413,5547,2852,5136,4888,6096,5424,3784,5938,824,4860,5835,5242,5622,1324,5530,5111,5843,3925,4860,6466,2645,3246,4597,3485,4771,4853,4755,1494,1652,1168,4927,4952,4498,4308,6219,1563,2301,3439,4245,4690,3589,4584,3954,3601,5634,1787,1206,1547,3301,1363,3512,5452,4111,4941,5168,2184,1250,1714,5664,4587,1239,2308,3859,883,1728,3068,3444,1930,3632,4529,3687,3451,1799,1225,4413,2612,4144,1593,4123,1292,4644,4425,1386,824,2737,1978,4290,3028,2873,4406,1693,877,3901,5023,2070,3859,2769,2271,3301,3538,1771,2248,3586,3538,4587,3446,3974,4383,3038,1760,4488,2625,3517,4069,3932,4318,3604,2517,1351,3251,2214,3341,1668,925,2756,1686,2315,2577,3515,4442,3412,2877,4443,3655,1420,1563,1730,1810,3006,3173,2538,3485,1351,2175,3905,1448,2559,1484,2903,2684,2933,1510,3129,1686,3173,1709,1801,3442,2581,1363,1728,2953,2099,2994,2653,1845,2960,2854,2143,1872],[2904,1222,434,621,516,388,625,227,287,524,463,538,430,160,204,373,96,361,267,424,63,276,91,290,89,189,253,267,95,133,248,218,219,224,159,175,118,214,203,147,189,166,126,225,222,135,190,101,183,160,200,103,185,175,210,180,124,195,27,159,191,170,180,42,175,159,181,121,149,191,78,95,127,96,130,131,128,40,44,31,130,130,118,112,162,40,59,88,108,119,88,112,96,87,136,43,29,37,78,32,82,126,95,114,119,50,28,38,124,100,27,50,83,19,37,65,73,41,77,95,77,71,37,25,90,53,84,32,83,26,92,87,27,16,53,38,82,57,53,81,31,16,71,91,37,69,49,40,58,62,31,39,62,61,79,59,68,75,52,30,76,44,59,68,65,71,59,41,22,53,36,54,27,15,44,27,37,41,55,69,53,44,67,54,21,23,25,26,43,45,36,49,19,30,54,20,35,20,39,36,39,20,41,22,41,21,22,42,31,16,20,34,24,33,29,20,31,27,18,15],[40.6,18.3,13.4,12.8,9.800000000000001,9.800000000000001,9,8.300000000000001,8.199999999999999,7.7,7.7,7.4,6.6,6.3,6.3,6.1,6,6,5.8,5.7,5.4,5.2,4.7,4.6,4.5,4.4,4.4,4.3,4.2,4.2,4.2,4.1,4,4,3.9,3.9,3.9,3.9,3.8,3.8,3.8,3.8,3.7,3.7,3.7,3.7,3.7,3.6,3.6,3.6,3.6,3.6,3.6,3.6,3.4,3.3,3.3,3.3,3.3,3.3,3.3,3.2,3.2,3.2,3.2,3.1,3.1,3.1,3.1,2.9,2.9,2.9,2.8,2.8,2.7,2.7,2.7,2.7,2.7,2.6,2.6,2.6,2.6,2.6,2.6,2.6,2.6,2.6,2.5,2.5,2.5,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.4,2.3,2.3,2.3,2.3,2.3,2.3,2.2,2.2,2.2,2.2,2.2,2.2,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2.1,2,2,2,2,2,2,2,2,2,2,1.9,1.9,1.9,1.9,1.9,1.8,1.8,1.8,1.8,1.8,1.8,1.8,1.8,1.8,1.8,1.8,1.8,1.8,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.7,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.6,1.5,1.5,1.5,1.5,1.5,1.5,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.3,1.3,1.3,1.3,1.3,1.3,1.3,1.2,1.2,1.2,1.2,1.2,1.2,1.1,1.1,1.1,1.1,1.1,1,0.9,0.8,0.8],["ACC,BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KICH,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CHOL,COADREAD,GBM,LGG,LIHC,LUAD","BLCA,BRCA,CESC,COADREAD,KIRP,LIHC,LUAD,LUSC,OV,PAAD,STAD,TGCT,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,THCA,UCEC","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD,STAD","ACC,BLCA,COADREAD,ESCA,HNSC,LIHC,LUAD,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LGG,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,CESC,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,SARC,STAD,UCEC","CESC,LUAD,LUSC,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,PAAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,BRCA,CESC,CHOL,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,THCA,UCEC","CESC,HNSC,LUAD","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,HNSC,KIRP,LUSC,STAD","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC","BLCA,HNSC,LUSC,PCPG,THCA","BLCA,BRCA,CESC,GBM,HNSC,LIHC,LUAD,LUSC,OV,SARC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,BRCA,PRAD,UCEC,UCS","BLCA,CESC,COADREAD,HNSC,KIRP,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,THCA,UCEC","BLCA,CESC,COADREAD,HNSC,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,PRAD,STAD","BLCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,STAD","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,UCEC","ACC,BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,COADREAD,LIHC,LUSC,OV,TGCT,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,CHOL,COADREAD,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,HNSC,LUSC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,UCEC","BLCA,BRCA,CESC,CHOL,KIRC,KIRP,LIHC,LUAD,MESO,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PRAD,STAD,UCEC","BLCA,ESCA,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,ESCA,HNSC,LUSC","COADREAD,LUAD,STAD,UCEC","BLCA,LIHC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,CESC,COADREAD,LUSC","BLCA,ESCA,GBM,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,GBM,HNSC,LGG,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LUAD,LUSC,PRAD,SARC,STAD,UCEC","BLCA,BRCA,PRAD","LIHC,LUAD,LUSC","CESC,HNSC,LUSC,STAD","BLCA,COADREAD,HNSC,KIRP,LUAD,LUSC,PRAD,UCEC","COADREAD,HNSC,LUAD","BLCA,BRCA,COADREAD,GBM,KIRP,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,PRAD","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BRCA,CESC,THCA,UCEC","BLCA,LUAD,LUSC","BLCA,LUAD,LUSC,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,STAD,TGCT,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,LUAD,UCEC","BRCA,COADREAD,LUAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","LUSC,UCEC","BLCA,HNSC,LUAD,UCEC","BLCA,BRCA,HNSC,LUAD,STAD,UCEC","BLCA,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,SARC,UCEC","BLCA,HNSC,LUSC,OV,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,CESC,GBM,HNSC,LUAD,LUSC,STAD","BLCA,HNSC,LGG,LUAD","LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","CESC,COADREAD,ESCA,HNSC,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,CESC,HNSC,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,STAD","BLCA,HNSC,LUAD","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,BRCA","BLCA,UCEC","BLCA,BRCA,HNSC,LUAD,LUSC","BLCA,CESC,COADREAD,LUAD,LUSC","BLCA,BRCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,LIHC,LUAD,LUSC,UCEC","BLCA,COADREAD,HNSC,LIHC,LUAD,STAD,UCEC","ACC,BLCA,BRCA,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","HNSC,LUAD,LUSC,STAD","BLCA,HNSC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","COADREAD,KIRC,LUAD,LUSC,OV,PAAD,STAD,UCEC","BLCA,LGG,LUAD,LUSC,MESO,UCEC","BLCA,BRCA,GBM,LIHC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,GBM,HNSC,LIHC,LUSC","BLCA,BRCA,LUAD,LUSC","BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,KIRC,LUAD,LUSC,UCEC","BLCA,HNSC,LUSC,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,ESCA,LUAD,PAAD,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,HNSC,KIRC,KIRP,LIHC,LUSC,MESO,UCEC","BLCA,BRCA,COADREAD,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,LGG,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LUAD,LUSC,STAD,UCEC","HNSC,LUAD,LUSC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV","BRCA,COADREAD,LUAD,STAD","BLCA,BRCA,ESCA,GBM,HNSC,LUAD,STAD,UCEC","BLCA,HNSC,LIHC,LUSC","HNSC,UCEC","BLCA,CESC,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,LUAD,LUSC,UCEC","BLCA,COADREAD,LUAD,LUSC,OV,UCEC","BRCA,CESC,COADREAD,LUAD,UCEC","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,KIRP,LIHC,LUSC,OV,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV,STAD,UCEC","BLCA,LUAD,LUSC,OV","BLCA,HNSC,LIHC,STAD","BLCA,BRCA,LIHC","COADREAD,HNSC,LUAD,LUSC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC","BLCA,BRCA,CESC,HNSC,LUAD,PCPG,UCEC","BLCA,BRCA,CESC,LUSC,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","HNSC,LUAD,LUSC","BLCA,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,CESC,LIHC,LUSC","BLCA,BRCA,CESC,HNSC,LUAD","COADREAD,GBM,LGG,LUAD","BLCA,BRCA,CESC,HNSC,LIHC,LUAD","BLCA,BRCA,LUAD,LUSC,UCEC","BLCA,BRCA,KIRC,LUAD,STAD,UCEC","BLCA,LIHC,STAD,UCEC","BLCA,BRCA,GBM,LUAD,LUSC,STAD,UCEC","BLCA,LUAD,LUSC,UCEC","BLCA,BRCA,HNSC,LUAD,LUSC,UCEC","BLCA,COADREAD,LUAD,LUSC","BLCA,BRCA,LUAD","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,LIHC,LUAD,UCEC","COADREAD,HNSC,LUAD","BLCA,BRCA,STAD","BLCA,BRCA,CESC,LUAD,LUSC,UCEC","COADREAD,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,HNSC,STAD,UCEC","BLCA,BRCA,COADREAD","BRCA,CESC,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,LUAD,LUSC,OV,UCEC","BLCA,BRCA,LUAD,STAD","BRCA,COADREAD,LUAD"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>gene<\/th>\n      <th>n tumor types<\/th>\n      <th>cohort samples<\/th>\n      <th>mutated samples<\/th>\n      <th>mut freq (%)<\/th>\n      <th>cohort (tumor types)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["copy","csv","excel"],"pageLength":15,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"name":"gene","targets":0},{"name":"n_tumor_types","targets":1},{"name":"n_samples","targets":2},{"name":"n_mutated","targets":3},{"name":"mut_freq_pct","targets":4},{"name":"tumors","targets":5}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[10,15,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<p>For each gene we take <code>dd.p</code> from its cohort run, then
+<strong>recompute FDR across all genes within each subtype</strong>.
+<code>alpha_e</code> is the subtype coefficient — <strong>positive =
+selected up in the subtype, negative = up in the rest</strong>.
+<code>mut_freq</code> is the cohort-level mutation frequency;
+<code>mut.E1</code>/ <code>mut.E0</code> are mutation counts in the
+subtype vs the rest.</p>
+<pre class="r"><code>res &lt;- read.table(&quot;data/pancancer299_immune_aggregated.txt&quot;, header = TRUE, sep = &quot;\t&quot;)
+res$mut_freq_pct &lt;- round(100 * res$mut_freq, 1)
+res &lt;- res[order(res$phenotype, res$dd.p),
+           c(&quot;gene&quot;, &quot;phenotype&quot;, &quot;dd.p&quot;, &quot;dd.fdr&quot;, &quot;direction&quot;, &quot;mut_freq_pct&quot;,
+             &quot;n_tumor_types&quot;, &quot;n_samples&quot;, &quot;mut.E1&quot;, &quot;mut.E0&quot;, &quot;tumors&quot;)]
+datatable(res, rownames = FALSE, filter = &quot;top&quot;, extensions = &quot;Buttons&quot;,
+          options = list(dom = &quot;Bfrtip&quot;, buttons = c(&quot;copy&quot;, &quot;csv&quot;, &quot;excel&quot;), pageLength = 15)) |&gt;
+  formatSignif(columns = c(&quot;dd.p&quot;, &quot;dd.fdr&quot;), digits = 3)</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1662b273260d1abeaa23" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1662b273260d1abeaa23">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"0\" data-max=\"1\" data-scale=\"15\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"0\" data-max=\"1\" data-scale=\"15\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"0.8\" data-max=\"40.6\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"2\" data-max=\"23\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"824\" data-max=\"7420\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"0\" data-max=\"1164\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"5\" data-max=\"2735\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","extensions":["Buttons"],"data":[["AXIN1","HRAS","KRAS","CASP8","HLA-A","PDGFRA","SMARCA4","KEAP1","PLCB4","SOS1","MSH2","TET2","CUL3","RAD21","DNMT3A","HLA-B","ASXL1","MAP2K4","IL7R","ZNF750","MECOM","PPP2R1A","PBRM1","CHD3","MAP3K1","FBXW7","EZH2","MLH1","RASA1","IDH1","RUNX1","BRAF","SPTAN1","MYCN","KLF5","PIK3CB","THRAP3","TP53","CUL1","PIK3CG","WHSC1","KMT2A","ASXL2","GATA3","CTCF","MSH3","ZFHX3","XPO1","PIK3CA","SPOP","RAC1","NOTCH1","CREB3L3","JAK2","CTNNB1","SPTA1","NIPBL","SETD2","TNFAIP3","SOX9","AJUBA","TRAF3","PTPN11","CYLD","MSH6","PIK3R2","BRCA1","RFC1","POLQ","MUC6","FAT1","CDK12","SMAD4","DACH1","PMS1","NSD1","DHX9","SF1","KIF1A","GRIN2D","RHOA","GNAS","CTNND1","ZC3H12A","ZNF133","TGFBR2","COL5A1","MAP3K4","JAK1","ESR1","NF1","EPHA2","PTCH1","EEF1A1","PTPRC","GTF2I","RET","EEF2","BRCA2","CHEK2","RB1","LATS2","JAK3","TSC2","PSIP1","KMT2C","TLR4","TSC1","KMT2B","NOTCH2","ZBTB7B","CDH1","EPAS1","KMT2D","RNF43","APC","CREBBP","CACNA1A","PGR","DICER1","AXIN2","FLT3","CIC","AKT1","PLXNB2","TBL1XR1","ZFP36L1","MTOR","IL6ST","ARID1A","PTPRD","NFE2L2","WT1","IRF6","CDKN2A","ATR","TCF12","CNBD1","APOB","HGF","CARD11","PLCG1","CHD8","NCOR1","FGFR2","GABRA6","ACVR2A","EPHA3","ABL1","CYSLTR2","ERBB4","HIST1H1E","KEL","RAF1","SIN3A","PMS2","TBX3","PTEN","HIST1H1C","IRF2","ACVR1","PIK3R1","RNF111","FGFR1","FOXA1","MACF1","ATM","EP300","KIT","CHD4","ARID2","MGA","ARHGAP35","EGFR","ALK","ERBB3","SETBP1","KANSL1","POLE","SF3B1","ATF7IP","PDS5B","LATS1","MYH9","SCAF4","ERBB2","NUP133","NF2","LZTR1","BAP1","ARID5B","INPPL1","ZBTB20","ACVR1B","MET","CSDE1","ALB","ZMYM2","SMC3","NRAS","POLRMT","ZFP36L2","SMAD2","PTPDC1","MAP2K1","FGFR3","PAX5","FUBP1","BRD7","NUP93","TCF7L2","DAZAP1","B2M","ERCC2","U2AF1","STK11","RXRA","MYC","FOXA2","CCND1","TP53","KRAS","JAK2","COL5A1","CASP8","HLA-A","PPP2R1A","HLA-B","EZH2","RB1","FAT1","SPTAN1","PIK3CG","CHD3","HRAS","WT1","MSH2","CARD11","MLH1","TSC2","AXIN1","CTCF","POLQ","KMT2C","EP300","DNMT3A","MAP3K1","PIK3CA","ZNF750","HGF","PGR","MECOM","PBRM1","TNFAIP3","BRAF","MACF1","FOXA1","LATS2","ZC3H12A","SETBP1","KLF5","FGFR3","PTCH1","ATR","MAP2K1","ARID2","FLT3","ZFP36L1","ALK","TCF12","CUL3","ERBB3","TSC1","CIC","SOS1","NIPBL","ZFP36L2","PIK3CB","CHD4","BRCA1","IRF6","MAP2K4","EGFR","GNAS","CTNNB1","MSH3","WHSC1","ASXL1","CREBBP","MSH6","ARID5B","HIST1H1E","CHD8","ERBB4","APC","CUL1","NUP133","IL6ST","CSDE1","CYSLTR2","KEAP1","MYH9","TGFBR2","TRAF3","PTPN11","NF2","CREB3L3","CYLD","FGFR2","SPOP","APOB","EPHA2","SMC3","AJUBA","XPO1","EEF1A1","SMARCA4","NF1","KANSL1","TET2","SF1","JAK1","PDS5B","CCND1","POLE","DACH1","AKT1","EPHA3","HIST1H1C","PLCG1","SIN3A","MTOR","RFC1","CTNND1","BRD7","KMT2A","DICER1","ABL1","FGFR1","PDGFRA","PLCB4","PMS1","LZTR1","IL7R","ASXL2","LATS1","EPAS1","BAP1","ERCC2","TBX3","PIK3R2","NUP93","RUNX1","PTPDC1","SCAF4","TLR4","NRAS","NSD1","RASA1","CDH1","RNF43","KIF1A","ACVR2A","RXRA","IRF2","PTPRD","MYC","TCF7L2","TBL1XR1","FOXA2","FUBP1","ARID1A","GABRA6","GRIN2D","ESR1","SMAD2","NFE2L2","BRCA2","KMT2D","DHX9","MYCN","PLXNB2","ATM","MGA","MUC6","RAD21","SPTA1","CNBD1","AXIN2","RAF1","SOX9","EEF2","SMAD4","KEL","CDKN2A","CDK12","RHOA","PTPRC","SETD2","ZFHX3","PTEN","NOTCH1","KIT","CACNA1A","NCOR1","ARHGAP35","KMT2B","MAP3K4","NOTCH2","FBXW7","SF3B1","ATF7IP","RET","ERBB2","THRAP3","INPPL1","ZBTB20","ACVR1B","GATA3","MET","PIK3R1","JAK3","ALB","IDH1","PMS2","ZMYM2","CHEK2","POLRMT","GTF2I","RNF111","PAX5","ACVR1","ZBTB7B","ZNF133","DAZAP1","B2M","PSIP1","U2AF1","STK11","RAC1","TP53","WHSC1","FAT1","SMARCA4","BRCA1","LATS2","POLQ","KMT2A","MUC6","PLCB4","DACH1","CDH1","ASXL2","NF2","SETD2","ATR","EP300","SPTA1","RB1","COL5A1","PTPRD","MACF1","EPHA3","SOX9","RNF43","CDK12","KEAP1","GRIN2D","WT1","PIK3CA","ZNF133","CHEK2","ZBTB20","APOB","TLR4","CYSLTR2","APC","CDKN2A","MAP2K1","FGFR2","KMT2C","CTNND1","GNAS","FBXW7","TSC2","CREBBP","RAC1","NSD1","CARD11","MSH2","PGR","JAK2","SF3B1","SPTAN1","EPHA2","CUL3","ZNF750","NOTCH1","PTPRC","RET","IRF6","SETBP1","ERCC2","ARID5B","KANSL1","MET","AKT1","SMAD2","RASA1","HRAS","SIN3A","ERBB3","MYCN","IRF2","CHD8","ERBB4","SPOP","RHOA","TCF12","CTCF","PPP2R1A","ZFP36L2","HLA-B","CHD3","ATF7IP","ZFHX3","GTF2I","PLCG1","TET2","TSC1","NUP93","CUL1","MAP3K4","CASP8","SOS1","ALK","TNFAIP3","ZFP36L1","RAF1","MAP3K1","ERBB2","BRCA2","ATM","CIC","HGF","SF1","SMAD4","CTNNB1","PIK3R1","MTOR","RNF111","JAK1","AXIN1","EGFR","EPAS1","CACNA1A","MLH1","KMT2D","HIST1H1E","NIPBL","ABL1","EZH2","THRAP3","RUNX1","MECOM","HIST1H1C","TBL1XR1","ALB","U2AF1","TBX3","PDGFRA","NFE2L2","HLA-A","LZTR1","EEF1A1","FLT3","ARID1A","KMT2B","CCND1","KIT","CNBD1","CREB3L3","KIF1A","ARID2","AXIN2","DNMT3A","PTPDC1","GABRA6","DICER1","PBRM1","ACVR1","PMS2","ZMYM2","GATA3","FGFR1","FOXA1","IL7R","AJUBA","IDH1","BRAF","PMS1","RFC1","MSH6","MYC","CSDE1","DHX9","DAZAP1","FOXA2","TCF7L2","NCOR1","MSH3","RAD21","ACVR2A","BRD7","PDS5B","FUBP1","TRAF3","NRAS","NF1","PTEN","CHD4","MGA","ARHGAP35","KRAS","NOTCH2","POLE","ASXL1","LATS1","MYH9","SCAF4","NUP133","PTCH1","TGFBR2","BAP1","PIK3CG","INPPL1","ACVR1B","PIK3CB","ESR1","KEL","JAK3","PLXNB2","SMC3","XPO1","EEF2","POLRMT","MAP2K4","FGFR3","IL6ST","PAX5","ZC3H12A","ZBTB7B","CYLD","KLF5","PTPN11","B2M","PSIP1","PIK3R2","STK11","RXRA","CIC","EGFR","CDH1","FGFR3","CHD4","GNAS","MAP3K1","KEL","MSH2","TSC1","XPO1","ASXL1","ZBTB20","PLXNB2","JAK1","PTCH1","PTPRC","SCAF4","KRAS","MYC","FOXA1","PLCG1","MET","CTNNB1","IL7R","ATM","MECOM","KIF1A","SF1","ARID1A","ERCC2","SETD2","NSD1","APOB","SPOP","MLH1","DICER1","CTNND1","ZNF133","MUC6","IRF2","CSDE1","TCF7L2","EPHA2","PIK3CA","PTEN","FGFR1","IL6ST","ZNF750","ZFP36L2","CCND1","ZC3H12A","PSIP1","TSC2","AKT1","ATR","FBXW7","ZMYM2","PIK3CG","MYH9","DACH1","CUL1","TBX3","LATS1","MAP3K4","CDKN2A","IRF6","FUBP1","ALK","EPHA3","RUNX1","TCF12","SPTA1","RXRA","SIN3A","ACVR2A","CHEK2","ALB","MYCN","FGFR2","NFE2L2","MSH3","CUL3","KMT2C","RAC1","GTF2I","DNMT3A","CREB3L3","BAP1","COL5A1","PTPDC1","GABRA6","ATF7IP","HGF","NUP133","CDK12","ERBB3","BRD7","HLA-A","STK11","BRCA1","PPP2R1A","CACNA1A","RAF1","PIK3R2","AJUBA","BRAF","CNBD1","TRAF3","U2AF1","ASXL2","ARHGAP35","MAP2K4","AXIN2","TBL1XR1","RFC1","EEF1A1","ZFP36L1","TNFAIP3","FOXA2","CYSLTR2","FAT1","KEAP1","HRAS","HLA-B","RASA1","PAX5","KMT2B","WHSC1","RNF111","RHOA","ESR1","BRCA2","POLE","PBRM1","RET","PMS1","NUP93","DHX9","LATS2","SMAD4","APC","HIST1H1C","PDGFRA","INPPL1","CREBBP","EEF2","ARID2","EPAS1","CHD3","GRIN2D","CHD8","PLCB4","CARD11","EZH2","NF1","MACF1","TP53","KMT2D","ZFHX3","EP300","SMARCA4","NIPBL","NOTCH1","KMT2A","KIT","MTOR","POLQ","ERBB4","PTPRD","MGA","NCOR1","SPTAN1","SETBP1","NOTCH2","KANSL1","SF3B1","AXIN1","PDS5B","TET2","ERBB2","RB1","TGFBR2","NF2","LZTR1","PGR","TLR4","ARID5B","CASP8","THRAP3","SOS1","ACVR1B","GATA3","PIK3CB","PIK3R1","JAK3","IDH1","PMS2","MSH6","JAK2","SMC3","NRAS","RNF43","CTCF","POLRMT","ABL1","FLT3","SMAD2","MAP2K1","RAD21","ACVR1","ZBTB7B","CYLD","KLF5","HIST1H1E","PTPN11","DAZAP1","B2M","SOX9","WT1"],["C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C1","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C2","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C3","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4","C4"],[0.00182653542354343,0.00501447795788019,0.00896883626697751,0.0109049354825272,0.0113552115752376,0.0119464440165903,0.0134174637739467,0.0148598069386875,0.0161607967188761,0.0173831011742972,0.0180321340953587,0.0193775003062237,0.0289797705925848,0.039821147695934,0.0416518571460294,0.0425273069960446,0.0446184194573039,0.0478491240080284,0.0491964022504657,0.0687146985339107,0.0741734370154204,0.07674872037775431,0.0830157478694194,0.0832580647847708,0.08688966166944211,0.0890597393103795,0.0958428016252923,0.101730703636934,0.102655308706022,0.10876467344409,0.114452279770451,0.115302073468828,0.11530988516082,0.12175603664414,0.122618404311276,0.125559289088594,0.140522416435283,0.142299650067227,0.14769355160174,0.147880218702341,0.163306049277154,0.169029792831078,0.172384049236693,0.178286985798217,0.181213234471022,0.192840864310478,0.192970715608595,0.193958203721622,0.196246707231461,0.199453247206726,0.202254754447775,0.202723409107982,0.206424531333032,0.209436453856068,0.211288023190382,0.220999112018647,0.223409341000417,0.226177670051223,0.228984900232836,0.230504386247555,0.231786876840126,0.233058911654148,0.238164762915416,0.256465386191347,0.265023282983362,0.269666042551955,0.275449158914622,0.276524145385674,0.277040134928616,0.280791560891853,0.288083354745279,0.291442445828996,0.291539656271784,0.294311788515012,0.29471768392425,0.295021968905829,0.307412235458933,0.3277127707207,0.33245662981767,0.333790639661673,0.338766096270458,0.342278599884721,0.343730314440037,0.344472695720214,0.349154370797164,0.351281037233836,0.354732849386144,0.359701463169602,0.366204020965533,0.367311311989557,0.373134404798688,0.37880324267637,0.389053567956632,0.401129572540362,0.407213851077448,0.409252834639364,0.413192249771749,0.413907744802667,0.423808478082651,0.427289624086938,0.442147052376702,0.448253403721802,0.45669937810635,0.464106496062656,0.465633958035121,0.476674973492541,0.477868444918388,0.496823267739179,0.50029703915919,0.50031421664722,0.502709853506958,0.503189727756289,0.50855145550476,0.512576350832651,0.518868835717141,0.519883888514352,0.533787600462992,0.534125391380593,0.53465190752991,0.536839918600457,0.53951877778706,0.550236733094301,0.556033425425716,0.5665619990321979,0.56658185912223,0.588477882090424,0.603769339537504,0.604638288505604,0.606500062738203,0.607205776887738,0.610259648201013,0.6110526795119809,0.613953963100054,0.6139753728528911,0.631829404395617,0.635040699567919,0.641295693793458,0.666480638779153,0.667112101840626,0.668982096480232,0.670662004459331,0.683516998163092,0.6930394362258629,0.707701561420542,0.711644688748817,0.713802207220693,0.717838238238382,0.717901875449962,0.7350940635896001,0.736393999488229,0.755991740843211,0.779215523826716,0.801818476260066,0.810049512746739,0.812754678977042,0.832373258432592,0.8392645723776621,0.860935822570526,0.882430414163591,0.888183064261594,0.897548075753514,0.913208708398435,0.9227789959564719,0.923997007845086,0.939903364695848,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1.13199399359073e-16,2.10543127980238e-05,0.000243331484604775,0.000620159064330979,0.000727769075449969,0.00197147363069739,0.00264287399898688,0.00322943665868056,0.00356929285886212,0.00358862630368997,0.00485324251287739,0.00639084924265717,0.00663890458770426,0.008226640900858499,0.0104543363463748,0.0153190102116295,0.0179885765348796,0.018935631680241,0.0216465573392138,0.021778245213962,0.0263845114441134,0.0264449829028593,0.0274688622947748,0.0278176734979846,0.0332927555601673,0.0364314078441066,0.0435999058137206,0.0448556205889262,0.047003892050306,0.047785964843828,0.0496909833593089,0.0601607080965303,0.0636482455386962,0.0697257398164987,0.0718770902942385,0.07348537572168359,0.07364487743343789,0.0737167521097494,0.0747800455549079,0.0760978670050651,0.0813705262770499,0.0829894426053373,0.0840862777496366,0.08481094363186729,0.08986223310348899,0.09175151712759561,0.0918588947632077,0.094067993594133,0.09943167508283619,0.107824898675231,0.108781206759044,0.114218714594578,0.114336479179768,0.11469333631526,0.115261285517984,0.124471856411614,0.127059624122709,0.129752275209974,0.131448402652122,0.135014257461793,0.135038041117603,0.135837634830018,0.136849706490015,0.139093308959899,0.142722619302134,0.14608446424741,0.146256111677102,0.148285153643273,0.149427427539201,0.153260164464152,0.167999987237731,0.168161899418427,0.168359577969835,0.168940924084465,0.170010663090654,0.175524671287765,0.18043650819044,0.181195019063554,0.185941487947364,0.189073928920121,0.189376709119804,0.203435076077613,0.21385975843439,0.214103686203576,0.216058551547347,0.219234359419219,0.222047352686218,0.233436729429282,0.249524149291435,0.250569184478698,0.255439469511632,0.261275403567066,0.267494331633761,0.268198616123087,0.270335301391642,0.277068776620789,0.293753197444516,0.29699609980628,0.297127870255429,0.299186045241774,0.310515422891272,0.315147733068892,0.330676184571012,0.331341059701572,0.332615405153941,0.340029641035962,0.350372718743194,0.351926348474658,0.353630857822197,0.35581639395829,0.359702437409962,0.362335295774375,0.368456359783336,0.378830253089454,0.385378585753098,0.387665289316641,0.387967240221465,0.389354013094545,0.389975110573649,0.392905943723929,0.393829317510661,0.408243514464633,0.417218139747397,0.41765111220858,0.422383949073163,0.426833456284371,0.435656299703347,0.448106589582505,0.458212417289502,0.481035010659884,0.484494065904399,0.494029317274559,0.514758291846922,0.51982619581996,0.53019852857324,0.540412997864397,0.574750055252701,0.5804373058044831,0.611346591816892,0.612356775467625,0.626689614652115,0.62715043977886,0.62868593328991,0.637524587768341,0.6594822441079981,0.662874354390397,0.680858825783117,0.681266310610204,0.681511796001962,0.684603894301378,0.693274221432191,0.693980657558446,0.706954842969262,0.7146810589107599,0.715709877707367,0.716170108868702,0.721037367576655,0.724747069734921,0.724833508221725,0.731276600249422,0.739494626162463,0.744258245274859,0.750389234515247,0.759912399992711,0.760756607776488,0.763380691356888,0.782763397962381,0.815680854014054,0.835506523086312,0.850458802634644,0.8641114958698179,0.872374204902168,0.883509918703784,0.885207982515702,0.8880587238083349,0.894252729561948,0.928794400914922,0.976342773414723,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4.16585678383565e-29,0.000396010117261768,0.000608939896850471,0.00102935208683971,0.00120231996807655,0.00130284778841463,0.00280830968532631,0.00394992795756305,0.00633788931975274,0.00655726416540499,0.00662237390158882,0.0093712838766551,0.009621712416471121,0.0102175668162958,0.0112350840849426,0.0147612146633641,0.0162676505931775,0.0163015260911542,0.0171632010424165,0.0218074860931174,0.023172183067767,0.0234569690472803,0.0271826069523569,0.032736749347392,0.0365664809576095,0.0372833128983008,0.0448061983064891,0.0452015686522461,0.0462561052915204,0.0494149151757327,0.05566523035173,0.0558324193205674,0.057105623555186,0.0573359693194014,0.0609403473876231,0.0635771718603009,0.0650599066291597,0.0657494501040837,0.0664448849735092,0.06671311414167561,0.0688867237547965,0.07084918931916639,0.07285429129886691,0.0730207251770342,0.07755749151329611,0.0781634343921026,0.0803934858391171,0.081140377250284,0.08143425807683009,0.0819174660310102,0.0827259945324562,0.0856203071382446,0.08753276694217629,0.103443607538588,0.107215715749271,0.109357484643047,0.114962155747698,0.121614910562265,0.123757570202707,0.130502625285272,0.132586033366442,0.135425531878614,0.141749627087032,0.150254632168774,0.162547317717393,0.166220252949781,0.167503750204201,0.16820689751774,0.171186012625331,0.171618262385495,0.171728948979244,0.182655667307471,0.184838265236341,0.184853729593077,0.186486598285964,0.187375323551354,0.190929540161676,0.1912175503336,0.191676766345622,0.193479131782526,0.200616108654909,0.20739855282942,0.207535655109052,0.208784085235941,0.209159156830911,0.21699795271425,0.218114276336517,0.220064028279958,0.225713898656093,0.227488109019974,0.229136278167891,0.233297587649243,0.246192179140241,0.247821843695199,0.251246394860828,0.251879197432722,0.258798934786661,0.262202139551533,0.264971891651079,0.268706854340087,0.272868450626155,0.272900633540785,0.273672983787396,0.280284479385995,0.28527064552442,0.301460153980534,0.304551508734797,0.305001797138688,0.306061464089137,0.308844061982008,0.314331022195268,0.324328449930467,0.33459063738077,0.36946759151756,0.377964394845525,0.381847524323587,0.38409808055416,0.391822764462188,0.394978418918005,0.403220932845366,0.419350276238306,0.422648218600403,0.425197292037809,0.444324946385975,0.462898663820858,0.4764376765481,0.481678874918454,0.482319723953427,0.491798211984511,0.496781294719574,0.496882701137335,0.504533241279601,0.510558143357283,0.514117587043326,0.518687503379025,0.519455554159529,0.521648919125177,0.533823038940027,0.535655137283843,0.546565605849667,0.566810620189223,0.57128099590468,0.58111396372529,0.594890832586502,0.599579368629015,0.599930205078355,0.6199809169166201,0.632659468799002,0.643800649875752,0.651921410244682,0.656138470663323,0.658945677775563,0.659514778900952,0.662009841637953,0.665476302130279,0.668497862330143,0.672540603505246,0.6755622667771159,0.676459741437394,0.682163671247787,0.683164996806798,0.685064827575392,0.6853245922394831,0.687978978018836,0.694253436136424,0.732657759285213,0.750138352506191,0.761556878502063,0.766946430968567,0.774620867587259,0.795876386925968,0.825601979907438,0.832145958312249,0.832491305726379,0.838691879373982,0.857233660998153,0.863814217537423,0.943454660175634,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6.46534557241204e-06,7.67001217885562e-05,0.00279750934929933,0.00461923643125178,0.00988892094607732,0.011607319111337,0.0148363978429427,0.0227843983061464,0.0293085236687168,0.0322696132258215,0.0330714547699721,0.0382148294645011,0.0412512308182518,0.041867905506291,0.0434905864787285,0.0447059864287225,0.0482676940839772,0.0485836643231557,0.0596196823865726,0.0631393048447396,0.0777491224569099,0.08024394588575889,0.08517618349079691,0.08817996723892819,0.0884788413419431,0.0885747738497429,0.0915016017018901,0.0974251527677102,0.09874529799667769,0.109214659292594,0.135354133342,0.135568732323456,0.137091435729529,0.144648379766218,0.147348143178821,0.158594860374149,0.166282105189205,0.167668012333109,0.17281277916101,0.185554980528326,0.187143568755187,0.189339687594386,0.194115639616147,0.200137488313691,0.208434054427609,0.215254698060909,0.217670079022144,0.219861951940274,0.220742735425755,0.225701623341855,0.225983310659507,0.229153218934942,0.249741559680366,0.2618363421806,0.262449032971497,0.26267209849936,0.280915601717744,0.290371810444726,0.291997491340132,0.298419710815506,0.306548363751857,0.306698488418356,0.307239946382053,0.309686478322903,0.313012935135423,0.316638312675407,0.31935358366439,0.319937731512564,0.321798638348031,0.327669110426272,0.33940155746836,0.344111810692835,0.349845193321707,0.352288776091798,0.36617557093241,0.367655425358675,0.375070941444335,0.379025668282486,0.3847170169038,0.386329798587213,0.392159556385004,0.393093374598604,0.393120846956315,0.400080195980406,0.401661059291421,0.410062547228509,0.41157315733631,0.422666636724618,0.427013696174122,0.442950026775196,0.442965964820126,0.447495463487979,0.454095301751749,0.458474566116813,0.459718992730901,0.463597943260168,0.46611961525761,0.469508815952531,0.477357355701453,0.482512836426597,0.483485531422394,0.489078701658518,0.498841333538354,0.5073806640628969,0.52430250074106,0.52509613548182,0.526924285775847,0.534568768838887,0.536429291095334,0.547358606755229,0.5476680107679111,0.556553542496429,0.556965449669665,0.569940612445244,0.5825683455634521,0.58992521285018,0.5902281205538,0.592458912161987,0.593967164935712,0.6025865789911899,0.603646549134925,0.604996134739337,0.6107543508722,0.61463677676033,0.6207115390967241,0.630590280707765,0.640010092982172,0.651043791202693,0.652488114248304,0.673336728818591,0.675245781001384,0.676253003295333,0.6816497536863571,0.696840289886916,0.698641717864629,0.700174690134025,0.741236808693933,0.750854643624707,0.751954043821813,0.7641296377124031,0.765895466020993,0.775484849067102,0.783264552033784,0.788039258096789,0.788678850853578,0.802164142030714,0.80942429278243,0.823355225433363,0.832771209642974,0.836154768856239,0.847170538386089,0.8485035584303789,0.877864937609438,0.879337786699014,0.902236485893979,0.905204946705188,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.355254172280768,0.490426886951435,0.569642552373813,0.569642552373813,0.569642552373813,0.569642552373813,0.569642552373813,0.569642552373813,0.753582409549365,0.753582409549365,0.753582409549365,0.753582409549365,0.753582409549365,0.753582409549365,0.753582409549365,0.767306766652519,0.767306766652519,0.767306766652519,0.767306766652519,0.767306766652519,0.767306766652519,0.767306766652519,0.767306766652519,0.767306766652519,0.767306766652519,0.813341202862875,0.813341202862875,0.813341202862875,0.813341202862875,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.826983234901815,0.831686473672881,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.854010962622137,0.878320672739809,0.89702559614887,0.89702559614887,0.89702559614887,0.89702559614887,0.89702559614887,0.89702559614887,0.89702559614887,0.89702559614887,0.89702559614887,0.89702559614887,0.897872095974473,0.897872095974473,0.897872095974473,0.902083176436389,0.905833841182624,0.92034177366085,0.929180651597824,0.929180651597824,0.929180651597824,0.929180651597824,0.929180651597824,0.940037172991264,0.940037172991264,0.963092589335391,0.966821066850945,0.975474399838806,0.975614007311682,0.975614007311682,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.9809432323401091,0.992230174432346,0.994531330029736,0.997184072055125,0.997184072055125,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2.49038678589961e-14,0.00231597440778262,0.0178443088710168,0.0320218393197986,0.0320218393197986,0.0722873664589043,0.07894977868117931,0.07894977868117931,0.07894977868117931,0.07894977868117931,0.0970648502575478,0.112350693022688,0.112350693022688,0.129275785584919,0.153330266413497,0.210636390409906,0.231435498314057,0.231435498314057,0.239560697353582,0.239560697353582,0.254995340398192,0.254995340398192,0.254995340398192,0.254995340398192,0.292976248929472,0.308265758680902,0.350430408854739,0.350430408854739,0.350430408854739,0.350430408854739,0.352645688356386,0.413604868163646,0.418538268527858,0.418538268527858,0.418538268527858,0.418538268527858,0.418538268527858,0.418538268527858,0.418538268527858,0.418538268527858,0.424054718159336,0.424054718159336,0.424054718159336,0.424054718159336,0.429977805274589,0.429977805274589,0.429977805274589,0.431144970639776,0.446427928943346,0.461045142071936,0.461045142071936,0.461045142071936,0.461045142071936,0.461045142071936,0.461045142071936,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.476435276211945,0.481674802601621,0.498697945065918,0.498697945065918,0.498697945065918,0.498697945065918,0.498697945065918,0.508097732675109,0.511062874281819,0.511062874281819,0.514356493905641,0.514356493905641,0.514356493905641,0.545801423622864,0.55921036871078,0.55921036871078,0.55921036871078,0.560832082235211,0.561499052769747,0.583591823573205,0.612502450947929,0.612502450947929,0.617545970247902,0.624789008529941,0.626039645328013,0.626039645328013,0.626039645328013,0.634949279755975,0.658209299531903,0.658209299531903,0.658209299531903,0.658209299531903,0.676370228079998,0.679730404658394,0.696908467941591,0.696908467941591,0.696908467941591,0.705721896489733,0.71163278791658,0.71163278791658,0.71163278791658,0.71163278791658,0.711730045271094,0.711730045271094,0.716053304564838,0.716053304564838,0.716053304564838,0.716053304564838,0.716053304564838,0.716053304564838,0.716053304564838,0.716053304564838,0.716053304564838,0.736176829362453,0.740993908757158,0.740993908757158,0.743395750368767,0.7452647649409651,0.754680204210522,0.77018320084493,0.7814475333619409,0.81365415648067,0.81365415648067,0.8233821954575981,0.851479881250548,0.853445993137248,0.864027231748984,0.874197496545348,0.922956293106527,0.92533483534048,0.9622749328776961,0.9622749328776961,0.967209128138323,0.967209128138323,0.967209128138323,0.97399589797941,0.9988517668896389,0.9988517668896389,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,9.16488492443843e-27,0.0435611128987945,0.0446555924357012,0.0477710855752031,0.0477710855752031,0.0477710855752031,0.0882611615388269,0.108623018832984,0.132447478031776,0.132447478031776,0.132447478031776,0.160561764256077,0.160561764256077,0.160561764256077,0.164781233245825,0.19873180154377,0.19873180154377,0.19873180154377,0.19873180154377,0.234569690472803,0.234569690472803,0.234569690472803,0.260007544761675,0.30008686901776,0.315474186062545,0.315474186062545,0.350908384970155,0.350908384970155,0.350908384970155,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.356857231316478,0.362239760969496,0.363343560892053,0.421436919601655,0.428862862997084,0.429618689669113,0.443713583587606,0.461297936615488,0.461468905840602,0.47817913673143,0.47817913673143,0.480542209891856,0.494998697764239,0.516500298080161,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.532067612401947,0.541353111797652,0.541353111797652,0.541353111797652,0.541353111797652,0.541353111797652,0.550160070699895,0.550160070699895,0.550160070699895,0.553955837328967,0.553955837328967,0.553955837328967,0.5578855356829719,0.577223160783321,0.577223160783321,0.577223160783321,0.577223160783321,0.584544237215797,0.584544237215797,0.584544237215797,0.584544237215797,0.584544237215797,0.584544237215797,0.584544237215797,0.59290947562422,0.597709923955928,0.617688123964016,0.617688123964016,0.617688123964016,0.617688123964016,0.617688123964016,0.622998422369,0.637073740934846,0.651415400210349,0.713007632753186,0.722235707024916,0.722235707024916,0.722235707024916,0.73021220304169,0.73021220304169,0.739238376883171,0.760515481693642,0.760515481693642,0.760515481693642,0.78831845326544,0.81470164832471,0.828987025544953,0.828987025544953,0.828987025544953,0.8344594980932341,0.8344594980932341,0.8344594980932341,0.837684395675467,0.837684395675467,0.837684395675467,0.837684395675467,0.837684395675467,0.837684395675467,0.84779949785932,0.84779949785932,0.858888809192334,0.884385364834249,0.885083233091758,0.894021482654292,0.9040044186112201,0.9040044186112201,0.9040044186112201,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.922898629049658,0.9256712481818991,0.970992211100885,0.988206212882407,0.997276864705082,0.99839180362772,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.00142237602593065,0.00843701339674118,0.205150685615284,0.254058003718848,0.425601700749023,0.425601700749023,0.466286789349628,0.593800341727459,0.593800341727459,0.593800341727459,0.593800341727459,0.593800341727459,0.593800341727459,0.593800341727459,0.593800341727459,0.593800341727459,0.593800341727459,0.593800341727459,0.690333164476104,0.694532353292136,0.745568606459845,0.745568606459845,0.745568606459845,0.745568606459845,0.745568606459845,0.745568606459845,0.745568606459845,0.749102260664452,0.749102260664452,0.800907501479023,0.913942904863527,0.913942904863527,0.913942904863527,0.926188328552589,0.926188328552589,0.969190813397577,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,0.969494387801678,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],["up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_subtype","up_in_rest","up_in_subtype","up_in_subtype","up_in_rest","up_in_rest","up_in_subtype","up_in_subtype"],[1.6,4.5,12.8,3.3,2.4,2.3,3.7,6.3,2.3,2.4,1.2,1.5,2.4,1.9,1.9,2,2.6,2.2,1.8,2.7,2.1,6,3.2,2.4,2.9,5.8,1.3,1.6,2.1,13.4,2,9.800000000000001,3.3,1.9,2.6,1.7,1.5,40.6,2.1,3.7,1.6,4,2.5,1.7,3.6,1.4,3.4,1.3,18.3,4.2,1.8,4.4,1.8,1.4,8.199999999999999,9,3.3,2.9,1.6,2.4,2,1,1.4,1.8,1.3,2,2.6,1.2,3.6,2.7,6.1,2.3,3.9,1.9,1.7,3.8,1.7,1.8,2.4,1.6,2.1,1.7,1.7,1.2,1.5,2,3.1,2.3,1.7,1.4,4.3,2.5,2,1.6,2.6,1.4,2,1.1,3.7,1.3,4.4,1.8,1.8,1.8,2,7.4,3.8,1.9,3.6,2.7,2.2,3.7,1.4,7.7,1.8,9.800000000000001,4.1,3.3,1.7,2.2,1.8,2.6,3.9,2.3,4.2,1.1,2.2,3.2,1.1,6,5.2,6.3,2.4,1.6,8.300000000000001,3.1,1.2,1.7,6.6,3.9,2.5,1.6,2.6,3.6,2.8,2.9,1.1,3.3,1.6,1.4,4,1.3,2.1,0.8,1.8,1.3,1.5,7.7,1.6,1.5,2.1,2.6,2.1,0.9,2.4,5.7,4.6,4.2,2.2,3.9,3.2,3.7,3.1,3.8,2.6,3.6,2.7,2,2.8,2.4,2.1,1.7,2,3.6,1.8,3.8,1.6,1.7,1.4,3.1,1.8,2.1,1.6,1.7,2.3,1.2,1.6,1.7,1.3,3.6,1.6,1.4,1.6,0.8,1.1,4.7,1.4,2.1,1.5,1.7,2.7,1.4,1.2,3.2,2.2,5.4,2.6,1.6,2.1,3.3,40.6,12.8,1.4,3.1,3.3,2.4,6,2,1.3,4.4,6.1,3.3,3.7,2.4,4.5,2.4,1.2,2.5,1.6,1.8,1.6,3.6,3.6,7.4,4.2,1.9,2.9,18.3,2.7,3.9,1.7,2.1,3.2,1.6,9.800000000000001,5.7,2.4,1.8,1.2,2.7,2.6,4.7,2,3.1,1.1,3.2,2.6,2.2,2.6,1.2,2.4,3.6,1.9,3.9,2.4,3.3,1.4,1.7,3.9,2.6,1.6,2.2,3.8,1.7,8.199999999999999,1.4,1.6,2.6,4.1,1.3,1.8,1.3,2.6,4,9.800000000000001,2.1,1.6,1.1,1.2,1.4,6.3,3.6,2,1,1.4,1.7,1.8,1.8,2.8,4.2,6.6,2.5,1.3,2,1.3,1.6,3.7,4.3,2,1.5,1.8,1.7,1.7,3.3,2.8,1.9,2.3,3.3,1.6,1.6,1.8,3.2,1.2,1.7,1.5,4,2.2,1.6,0.9,2.3,2.3,1.7,1.4,1.8,2.5,2,1.4,3.1,3.2,1.5,2,1.7,2,0.8,1.8,3.8,3.6,3.8,2.1,3.7,1.8,2.4,1.1,2.6,1.5,5.2,1.6,2.7,1.1,2.1,2.1,6,2.9,1.6,1.4,1.6,6.3,3.7,7.7,1.7,1.9,4.2,4.6,3.7,2.7,1.9,9,1.7,1.8,0.8,2.4,1.1,3.9,2.1,8.300000000000001,2.3,2.1,2.6,2.9,3.4,7.7,4.4,2.2,3.3,3.6,3.1,3.6,2.3,2.7,5.8,2.4,2.1,2,3.8,1.5,2.1,1.6,1.7,1.7,2.3,2.6,1.8,1.6,13.4,1.3,1.7,1.3,1.6,1.4,2.1,1.4,2.1,2.2,1.5,1.4,1.2,2,2.2,5.4,1.8,40.6,1.6,6.1,3.7,2.6,1.8,3.6,4,2.7,2.3,1.9,3.7,2.5,1.7,2.9,3.1,4.2,9,4.4,3.1,5.2,5.7,3.3,2.4,1.8,2.3,6.3,1.6,2.4,18.3,1.5,1.3,1.6,6.6,3.8,1.4,9.800000000000001,8.300000000000001,1.1,2.8,7.4,1.7,1.7,5.8,1.8,4.1,1.8,3.8,2.5,1.2,1.7,1.4,2.4,3.3,2.5,2.4,2.7,4.4,2.6,2,1.6,2.7,3.2,1.8,2,2.3,2.3,1.6,2.1,4.5,1.8,3.6,1.9,1.5,2.6,4,4.2,2.1,1.2,3.6,6,1.4,2,2.4,2.1,3.4,1.4,1.6,1.5,1.9,1.7,2.1,2.3,3.3,2.4,2.6,1.6,2.2,0.8,2.9,3.8,3.7,4.6,3.9,3.9,1.8,3.9,8.199999999999999,2.6,3.2,2.1,1.7,1.6,3.8,1.4,3.3,1.6,7.7,1.3,3.3,1.6,1.3,1.5,2,2.1,1.6,1.1,1.6,2.2,1.5,2.3,6.3,2.4,1.4,1.6,2.6,6,3.6,3.3,2.2,1.7,1.8,2.4,3.2,1.8,1.9,0.8,2.9,2.2,3.2,2.1,1.3,1.7,1.7,0.9,2.4,1.8,2,13.4,9.800000000000001,1.7,1.2,1.3,1.6,1.2,1.7,1.4,2.1,2.7,3.6,1.4,1.9,1.1,1.5,1.7,2.1,1,3.6,4.3,7.7,3.9,3.7,3.1,12.8,2.7,2.8,2.6,2,3.6,1.8,1.6,2,2,3.1,3.7,2.1,1.7,1.7,1.4,2.1,1.8,4.2,1.3,1.3,1.1,1.6,2.2,4.7,1.1,1.4,1.2,2.2,1.8,2.6,1.4,1.2,2,2,5.4,2.6,3.9,3.8,3.7,4.7,3.9,1.7,2.9,2.1,1.2,1.9,1.3,2.6,1.6,4.2,1.7,2,2.6,1.8,12.8,1.6,2.4,1.6,2.3,8.199999999999999,1.8,4.6,2.1,2.4,1.8,6,3.2,2.9,3.8,6.6,4.2,1.6,2.2,1.7,1.5,2.7,1.5,1.2,2.7,2.5,18.3,7.7,0.9,1.1,2.7,1.4,3.3,1.2,2,1.8,2.3,3.1,5.8,1.7,3.7,3.6,1.9,2.1,1.5,2,2.3,8.300000000000001,1.6,2.1,2.6,3.3,2,1.2,9,2.6,1.8,1.1,1.3,1.6,1.9,2.8,6.3,1.4,2.4,7.4,1.8,1.4,1.9,1.8,3.1,3.1,0.8,2.9,2.1,3.9,1.6,2.3,3.6,1.5,2.4,5.4,2.6,6,3.3,0.8,2,2,9.800000000000001,1.7,1,2.2,2.5,3.1,2.2,1.8,1.1,1.2,1.6,2.2,1.6,2.1,1.4,6.1,6.3,4.5,2,2.1,1.4,3.6,1.6,2.1,2.1,1.4,3.7,2.8,3.2,2,1.7,1.7,1.7,1.8,3.9,9.800000000000001,1.6,2.3,2.1,4.1,1.1,3.2,1.4,2.4,1.6,2.6,2.3,2.5,1.3,4.3,5.7,40.6,7.7,3.4,4.2,3.7,3.3,4.4,4,2.2,3.2,3.6,4,5.2,3.7,3.6,3.3,2.7,2.7,2,2.4,1.6,1.7,1.5,3.8,4.4,2,1.7,1.4,1.7,3.8,1.8,3.3,1.5,2.4,1.7,1.7,1.7,2.6,1.8,13.4,1.3,1.3,1.4,1.3,3.6,1.8,3.6,1.6,1.6,2.6,1.6,1.1,1.9,2.1,2.2,1.8,2.6,1.3,1.4,1.4,1.2,2.4,2.4],[11,5,14,8,4,13,15,6,9,9,3,10,8,5,9,7,10,4,7,4,8,5,13,9,7,12,4,7,8,8,2,10,12,2,4,8,8,23,8,10,7,14,9,7,5,5,15,6,19,5,2,14,5,6,10,18,14,17,4,3,4,6,4,4,7,3,10,5,14,11,15,12,11,5,4,13,10,5,14,6,6,8,10,3,4,10,16,11,7,7,16,9,9,8,15,5,11,5,15,5,11,6,8,12,3,19,9,6,13,12,5,7,7,19,8,13,14,13,9,10,7,7,10,4,8,6,3,14,3,15,14,9,3,3,8,12,4,8,17,8,11,8,13,13,7,8,6,15,6,3,13,4,9,3,8,6,6,16,4,4,4,7,5,6,3,21,17,15,15,14,13,13,12,12,12,13,12,10,10,10,10,10,10,10,10,10,9,10,9,11,8,7,7,7,8,7,7,6,6,8,5,5,4,4,5,5,4,4,3,4,4,4,3,3,3,3,3,2,2,2,23,14,6,16,8,4,5,7,4,11,15,12,10,9,5,3,3,11,7,12,11,5,14,19,15,9,7,19,4,8,9,8,13,4,10,21,3,6,3,12,4,5,9,12,5,13,7,3,12,4,8,13,6,10,9,14,5,8,14,10,3,4,12,8,10,5,7,10,14,7,8,4,13,13,13,8,9,3,7,3,6,10,10,6,4,10,5,4,7,5,17,9,6,4,6,8,15,16,10,10,5,7,10,2,10,5,4,15,4,8,8,14,5,10,3,14,10,6,6,13,9,4,9,7,9,10,7,11,3,6,3,4,2,4,10,9,8,13,8,7,8,14,6,3,4,14,2,4,6,2,4,15,8,6,7,4,9,15,19,10,2,8,17,13,11,5,18,8,7,3,3,5,11,9,8,12,6,15,17,15,16,14,15,13,13,12,13,11,12,12,10,10,11,10,8,7,7,7,7,8,7,8,7,8,6,6,5,5,5,5,4,4,5,4,4,3,3,3,3,2,23,7,15,15,10,6,14,14,11,9,5,7,9,10,17,12,15,18,11,16,14,21,15,3,8,12,6,6,3,19,4,5,7,17,9,3,13,8,5,7,19,10,8,12,12,14,2,13,11,3,9,6,10,12,9,8,4,14,15,11,3,12,3,8,10,8,4,4,8,5,8,13,2,4,13,13,5,6,4,5,5,5,7,9,10,15,5,8,10,6,4,8,11,8,9,12,4,3,3,7,10,15,17,10,8,5,11,10,7,14,5,7,11,12,7,13,7,19,4,14,6,4,8,2,8,4,6,7,3,6,13,9,4,9,8,7,15,13,2,15,8,5,14,13,7,9,4,8,10,13,4,6,6,7,6,3,7,4,8,10,4,5,7,2,7,10,4,2,4,13,5,5,6,3,10,4,6,8,16,16,14,13,12,14,12,10,10,10,10,10,9,9,10,11,10,7,7,8,7,9,8,8,6,6,5,5,4,5,3,4,3,5,4,4,4,3,3,3,3,3,10,12,7,5,14,8,7,9,3,6,6,10,7,8,7,9,15,10,14,2,3,8,8,10,7,17,8,14,5,15,3,17,13,17,5,7,10,10,4,11,4,7,4,9,19,16,6,3,4,5,2,3,3,12,4,12,12,6,10,10,5,8,6,10,11,8,3,4,12,15,2,4,18,3,8,6,5,7,2,7,9,5,8,19,2,5,9,5,11,16,4,8,10,8,9,12,13,3,4,3,10,5,13,3,3,4,10,8,6,3,9,12,4,7,6,5,8,3,4,2,3,15,6,5,7,8,4,13,7,5,6,7,15,10,13,11,4,4,10,6,11,13,4,13,7,14,5,13,7,9,6,13,9,11,4,16,21,23,19,15,15,15,14,14,14,15,14,14,13,14,13,13,12,12,12,10,10,11,10,10,10,11,10,10,9,9,9,8,8,8,9,7,7,8,7,8,8,6,7,6,6,8,8,5,5,6,7,4,5,5,4,5,4,4,4,4,4,3,3,3],[4442,1983,4835,3784,1547,5452,5987,2519,4111,3601,1801,4443,3301,1978,4290,2612,4498,2308,3538,1494,3687,1595,5242,3954,3246,4611,1686,2756,3859,3249,1386,3961,4860,824,1563,3446,3655,7153,3451,3650,3412,5674,4245,3538,2770,2175,6096,2903,6666,2251,877,5730,1771,3006,3522,6919,5835,6466,1686,1363,1593,2960,1484,1693,3129,1225,4308,2581,5547,4853,6084,5168,4524,2737,2248,5281,4587,2070,5634,2517,3068,2625,4488,1728,1420,4123,5843,4941,3517,3485,6165,3589,4144,3515,6219,2559,4425,2653,6054,2684,4259,2271,3301,5023,1292,7239,3855,3028,5034,4755,1714,3370,3173,6786,2769,5261,5296,5424,3932,4587,2873,2301,4096,2184,3169,2953,1250,5622,1845,6030,5353,3224,1206,1351,2741,4860,1709,3974,6492,3054,4690,3341,4952,5136,3485,2645,2994,5938,2315,1351,5512,1510,3444,1872,3901,3173,2877,6006,1668,1563,1728,3439,1930,2854,1787,7420,6294,5948,5664,5540,5530,5193,5111,5023,4927,4888,4771,4644,4597,4584,4529,4383,4413,4413,4406,4413,4318,4069,3905,3925,3859,3632,3604,3586,3512,3442,3251,3038,2933,2852,2577,2538,2214,2143,2099,1932,1810,1799,1730,1760,1652,1448,1363,1324,1239,1173,1168,925,883,824,7153,4835,3006,5843,3784,1547,1595,2612,1686,4259,6084,4860,3650,3954,1983,1206,1801,4690,2756,5023,4442,2770,5547,7239,5948,4290,3246,6666,1494,3054,3932,3687,5242,1686,3961,7420,1787,2271,1728,4771,1563,1932,4144,4860,2099,5530,2301,1250,4927,1709,3301,4888,3028,4096,3601,5835,2538,3446,5540,4308,1351,2308,5023,2625,3522,2175,3412,4498,5296,3129,3859,1510,4952,5512,5261,3451,4318,1845,3442,1351,2519,4413,4123,2960,1484,4069,1771,1693,3485,2251,6492,3589,2933,1593,2903,3515,5987,6165,4644,4443,2070,3517,4383,824,4597,2737,2184,5938,1668,3341,3901,5622,2581,4488,1730,5674,4587,2315,2854,5452,4111,2248,3905,3538,4245,4413,3173,3925,1324,2877,1225,1760,1386,2143,4406,3855,2852,5281,3859,3370,2769,5634,2994,1168,1563,5353,925,1652,2953,883,1799,6030,2645,2517,3485,2214,3224,6054,6786,4587,824,3169,6294,5193,4853,1978,6919,3974,2873,1872,1363,2653,4524,3444,2741,5168,3068,6219,6466,6096,6006,5730,5664,5424,5136,5111,5034,4941,4755,4611,4584,4529,4425,4413,3655,3632,3604,3586,3538,3512,3439,3301,3251,3249,3173,3038,2684,2577,2559,1930,1810,1728,1714,1420,1448,1363,1292,1239,1173,877,7153,3412,6084,5987,4308,2271,5547,5674,4853,4111,2737,3370,4245,4069,6466,4860,5948,6919,4259,5843,5353,7420,5938,1363,2769,5168,2519,2517,1206,6666,1420,2684,3604,6492,3855,1351,5261,2741,2099,3485,7239,4488,2625,4611,5023,5296,877,5281,4690,1801,3932,3006,4584,4860,3589,3301,1494,5730,6219,4425,1351,4771,1324,3859,4644,3512,2184,2214,3859,1983,3901,4888,824,1563,4952,5512,2251,3068,1709,2770,1595,2538,2612,3954,4529,6096,2559,3341,4443,3028,1760,3451,4941,3784,3601,4927,1686,1250,1872,3246,4413,6054,6294,4096,3054,2070,4524,3522,3439,5622,1930,3517,4442,5023,3173,5424,2756,6786,1510,5835,2315,1686,3655,1386,3687,1668,2953,3251,1239,2877,5452,3224,1547,3905,3515,2301,6030,5034,824,5664,3974,1771,5634,5530,2873,4290,2143,2645,4587,5242,1728,3173,3038,3538,2854,1787,3538,1593,3249,3961,2248,2581,3129,925,3442,4587,1448,883,1652,5136,2175,1978,2994,1730,4383,1799,2960,2852,6165,6006,5540,5193,5111,4835,4755,4597,4498,4413,4413,4406,4318,4144,4123,3925,3650,3632,3586,3446,3485,3444,3301,3169,2933,2903,2653,2577,2308,1932,1845,1810,1728,1714,1693,1563,1484,1363,1292,1225,1173,1168,4096,5023,3370,1932,5540,2625,3246,3444,1801,3028,2903,4498,3604,3169,3517,4144,6219,4406,4835,925,1787,3341,3512,3522,3538,6294,3687,5634,2070,6030,1324,6466,5281,6492,2251,2756,4587,4488,1420,4853,1563,3442,1652,3589,6666,6006,2854,1845,1494,2538,824,1728,1292,5023,2184,4860,4611,3038,3650,4413,2737,3451,2877,4413,4941,2741,1351,1799,4927,5938,1386,1709,6919,1168,3901,2994,2684,3251,824,3485,3224,2175,3301,7239,877,2559,4290,1771,3925,5843,2143,2645,4529,3054,4318,5168,4888,1730,1547,1173,4308,1595,5424,1872,1225,1593,3961,3974,2960,1239,4245,5111,2308,2873,2953,2581,3515,1250,1686,883,1351,6084,2519,1983,2612,3859,1810,5034,3412,1930,3068,3485,6054,4597,5242,4425,2248,1760,4587,2271,4524,5261,1668,5452,3632,5296,2653,5530,3173,3954,2517,4952,4111,4690,1686,6165,7420,7153,6786,6096,5948,5987,5835,5730,5674,5664,5622,5547,5512,5353,5193,5136,4860,4771,4755,4644,4584,4442,4383,4443,4413,4259,4123,4069,3905,3932,3855,3859,3784,3655,3601,3586,3538,3446,3439,3301,3249,3173,3129,3006,2933,2852,2769,2770,2577,2315,2301,2214,2099,1978,1728,1714,1693,1563,1510,1484,1448,1363,1363,1206],[33,8,319,25,5,50,86,63,41,45,3,36,38,18,23,14,39,16,34,11,37,32,29,30,50,148,5,15,31,7,14,37,49,11,15,30,31,1034,18,43,22,89,51,28,51,14,91,12,479,28,3,86,7,19,99,235,56,56,8,22,7,12,5,8,15,16,44,12,67,56,118,41,85,24,12,84,32,7,58,20,19,16,34,6,10,27,62,37,24,25,81,31,33,14,59,15,41,13,90,17,55,16,25,33,9,172,54,22,77,41,18,38,9,200,22,352,76,72,26,42,22,20,28,18,53,13,11,63,9,149,104,90,7,7,76,57,9,33,153,42,45,21,45,62,39,24,16,68,14,7,82,5,24,7,34,14,18,195,12,6,17,40,16,11,14,141,105,86,45,86,53,66,67,35,47,62,40,38,48,41,32,22,36,57,32,69,25,22,22,31,28,37,22,29,25,16,15,23,9,38,21,12,19,7,11,39,11,6,7,12,31,6,7,22,9,15,12,7,9,15,1164,140,20,90,90,32,58,39,14,103,193,90,69,56,44,14,14,53,24,41,13,32,90,243,126,26,22,476,26,57,27,23,49,15,53,176,6,18,12,61,22,28,42,64,11,78,28,8,61,10,22,88,29,51,25,89,24,19,90,55,12,18,56,15,59,10,25,55,107,19,33,10,61,92,115,39,32,9,22,11,57,83,48,13,4,26,15,19,42,19,180,45,18,23,16,16,71,93,34,25,19,18,35,10,58,25,15,82,9,28,30,57,8,31,6,94,43,18,9,36,32,16,23,21,43,41,21,32,19,15,8,17,9,9,33,69,15,100,39,45,17,53,10,10,12,122,6,8,15,9,9,132,28,18,15,10,84,91,221,27,5,58,103,84,51,16,239,26,22,4,8,12,57,20,124,55,32,62,59,74,142,118,52,70,80,66,66,46,56,101,42,42,35,74,17,30,16,23,25,21,29,20,19,9,19,15,13,14,16,21,12,16,15,8,8,6,11,12,29,10,169,1,26,26,7,0,19,20,9,10,2,36,4,8,41,9,18,92,11,19,30,59,23,0,6,12,27,1,3,139,0,2,2,47,15,1,29,11,2,8,73,6,7,10,10,17,2,12,11,1,5,3,11,8,4,11,3,14,20,5,1,21,0,4,13,27,10,4,5,23,4,9,0,4,13,32,36,11,1,13,4,0,0,7,12,28,2,4,4,4,0,5,25,4,10,10,2,5,4,18,10,28,51,6,13,3,22,52,5,40,0,6,12,22,10,21,3,58,1,17,3,2,3,2,7,3,5,6,4,4,18,17,0,4,11,6,46,23,2,10,5,2,20,22,6,11,2,11,10,79,3,4,13,5,4,15,6,0,13,280,6,8,4,0,4,9,4,1,4,25,4,2,5,5,12,2,3,43,42,58,29,24,14,114,20,17,12,5,15,10,8,8,4,47,15,7,7,4,7,9,5,16,10,8,3,4,10,7,2,2,2,3,3,2,2,3,3,1,16,2,8,69,2,16,6,5,2,18,4,2,1,12,7,2,11,1,18,5,26,2,8,0,7,74,0,30,10,3,8,19,1,27,6,31,11,0,4,5,3,13,1,0,0,7,81,57,0,0,0,0,0,0,3,5,4,14,7,1,7,4,1,7,5,6,5,12,2,4,10,12,1,0,52,7,2,2,1,13,0,6,9,2,6,45,1,2,15,7,11,9,0,13,6,6,6,10,12,7,0,1,4,1,11,0,0,2,15,3,2,2,8,8,4,3,1,3,12,3,2,0,0,25,12,14,0,6,0,15,4,3,2,2,13,2,12,6,3,1,10,2,6,17,3,18,2,15,1,16,3,3,1,9,9,9,1,34,35,285,38,14,17,19,14,16,16,13,13,20,11,14,15,14,9,7,10,7,13,11,4,2,10,18,2,7,5,6,6,4,3,3,6,3,2,4,8,7,87,2,2,1,2,6,2,5,1,1,3,1,0,2,1,1,1,1,4,5,2,0,1,4],[36,81,302,99,32,76,136,97,54,42,19,31,40,20,59,39,79,34,28,29,40,64,141,66,45,119,17,29,52,427,13,351,110,5,25,29,23,1870,53,92,31,135,57,33,50,16,119,27,743,67,13,167,24,24,188,390,135,135,19,10,25,19,15,23,26,9,68,19,133,75,255,78,90,29,27,119,47,30,78,21,46,28,42,14,11,56,119,77,35,24,186,57,51,41,103,20,46,16,135,19,134,24,33,58,17,366,93,35,106,87,20,88,36,324,27,164,142,108,39,58,31,39,131,32,80,21,17,117,11,212,172,114,22,15,151,92,12,35,277,76,74,33,85,123,57,54,17,127,23,12,137,15,49,8,37,27,26,268,15,17,20,48,25,16,29,283,185,162,79,128,122,124,92,154,83,113,90,54,79,71,63,53,54,103,49,97,46,46,32,90,41,40,37,33,57,26,38,29,30,65,20,24,17,11,13,52,15,31,18,18,13,14,9,20,18,48,19,8,10,12,1740,481,23,91,34,5,38,14,8,86,180,69,66,40,45,15,8,66,20,50,56,69,110,295,122,56,73,746,14,61,38,54,121,12,335,248,37,22,8,69,18,63,42,85,13,97,31,20,69,11,56,87,28,108,62,102,12,40,124,57,10,32,133,29,228,20,28,63,111,22,36,10,69,127,401,32,39,11,20,8,103,77,35,18,16,42,16,12,54,76,250,43,21,9,23,39,151,174,58,42,18,41,40,17,69,28,35,113,18,26,41,123,23,45,19,130,57,19,18,90,63,23,31,41,65,49,24,89,23,29,17,13,18,9,48,78,88,103,44,81,32,83,23,21,11,154,9,36,19,10,28,229,50,23,34,26,120,134,303,52,11,75,187,106,80,22,386,42,31,11,24,17,118,53,103,64,33,100,132,136,321,135,72,110,105,93,117,68,72,166,70,53,52,92,37,47,43,39,36,61,59,38,34,425,22,37,23,27,19,20,14,21,23,13,12,10,15,15,34,6,2735,52,347,196,105,40,181,204,122,85,51,90,104,60,150,140,230,533,178,162,246,365,172,32,43,107,133,40,26,1083,21,34,57,383,132,18,487,216,22,88,465,70,37,257,81,201,14,191,108,21,60,40,101,151,84,67,37,239,142,82,21,109,42,65,79,55,40,32,78,66,67,166,16,19,117,187,59,54,20,88,92,36,53,89,83,182,33,50,63,53,30,66,89,120,77,120,25,23,11,77,156,197,239,153,105,34,153,235,83,140,41,53,57,167,35,159,41,466,19,174,34,20,51,25,70,24,29,47,23,40,108,187,37,50,44,53,315,160,25,114,63,29,116,153,47,71,16,67,90,91,34,37,39,56,23,28,56,32,421,108,33,23,37,15,38,70,16,18,40,160,26,36,28,20,63,35,28,60,225,405,185,166,145,507,108,110,106,85,145,71,63,76,79,74,120,70,55,55,42,64,53,117,29,31,26,37,40,84,18,24,18,35,28,38,18,13,23,24,47,29,151,120,124,75,208,39,93,55,18,55,38,106,52,131,48,83,144,76,595,13,35,54,75,213,62,260,67,133,29,342,41,164,197,399,84,44,96,71,18,118,22,42,44,81,1141,406,27,20,40,36,27,20,23,86,46,135,260,51,128,156,52,64,39,84,109,215,20,33,120,183,26,21,573,24,69,31,35,40,16,90,195,28,72,493,15,33,67,24,110,172,18,65,89,112,65,109,163,18,37,62,108,95,169,15,25,30,373,65,29,25,100,151,46,50,33,28,43,25,25,19,19,348,148,75,53,77,26,168,49,38,63,47,212,125,158,81,36,29,69,38,169,499,24,108,75,203,28,159,42,93,40,121,86,110,21,233,389,2619,486,196,231,203,177,237,208,111,167,180,208,262,175,171,150,123,118,85,99,58,71,65,156,171,81,61,49,59,141,65,121,51,81,59,59,55,80,51,347,39,39,42,37,97,47,96,40,36,56,35,24,36,36,37,30,39,16,15,18,16,31,25],["BLCA,BRCA,COADREAD,GBM,HNSC,KIRP,LIHC,LUSC,OV,STAD,UCEC","BLCA,HNSC,LUSC,PCPG,THCA","BLCA,BRCA,CESC,COADREAD,KIRP,LIHC,LUAD,LUSC,OV,PAAD,STAD,TGCT,UCEC,UCS","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,STAD,UCEC","CESC,HNSC,LUSC,STAD","BLCA,BRCA,COADREAD,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,PRAD","BLCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,LUAD","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,COADREAD,HNSC,KIRP,LUAD,LUSC,PRAD,UCEC","BLCA,CESC,COADREAD,LUAD,LUSC","BLCA,BRCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,UCEC","CESC,COADREAD,ESCA,HNSC,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,LUAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,ESCA,HNSC,LUSC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV,UCEC","CESC,LUAD,LUSC,UCEC,UCS","BLCA,BRCA,CESC,CHOL,COADREAD,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,LUAD,LUSC,UCEC","BLCA,CESC,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CHOL,COADREAD,GBM,LGG,LIHC,LUAD","BLCA,BRCA","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,UCEC","BLCA,CESC,COADREAD,LUSC","BLCA,BRCA,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV,STAD,UCEC","ACC,BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KICH,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,GBM,HNSC,LUAD,LUSC,STAD","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,COADREAD,HNSC,UCEC","BLCA,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,PRAD,UCEC,UCS","BLCA,HNSC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,GBM,HNSC,LIHC,LUSC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC","ACC,BLCA,COADREAD,ESCA,HNSC,LIHC,LUAD,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PRAD,STAD,UCEC","BLCA,LUAD,LUSC,UCEC","COADREAD,HNSC,LUAD","BLCA,CESC,HNSC,LUSC","BRCA,CESC,HNSC,LUAD,LUSC,STAD","COADREAD,GBM,LGG,LUAD","HNSC,LUAD,LUSC,STAD","BLCA,BRCA,GBM,LUAD,LUSC,STAD,UCEC","LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,LIHC,LUAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,PRAD,STAD","BLCA,BRCA,HNSC,LUAD,LUSC","BLCA,BRCA,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LUAD,LUSC,PRAD,SARC,STAD,UCEC","BLCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,LUAD,STAD,UCEC","BLCA,CESC,COADREAD,ESCA,LUAD,PAAD,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,STAD","BLCA,LUAD,LUSC,OV","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,STAD","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,BRCA,HNSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,GBM,HNSC,LIHC,LUAD,LUSC,OV,SARC,UCEC","BLCA,LGG,LUAD,LUSC,MESO,UCEC","BLCA,BRCA,GBM,LIHC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,HNSC,LUAD","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,THCA,UCEC","BLCA,BRCA,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,LIHC,LUAD,LUSC,UCEC","ACC,BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,LUAD,LUSC,UCEC,UCS","BLCA,BRCA,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,PCPG,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","COADREAD,KIRC,LUAD,LUSC,OV,PAAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,COADREAD,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,ESCA,GBM,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BRCA,CESC,THCA,UCEC","BLCA,CESC,COADREAD,HNSC,KIRP,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,LUAD,LUSC,UCEC","BLCA,LUAD,LUSC","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,PAAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,CESC,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,UCEC","LIHC,LUAD,LUSC","HNSC,LUAD,LUSC","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD,STAD","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,COADREAD,LUAD,LUSC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,STAD","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,ESCA,GBM,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,ESCA,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,COADREAD,LUAD,LUSC,OV,UCEC","HNSC,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,LIHC,STAD,UCEC","BLCA,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,SARC,UCEC","BRCA,COADREAD,LUAD","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LGG,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,HNSC,LIHC,LUSC","BLCA,HNSC,LIHC,STAD","BLCA,HNSC,LUAD,UCEC","BRCA,COADREAD,GBM,HNSC,LGG,LUSC,UCEC","BLCA,HNSC,LUSC,OV,UCEC","BLCA,BRCA,LUAD,LUSC,OV,UCEC","BLCA,BRCA,PRAD","BLCA,BRCA,CESC,CHOL,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,STAD,TGCT,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","ACC,BLCA,BRCA,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,KIRC,KIRP,LIHC,LUSC,MESO,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,CESC,CHOL,KIRC,KIRP,LIHC,LUAD,MESO,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,UCEC","BRCA,COADREAD,LGG,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,KIRP,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV","BLCA,BRCA,KIRC,LUAD,LUSC,UCEC","BLCA,BRCA,KIRC,LUAD,STAD,UCEC","BLCA,COADREAD,LIHC,LUSC,OV,TGCT,THCA,UCEC","BRCA,CESC,COADREAD,LUAD,UCEC","BLCA,BRCA,CESC,LUSC,UCEC","BRCA,COADREAD,LUAD,STAD","BLCA,BRCA,LUAD,STAD","COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,KIRP,LUSC,STAD","COADREAD,HNSC,LUAD,LUSC","BLCA,HNSC,LGG,LUAD","BLCA,BRCA,LIHC","BLCA,HNSC,LUSC,UCEC","COADREAD,LUAD,STAD,UCEC","BLCA,CESC,LIHC,LUSC","COADREAD,HNSC,LUAD","BLCA,HNSC,LUSC","BLCA,LUAD,UCEC","CESC,HNSC,LUAD","BLCA,LIHC,UCEC","HNSC,UCEC","LUSC,UCEC","BLCA,UCEC","ACC,BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KICH,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,KIRP,LIHC,LUAD,LUSC,OV,PAAD,STAD,TGCT,UCEC,UCS","BLCA,BRCA,CESC,HNSC,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,STAD,UCEC","CESC,HNSC,LUSC,STAD","CESC,LUAD,LUSC,UCEC,UCS","CESC,COADREAD,ESCA,HNSC,LUSC,STAD,UCEC","BLCA,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,GBM,HNSC,LIHC,LUAD,LUSC,OV,SARC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LUSC,PCPG,THCA","LIHC,LUAD,LUSC","BLCA,BRCA,LUAD","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,KIRP,LIHC,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,GBM,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,ESCA,HNSC,LUSC","BLCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,STAD","BLCA,BRCA,COADREAD,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,CESC,CHOL,COADREAD,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,LUAD,LUSC,UCEC","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,CHOL,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,THCA,UCEC","BLCA,BRCA,PRAD","BLCA,LGG,LUAD,LUSC,MESO,UCEC","BLCA,BRCA,STAD","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","BLCA,CESC,COADREAD,LUSC","BLCA,HNSC,KIRP,LUSC,STAD","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,ESCA,GBM,LUAD,LUSC,STAD,UCEC","BLCA,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,COADREAD,LUAD,LUSC","BLCA,COADREAD,HNSC,KIRP,LUAD,LUSC,PRAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,BRCA,LIHC,LUAD,LUSC,UCEC","BLCA,CESC,COADREAD,HNSC,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,LUSC,UCEC","BLCA,BRCA,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC,UCS","BLCA,BRCA,CESC,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","HNSC,LUAD,LUSC","BRCA,COADREAD,LUAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,OV,STAD,UCEC","BLCA,CESC,COADREAD,ESCA,LUAD,PAAD,STAD,UCEC","ACC,BLCA,COADREAD,ESCA,HNSC,LIHC,LUAD,PRAD,STAD,UCEC","BLCA,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,GBM,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,LIHC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,GBM,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,UCEC","HNSC,LUAD,LUSC","BLCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,STAD","BRCA,CESC,HNSC,LUAD,LUSC,STAD","COADREAD,GBM,LGG,LUAD","BLCA,BRCA,CESC,HNSC,KIRC,KIRP,LIHC,LUSC,MESO,UCEC","BLCA,GBM,HNSC,LIHC,LUSC","HNSC,LUAD,LUSC,STAD","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,PRAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,KIRC,LUAD,STAD,UCEC","BLCA,CESC,HNSC,LUSC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,LUAD,LUSC","BRCA,CESC,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,HNSC,LIHC,LUSC","BLCA,BRCA,ESCA,GBM,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,LIHC,LUAD,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,LIHC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,COADREAD,LUAD,LUSC,OV,UCEC","BLCA,BRCA,LUAD,LUSC,OV,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,PRAD","BLCA,BRCA,LUAD,LUSC","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,PCPG,UCEC","BLCA,BRCA,CESC,CHOL,KIRC,KIRP,LIHC,LUAD,MESO,STAD,UCEC","BLCA,HNSC,LUSC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV","LUSC,STAD,UCEC","BLCA,HNSC,LUSC,UCEC","BLCA,BRCA","BLCA,BRCA,LUAD,STAD","ACC,BLCA,BRCA,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,COADREAD,LIHC,LUSC,OV,TGCT,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,LIHC,LUAD,LUSC,STAD,UCEC","COADREAD,KIRC,LUAD,LUSC,OV,PAAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LUAD,LUSC,PRAD,SARC,STAD,UCEC","BRCA,COADREAD,LIHC,LUAD,STAD,UCEC","BLCA,LIHC,UCEC","BLCA,HNSC,LIHC,STAD","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,PRAD,STAD,UCEC","HNSC,UCEC","COADREAD,LUAD,STAD,UCEC","BLCA,BRCA,CESC,LUAD,LUSC,UCEC","LUSC,UCEC","BLCA,HNSC,LGG,LUAD","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,PAAD,STAD,UCEC","BLCA,ESCA,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,LUAD,STAD","BLCA,CESC,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,UCEC","BLCA,CESC,COADREAD,HNSC,KIRP,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,THCA,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,COADREAD,HNSC,LIHC,LUAD,STAD,UCEC","BRCA,COADREAD,LUAD","COADREAD,HNSC,LUAD","BLCA,BRCA,HNSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,PRAD,STAD","BLCA,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,SARC,UCEC","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD,STAD","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LGG,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,STAD,TGCT,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","ACC,BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,BRCA,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,UCEC","BRCA,COADREAD,LGG,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,COADREAD,GBM,KIRP,LUAD,LUSC,UCEC","BRCA,COADREAD,GBM,HNSC,LGG,LUSC,UCEC","BLCA,BRCA,GBM,LIHC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV","BLCA,BRCA,CHOL,COADREAD,GBM,LGG,LIHC,LUAD","BLCA,BRCA,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,KIRC,LUAD,LUSC,UCEC","BLCA,BRCA,LUAD,LUSC,UCEC","BRCA,CESC,COADREAD,LUAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD","BLCA,HNSC,LUSC,OV,UCEC","COADREAD,HNSC,LUAD,LUSC","BLCA,HNSC,LUAD,UCEC","BLCA,LUAD,LUSC,UCEC,UCS","BLCA,LUAD,LUSC,OV","BLCA,CESC,LIHC,LUSC","COADREAD,HNSC,LUAD","BLCA,HNSC,LUAD","BLCA,LUAD,UCEC","CESC,HNSC,LUAD","BLCA,HNSC","ACC,BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KICH,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","BLCA,LGG,LUAD,LUSC,MESO,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,PRAD","BLCA,BRCA,HNSC,LUAD,LUSC","BLCA,BRCA,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,HNSC,KIRC,KIRP,LIHC,LUSC,MESO,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,GBM,HNSC,LIHC,LUAD,LUSC,OV,SARC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,CHOL,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","COADREAD,HNSC,LUAD","COADREAD,KIRC,LUAD,LUSC,OV,PAAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,HNSC,LUAD,LUSC,STAD,UCEC","LIHC,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,LUAD,LUSC,OV","BLCA,BRCA,LUAD,LUSC,UCEC","BRCA,COADREAD,LGG,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,BRCA,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC","HNSC,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD,STAD","COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,THCA,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,ESCA,LUAD,PAAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,HNSC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,LUAD","BLCA,BRCA,COADREAD,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC","BLCA,BRCA,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,COADREAD,HNSC,KIRP,LUAD,LUSC,PRAD,UCEC","BLCA,ESCA,HNSC,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PCPG,STAD,UCEC","HNSC,LUAD,LUSC","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","BLCA,HNSC,LUSC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,KIRP,LUAD,LUSC,UCEC","BRCA,CESC,THCA,UCEC","BRCA,COADREAD,LUAD,STAD","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LUSC,PCPG,THCA","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,UCEC","BLCA,HNSC,LIHC,STAD","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,PRAD,UCEC,UCS","BLCA,BRCA,HNSC,LUAD,STAD,UCEC","BLCA,COADREAD,LUAD,LUSC","BLCA,BRCA,COADREAD,HNSC,UCEC","CESC,LUAD,LUSC,UCEC,UCS","BLCA,BRCA,CESC,LUSC,UCEC","CESC,COADREAD,ESCA,HNSC,LUSC,STAD,UCEC","BLCA,BRCA,CESC,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,HNSC,LUAD","BLCA,BRCA,ESCA,GBM,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,BRCA,LIHC,LUAD,LUSC,UCEC","BLCA,HNSC,LUSC,UCEC","BLCA,BRCA,CESC,GBM,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,LUAD,LUSC,UCEC","BLCA,LUAD,LUSC","BRCA,COADREAD,LUAD","BLCA,BRCA,COADREAD,GBM,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,STAD","BLCA,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,PRAD,STAD","ACC,BLCA,COADREAD,ESCA,HNSC,LIHC,LUAD,PRAD,STAD,UCEC","BRCA,COADREAD,GBM,HNSC,LGG,LUSC,UCEC","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,HNSC,LUSC,OV,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,KIRP,LIHC,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,PCPG,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,CESC,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,LIHC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,COADREAD,LUAD,LUSC,OV,UCEC","BLCA,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV,UCEC","BLCA,HNSC,LIHC,LUSC","BLCA,BRCA,CESC,LUAD,LUSC,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV","BLCA,LUAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV","BLCA,BRCA,COADREAD,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,CESC,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,UCEC","CESC,HNSC,LUSC,STAD","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,ESCA,GBM,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,PAAD,STAD,UCEC","ACC,BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,STAD,TGCT,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,GBM,HNSC,LIHC,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LUAD,LUSC,PRAD,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,COADREAD,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,LUAD,STAD","BLCA,ESCA,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,CHOL,COADREAD,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LUAD,UCEC","BLCA,BRCA,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,KIRC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,LUAD,LUSC,OV,UCEC","BLCA,BRCA,PRAD","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,CESC,HNSC,LUSC","BLCA,BRCA,CHOL,COADREAD,GBM,LGG,LIHC,LUAD","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,PRAD,STAD,THCA,UCEC","BLCA,BRCA,LUAD,LUSC","BLCA,BRCA,LIHC,LUAD,UCEC","BLCA,BRCA,GBM,LUAD,LUSC,STAD,UCEC","HNSC,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,CESC,LIHC,LUSC","LUSC,UCEC","COADREAD,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,HNSC,LUAD,LUSC,UCEC","BLCA,CESC,COADREAD,LUAD,LUSC","BRCA,COADREAD,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,LIHC","BLCA,BRCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,HNSC,LGG,LUAD","BRCA,CESC,HNSC,LUAD,LUSC,STAD","BLCA,COADREAD,LIHC,LUSC,OV,TGCT,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LGG,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,KIRP,LIHC,LUAD,LUSC,OV,PAAD,STAD,TGCT,UCEC,UCS","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","ACC,BLCA,BRCA,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,STAD","BLCA,BRCA,CESC,CHOL,KIRC,KIRP,LIHC,LUAD,MESO,STAD,UCEC","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,UCEC","BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,SARC,UCEC","BLCA,BRCA,GBM,LIHC,LUAD,LUSC,OV,UCEC","BLCA,CESC,COADREAD,HNSC,KIRP,LUAD,LUSC,UCEC","BLCA,BRCA,KIRC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD","BLCA,BRCA,HNSC,STAD,UCEC","BRCA,CESC,COADREAD,LUAD,UCEC","BRCA,COADREAD,LUAD,UCEC","BLCA,HNSC,KIRP,LUSC,STAD","BLCA,BRCA,COADREAD","COADREAD,HNSC,LUAD,LUSC","BLCA,BRCA,STAD","BLCA,LUAD,LUSC,UCEC,UCS","HNSC,LUAD,LUSC,STAD","BLCA,CESC,COADREAD,LUSC","COADREAD,GBM,LGG,LUAD","COADREAD,HNSC,LUAD","BLCA,HNSC,LUAD","LUSC,STAD,UCEC","CESC,HNSC,LUAD","BLCA,LIHC,UCEC","BLCA,CESC,COADREAD,HNSC,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,KIRP,LUSC,STAD","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC,UCS","BLCA,CESC,COADREAD,ESCA,LUAD,PAAD,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,LUAD,LUSC,UCEC","BLCA,COADREAD,GBM,HNSC,LGG,LUAD,LUSC,SARC,UCEC","BLCA,BRCA,LUAD","BLCA,BRCA,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD","BLCA,BRCA,COADREAD,ESCA,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,LGG,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,KIRP,LUAD,LUSC,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","ACC,BLCA,BRCA,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,KIRP,LIHC,LUAD,LUSC,OV,PAAD,STAD,TGCT,UCEC,UCS","HNSC,UCEC","BLCA,BRCA,PRAD","BLCA,BRCA,ESCA,GBM,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,KIRP,LUAD,LUSC,UCEC","ACC,BLCA,COADREAD,ESCA,HNSC,LIHC,LUAD,PRAD,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LUAD,LUSC,PRAD,SARC,STAD,UCEC","BLCA,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,PAAD,STAD,UCEC","BLCA,HNSC,LUSC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC","BLCA,BRCA,PRAD,UCEC,UCS","BLCA,CESC,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,LUAD,LUSC,OV","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LIHC,STAD","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,UCEC","COADREAD,LUAD,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LGG,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,LUAD,LUSC,OV,UCEC","BLCA,BRCA,COADREAD","BLCA,ESCA,HNSC,LUSC","BLCA,BRCA,CESC,LUSC,UCEC","BLCA,UCEC","BLCA,BRCA,STAD","BLCA,HNSC,LUAD","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BRCA,CESC,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,BRCA,KIRC,LUAD,LUSC,UCEC","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,HNSC,LUAD,LUSC","BLCA,BRCA,CESC,GBM,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,COADREAD,LUAD,LUSC,OV","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,ESCA,HNSC,LIHC,LUAD,LUSC,PAAD,STAD","HNSC,LUAD,LUSC","BLCA,HNSC,LGG,LUAD","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA","BLCA,COADREAD,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,THCA,UCEC","BLCA,LIHC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,UCEC","BRCA,COADREAD,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,LUAD,LUSC,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,OV","BLCA,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,CESC,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,UCEC","BLCA,HNSC,LUAD,LUSC,UCEC","BLCA,COADREAD,HNSC,KIRP,LUAD,LUSC,PRAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,THCA,UCEC","BLCA,HNSC","BLCA,BRCA,CESC,HNSC,LUAD","BLCA,BRCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,UCEC","BLCA,GBM,HNSC,LIHC,LUSC","BLCA,BRCA,CESC,CHOL,KIRC,KIRP,LIHC,LUAD,MESO,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PAAD,PRAD,STAD,UCEC","BLCA,BRCA,LUAD,STAD","BLCA,ESCA,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,STAD","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC,UCS","BLCA,BRCA,LIHC","CESC,HNSC,LUSC,STAD","CESC,HNSC,LUAD","BLCA,BRCA,CESC,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","CESC,LUAD,LUSC,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BRCA,COADREAD,LUAD","LUSC,STAD,UCEC","BLCA,CESC,HNSC,LUSC","BLCA,COADREAD,GBM,HNSC,LUAD,LUSC,PRAD,STAD,THCA,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BRCA,CESC,HNSC,LUAD,LUSC,STAD","BLCA,LUAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BRCA,COADREAD,LUAD,UCEC","BLCA,COADREAD,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,BRCA,CESC,LUAD,LUSC,UCEC","BLCA,BRCA,LIHC,LUAD,UCEC","BLCA,BRCA,GBM,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,LUAD,LUSC","BLCA,LUAD,LUSC,UCEC","LUSC,UCEC","HNSC,LUAD,LUSC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,SARC,STAD,UCEC","BLCA,HNSC,LIHC,LUAD,LUSC,UCEC","BLCA,HNSC,LUSC,PCPG,THCA","CESC,COADREAD,ESCA,HNSC,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","COADREAD,HNSC,LUAD,LUSC","ACC,BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,STAD,UCEC","BLCA,HNSC,LUSC,OV,UCEC","BLCA,BRCA,HNSC,LUAD,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,CHOL,COADREAD,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,BRCA,LUAD,LUSC","BLCA,HNSC,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,LGG,LUAD,LUSC,MESO,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,PRAD,STAD","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,HNSC,LIHC,LUSC","BLCA,BRCA,COADREAD,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,HNSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,PCPG,UCEC","BLCA,BRCA,CESC,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LIHC,LUAD,LUSC,OV,PRAD","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,LUAD,LUSC,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PCPG,STAD,UCEC","BLCA,BRCA,CESC,CHOL,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PAAD,PRAD,SARC,STAD,THCA,UCEC","ACC,BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KICH,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,MESO,OV,PAAD,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,OV,PRAD,SARC,STAD,UCEC,UCS","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,OV,PRAD,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRC,KIRP,LGG,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LGG,LIHC,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LGG,LIHC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,THCA,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,LGG,LIHC,LUAD,LUSC,OV,STAD,TGCT,UCEC","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LGG,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRC,LIHC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,GBM,HNSC,KIRP,LUAD,LUSC,OV,PRAD,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,KIRP,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,KIRC,KIRP,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,GBM,HNSC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,COADREAD,ESCA,GBM,HNSC,KIRC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,ESCA,GBM,HNSC,KIRC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,PRAD,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,KIRP,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,KIRP,LIHC,LUSC,OV,STAD,UCEC","BLCA,BRCA,HNSC,KIRC,LIHC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,HNSC,LUAD,LUSC,SARC,STAD,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,GBM,HNSC,LIHC,LUAD,LUSC,OV,SARC,UCEC","BLCA,BRCA,CESC,COADREAD,ESCA,HNSC,LUAD,LUSC,PAAD,STAD","BLCA,BRCA,CESC,HNSC,KIRC,KIRP,LIHC,LUSC,MESO,UCEC","BLCA,BRCA,COADREAD,GBM,HNSC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,COADREAD,GBM,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,ESCA,HNSC,LUAD,LUSC,OV,STAD,UCEC","BLCA,BRCA,HNSC,LIHC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,LUAD,LUSC,OV,STAD,UCEC","BLCA,CESC,COADREAD,HNSC,KIRC,LIHC,LUAD,LUSC,UCEC","BRCA,COADREAD,HNSC,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,LUAD,LUSC,STAD","BLCA,BRCA,GBM,HNSC,LUAD,LUSC,OV,UCEC","BRCA,COADREAD,GBM,HNSC,LGG,LUSC,UCEC","BLCA,BRCA,GBM,LIHC,LUAD,LUSC,OV,UCEC","BLCA,BRCA,CHOL,COADREAD,GBM,LGG,LIHC,LUAD","BLCA,BRCA,HNSC,LUAD,LUSC,UCEC","BLCA,BRCA,GBM,LUAD,LUSC,STAD,UCEC","BLCA,BRCA,CESC,HNSC,LUAD,LUSC","BLCA,BRCA,KIRC,LUAD,STAD,UCEC","BLCA,COADREAD,LIHC,LUSC,OV,TGCT,THCA,UCEC","COADREAD,KIRC,LUAD,LUSC,OV,PAAD,STAD,UCEC","BLCA,BRCA,COADREAD,HNSC,UCEC","BRCA,CESC,COADREAD,LUAD,UCEC","BLCA,COADREAD,LUAD,LUSC,OV,UCEC","BLCA,ESCA,GBM,LUAD,LUSC,STAD,UCEC","BRCA,COADREAD,LUAD,STAD","COADREAD,LUAD,LUSC,STAD,UCEC","BLCA,CESC,COADREAD,LUAD,LUSC","BLCA,HNSC,LUAD,UCEC","BLCA,LUAD,LUSC,UCEC,UCS","HNSC,LUAD,LUSC,STAD","BLCA,CESC,COADREAD,LUSC","BLCA,LIHC,STAD,UCEC","COADREAD,GBM,LGG,LUAD","BLCA,CESC,LIHC,LUSC","COADREAD,HNSC,LUAD","COADREAD,HNSC,LUAD","LIHC,LUAD,LUSC"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>gene<\/th>\n      <th>phenotype<\/th>\n      <th>dd.p<\/th>\n      <th>dd.fdr<\/th>\n      <th>direction<\/th>\n      <th>mut_freq_pct<\/th>\n      <th>n_tumor_types<\/th>\n      <th>n_samples<\/th>\n      <th>mut.E1<\/th>\n      <th>mut.E0<\/th>\n      <th>tumors<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","buttons":["copy","csv","excel"],"pageLength":15,"columnDefs":[{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatSignif(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatSignif(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,5,6,7,8,9]},{"name":"gene","targets":0},{"name":"phenotype","targets":1},{"name":"dd.p","targets":2},{"name":"dd.fdr","targets":3},{"name":"direction","targets":4},{"name":"mut_freq_pct","targets":5},{"name":"n_tumor_types","targets":6},{"name":"n_samples","targets":7},{"name":"mut.E1","targets":8},{"name":"mut.E0","targets":9},{"name":"tumors","targets":10}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[10,15,25,50,100]}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+<div id="significant-genes-dd.fdr-0.05" class="section level2">
+<h2>Significant genes (dd.fdr &lt; 0.05)</h2>
+<ul>
+<li><strong>C2 vs rest (5):</strong> TP53 (up in C2), KRAS (up in rest),
+JAK2 (up in C2), COL5A1 (up in C2), CASP8 (up in C2).</li>
+<li><strong>C3 vs rest (6):</strong> TP53 (up in rest), WHSC1/NSD2,
+FAT1, SMARCA4, BRCA1, LATS2 — all up in the rest.</li>
+<li><strong>C4 vs rest (2):</strong> CIC (up in rest), <strong>EGFR (up
+in C4)</strong>.</li>
+<li><strong>C1 vs rest:</strong> none pass FDR 0.05.</li>
+</ul>
+<p>The dominant, most consistent signal is <strong>TP53</strong>, which
+flips direction — enriched in C2 (“IFN-γ dominant”) but depleted (up in
+rest) for C3 (“inflammatory”) — consistent with the immune subtypes
+tracking distinct oncogenic-driver backgrounds. <strong>KRAS</strong> is
+depleted in C2. Notably <strong>EGFR</strong> is selected up in
+<strong>C4</strong> (lymphocyte-depleted), and <strong>CIC</strong> in
+the rest of C4. This cohort-adjusted pan-cancer view (250 genes, 27
+tumor types) extends the earlier tumor-type-restricted immune-subtype
+analyses.</p>
+</div>
+</div>
+<div id="notes" class="section level1">
+<h1>Notes</h1>
+<ul>
+<li>FDR is recomputed within each subtype over the genes tested, so
+values differ from the per-tumor-type immune-subtype pages.</li>
+<li>The full aggregated table (all 220 genes × 4 subtypes, with mutation
+frequency and cohort composition) is downloadable from the results table
+above.</li>
+</ul>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Sonoma 14.6.1
+
+Matrix products: default
+BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.11.0
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+time zone: America/New_York
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] DT_0.33         workflowr_1.7.1
+
+loaded via a namespace (and not attached):
+ [1] jsonlite_2.0.0    compiler_4.3.2    promises_1.5.0    Rcpp_1.1.0       
+ [5] stringr_1.6.0     git2r_0.36.2      callr_3.7.6       later_1.4.8      
+ [9] jquerylib_0.1.4   yaml_2.3.12       fastmap_1.2.0     R6_2.6.1         
+[13] knitr_1.51        htmlwidgets_1.6.4 tibble_3.3.1      rprojroot_2.0.4  
+[17] bslib_0.10.0      pillar_1.11.1     rlang_1.1.6       cachem_1.1.0     
+[21] stringi_1.8.7     httpuv_1.6.15     xfun_0.52         getPass_0.2-4    
+[25] fs_1.6.6          sass_0.4.10       otel_0.2.0        cli_3.6.5        
+[29] magrittr_2.0.3    crosstalk_1.2.2   ps_1.8.1          digest_0.6.39    
+[33] processx_3.8.5    rstudioapi_0.17.1 lifecycle_1.0.5   vctrs_0.6.5      
+[37] evaluate_1.0.5    glue_1.8.0        whisker_0.4.1     rmarkdown_2.29   
+[41] httr_1.4.8        tools_4.3.2       pkgconfig_2.0.3   htmltools_0.5.9  </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
