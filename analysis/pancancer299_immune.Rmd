@@ -69,10 +69,13 @@ datatable(gc[, c("gene", "n_tumor_types", "n_samples", "n_mutated", "mut_freq_pc
 
 # Results
 
-For each gene we take `dd.p` from its cohort run, then **recompute FDR across all genes within
-each subtype**. `alpha_e` is the subtype coefficient — **positive = selected up in the subtype,
-negative = up in the rest**. `mut_freq` is the cohort-level mutation frequency; `mut.E1`/
-`mut.E0` are mutation counts in the subtype vs the rest.
+For each gene we take `dd.p` from its cohort run — the diffdriver likelihood-ratio test
+p-value (−2·(null − alt) log-likelihood, compared to χ² with 1 df). We then **recompute FDR
+by Benjamini–Hochberg across all genes within each subtype** (`p.adjust(method = "fdr")`
+applied separately to the ~220 p-values for C1, C2, C3, and C4). `alpha_e` is the subtype
+coefficient — **positive = selected up in the subtype, negative = up in the rest**.
+`mut_freq` is the cohort-level mutation frequency; `mut.E1`/`mut.E0` are mutation counts in
+the subtype vs the rest.
 
 ```{r results}
 res <- read.table("data/pancancer299_immune_aggregated.txt", header = TRUE, sep = "\t")
@@ -85,20 +88,22 @@ datatable(res, rownames = FALSE, filter = "top", extensions = "Buttons",
   formatSignif(columns = c("dd.p", "dd.fdr"), digits = 3)
 ```
 
-## Significant genes (dd.fdr < 0.05)
+## Significant genes (dd.fdr < 0.1)
 
-- **C2 vs rest (5):** TP53 (up in C2), KRAS (up in rest), JAK2 (up in C2), COL5A1 (up in C2),
-  CASP8 (up in C2).
-- **C3 vs rest (6):** TP53 (up in rest), WHSC1/NSD2, FAT1, SMARCA4, BRCA1, LATS2 — all up in
-  the rest.
+- **C2 vs rest (11):** TP53 (up in C2), KRAS (up in rest), JAK2, COL5A1, CASP8, **HLA-A**,
+  PPP2R1A, **HLA-B**, EZH2, RB1, FAT1 — all up in C2 except KRAS.
+- **C3 vs rest (7):** TP53, WHSC1/NSD2, FAT1, SMARCA4, BRCA1, LATS2, POLQ — all up in the
+  rest.
 - **C4 vs rest (2):** CIC (up in rest), **EGFR (up in C4)**.
-- **C1 vs rest:** none pass FDR 0.05.
+- **C1 vs rest:** none pass FDR 0.1.
 
 The dominant, most consistent signal is **TP53**, which flips direction — enriched in C2
 ("IFN-γ dominant") but depleted (up in rest) for C3 ("inflammatory") — consistent with the
 immune subtypes tracking distinct oncogenic-driver backgrounds. **KRAS** is depleted in C2.
-Notably **EGFR** is selected up in **C4** (lymphocyte-depleted), and **CIC** in the rest of C4.
-This cohort-adjusted pan-cancer view (250 genes, 27 tumor types) extends the earlier
+At the 0.1 threshold, C2 additionally picks up the antigen-presentation genes **HLA-A** and
+**HLA-B**, whose selection tracks immune-subtype differences in immune evasion. Notably
+**EGFR** is selected up in **C4** (lymphocyte-depleted), and **CIC** in the rest of C4. This
+cohort-adjusted pan-cancer view (250 genes, 27 tumor types) extends the earlier
 tumor-type-restricted immune-subtype analyses.
 
 # Notes
