@@ -235,6 +235,15 @@ using the fastTopics fit stored in the run's `*_BMRres.Rdata`. Sample-level
 labels (tumor type, smoking status from `tobacco_smoking_history_indicator`, sex,
 age) come from the TCGA LUAD/LUSC clinical files.
 
+## Signature spectra (96 trinucleotide contexts)
+
+The 6 fitted signatures across the 96 trinucleotide contexts (standard SBS
+layout; purine-reference substitutions reverse-complemented to pyrimidine
+convention). Signature 4 = C>A tobacco signature (SBS4); Signature 3 = C>T at
+CpG aging signature (SBS1).
+
+![](figure/lung_subtype.Rmd/fig4_signatures96_labeled.png)
+
 ## Signature structure by tumor type, smoking, sex, and age
 
 Per-sample signature proportions (structure plot), with samples ordered by tumor

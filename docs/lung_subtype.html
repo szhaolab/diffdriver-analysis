@@ -1009,6 +1009,20 @@ Qirui Zhang
 (topic) model. Here <strong>k = 6</strong> signatures were fit across the 704
 LUAD + LUSC samples. The two figures below summarize the signatures and their
 relationship to sample-level features.</p>
+<div id="ms-spectra" class="section level2">
+<h2>Signature spectra (96 trinucleotide contexts)</h2>
+<p>The 6 fitted signatures across the 96 trinucleotide contexts, in standard SBS
+layout: columns are the six base substitutions (C&gt;A, C&gt;G, C&gt;T, T&gt;A,
+T&gt;C, T&gt;G; substitutions on purine references are reverse-complemented to
+the pyrimidine convention), rows are the signatures, and the x-axis labels give
+the 5&#39; and 3&#39; flanking bases of each context. <strong>Signature 4</strong>
+is dominated by C&gt;A transversions (peak at C[C&gt;A]A) &mdash; the tobacco
+smoking signature SBS4. <strong>Signature 3</strong> is dominated by C&gt;T at
+CpG (G[C&gt;T]G, A[C&gt;T]G, C[C&gt;T]G) &mdash; the clock-like aging signature
+SBS1.</p>
+<p><img src="figure/lung_subtype.Rmd/fig4_signatures96_labeled.png" style="width:100%"
+alt="96-context spectra of the 6 mutational signatures, faceted by substitution class"></p>
+</div>
 <div id="ms-structure" class="section level2">
 <h2>Signature structure by tumor type, smoking, sex, and age</h2>
 <p>Per-sample signature proportions (structure plot), with samples ordered by
