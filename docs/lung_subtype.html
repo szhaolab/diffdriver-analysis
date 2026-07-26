@@ -1028,6 +1028,27 @@ the mutation spectra of both lung cancer types.</p>
 <p><img src="figure/lung_subtype.Rmd/fig2_obs_exp_bytumor.png" style="width:55%"
 alt="Per-context observed vs expected mutations, colored by LUAD vs LUSC"></p>
 </div>
+<div id="ms-obsexp-persample" class="section level2">
+<h2>Signature-model fit: per-sample observed vs expected</h2>
+<p>The same observed-vs-expected comparison, now at the individual
+sample&times;context level (not summed), colored by tumor type. Cells for both
+LUAD and LUSC scatter around the diagonal; the horizontal bands reflect integer
+observed counts.</p>
+<p><img src="figure/lung_subtype.Rmd/fig2b_obs_exp_persample_bytumor.png" style="width:55%"
+alt="Per-sample per-context observed vs expected mutations, colored by LUAD/LUSC"></p>
+</div>
+<div id="ms-covcorr" class="section level2">
+<h2>Covariate vs signature-loading correlation</h2>
+<p>Pearson correlation between each sample-level covariate (tumor type, smoking
+status, age, sex, stage) and each of the 6 signature loadings (stars:
+*&nbsp;p&lt;0.05, **&nbsp;p&lt;0.01, ***&nbsp;p&lt;0.001). Smoking is the
+strongest axis: Signature&nbsp;3 is depleted in smokers (never-smoker signature)
+while Signatures&nbsp;4 (tobacco C&gt;A) and&nbsp;5 are enriched. Tumor type
+separates Signature&nbsp;1 (LUSC) from Signature&nbsp;5 (LUAD); age shifts usage
+from Sig&nbsp;5 toward Sig&nbsp;3/6.</p>
+<p><img src="figure/lung_subtype.Rmd/fig3_cov_sig_corr.png" style="width:65%"
+alt="Heatmap: correlation of covariates with signature loadings"></p>
+</div>
 </div>
 <br>
 <p>

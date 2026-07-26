@@ -256,3 +256,19 @@ expected under the fitted signature model (`expected = ysample * sigmtx`),
 colored by tumor type. Points lie on the diagonal for both LUAD and LUSC.
 
 ![](figure/lung_subtype.Rmd/fig2_obs_exp_bytumor.png)
+
+## Signature-model fit: per-sample observed vs expected
+
+The observed-vs-expected comparison at the individual sample x context level
+(not summed), colored by tumor type.
+
+![](figure/lung_subtype.Rmd/fig2b_obs_exp_persample_bytumor.png)
+
+## Covariate vs signature-loading correlation
+
+Pearson correlation between each sample-level covariate (tumor type, smoking
+status, age, sex, stage from `ajcc_pathologic_tumor_stage`) and each of the 6
+signature loadings. Smoking is the strongest axis (Sig3 depleted / Sig4-5
+enriched in smokers); tumor type separates Sig1 (LUSC) from Sig5 (LUAD).
+
+![](figure/lung_subtype.Rmd/fig3_cov_sig_corr.png)
