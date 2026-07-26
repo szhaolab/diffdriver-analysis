@@ -247,7 +247,7 @@ CpG aging signature (SBS1).
 ## Signature structure by tumor type, smoking, sex, and age
 
 Per-sample signature proportions (structure plot), with samples ordered by tumor
-type, then smoking status, then sex, then age; tracks above show these labels.
+type, then smoking status, then sex; tracks above show these labels.
 Signature 4 is the tobacco C>A signature (enriched in ever-smokers); Signature 3
 is enriched in never-smokers.
 
