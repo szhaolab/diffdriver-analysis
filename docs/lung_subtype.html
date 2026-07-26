@@ -1003,6 +1003,32 @@ Qirui Zhang
 </table>
 </div>
 </div>
+<div id="mutational-signature-analysis" class="section level1">
+<h1>Mutational signature analysis</h1>
+<p>diffdriver models the background mutation rate with a mutational-signature
+(topic) model. Here <strong>k = 6</strong> signatures were fit across the 704
+LUAD + LUSC samples. The two figures below summarize the signatures and their
+relationship to sample-level features.</p>
+<div id="ms-structure" class="section level2">
+<h2>Signature structure by tumor type, smoking, sex, and age</h2>
+<p>Per-sample signature proportions (structure plot), with samples ordered by
+tumor type, then smoking status, then sex, then age. The tracks above show these
+sample-level labels in the same order. Signature 4 (purple) is the tobacco
+C&gt;A signature, enriched in ever-smokers; Signature 3 (green) is enriched in
+never-smokers.</p>
+<p><img src="figure/lung_subtype.Rmd/fig1_structure_annotated.png" style="width:100%"
+alt="Annotated structure plot of 6 mutational signatures, samples ordered by tumor type, smoking, sex, age"></p>
+</div>
+<div id="ms-obsexp" class="section level2">
+<h2>Signature-model fit: observed vs expected mutations</h2>
+<p>Per-trinucleotide-context mutation totals (summed over samples), observed vs
+expected under the fitted signature model, colored by tumor type. Points lie on
+the diagonal for both LUAD and LUSC, indicating the 6-signature model reproduces
+the mutation spectra of both lung cancer types.</p>
+<p><img src="figure/lung_subtype.Rmd/fig2_obs_exp_bytumor.png" style="width:55%"
+alt="Per-context observed vs expected mutations, colored by LUAD vs LUSC"></p>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

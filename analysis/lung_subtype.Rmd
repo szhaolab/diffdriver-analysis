@@ -227,3 +227,32 @@ plot_diff_number(filedf, mode = "sig")
 ```{r}
 plot_diff_number(filedf, mode = "reg")
 ```
+# Mutational signature analysis
+
+diffdriver models the background mutation rate with a mutational-signature (topic)
+model. Here **k = 6** signatures were fit across the 704 LUAD + LUSC samples,
+using the fastTopics fit stored in the run's `*_BMRres.Rdata`. Sample-level
+labels (tumor type, smoking status from `tobacco_smoking_history_indicator`, sex,
+age) come from the TCGA LUAD/LUSC clinical files.
+
+## Signature structure by tumor type, smoking, sex, and age
+
+Per-sample signature proportions (structure plot), with samples ordered by tumor
+type, then smoking status, then sex, then age; tracks above show these labels.
+Signature 4 is the tobacco C>A signature (enriched in ever-smokers); Signature 3
+is enriched in never-smokers.
+
+```{r fig1, eval=FALSE}
+# loadings L (samples x 6) ordered by tumor, smoking, sex, age; tracks via cowplot
+knitr::include_graphics("figure/lung_subtype.Rmd/fig1_structure_annotated.png")
+```
+
+![](figure/lung_subtype.Rmd/fig1_structure_annotated.png)
+
+## Signature-model fit: observed vs expected mutations
+
+Per-trinucleotide-context mutation totals (summed over samples), observed vs
+expected under the fitted signature model (`expected = ysample * sigmtx`),
+colored by tumor type. Points lie on the diagonal for both LUAD and LUSC.
+
+![](figure/lung_subtype.Rmd/fig2_obs_exp_bytumor.png)
